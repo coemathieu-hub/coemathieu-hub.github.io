@@ -1,0 +1,7 @@
+Starting: Intent { cmp=io.github.coemathieuhub.carnet/.LauncherActivity }
+Status: ok
+LaunchState: COLD
+Activity: io.github.coemathieuhub.carnet/.LauncherActivity
+TotalTime: 1323
+WaitTime: 1327
+Complete

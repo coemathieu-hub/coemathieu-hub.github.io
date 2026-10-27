@@ -1,0 +1,984 @@
+10-27 20:04:27.560 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:27.562 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:27.575 V/SplashScreenExceptionList(  552): SplashScreen checking exception for package io.github.coemathieuhub.carnet (target sdk:35) -> false
+10-27 20:04:27.581 I/ActivityTaskManager(  552): START u0 {flg=0x10000000 cmp=io.github.coemathieuhub.carnet/.LauncherActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-27 20:04:27.584 E/WifiChipAidlImpl(  552): getUsableChannels failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+10-27 20:04:27.620 I/thieuhub.carnet( 2027): Using CollectorTypeCMC GC.
+10-27 20:04:27.621 W/thieuhub.carnet( 2027): Unexpected CPU variant for x86: x86_64.
+10-27 20:04:27.621 W/thieuhub.carnet( 2027): Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, default
+10-27 20:04:27.627 E/thieuhub.carnet( 2027): Not starting debugger since process cannot load the jdwp agent.
+10-27 20:04:27.638 I/ActivityManager(  552): Start proc 2027:io.github.coemathieuhub.carnet/u0a209 for next-top-activity {io.github.coemathieuhub.carnet/io.github.coemathieuhub.carnet.LauncherActivity}
+10-27 20:04:27.707 D/nativeloader( 2027): Configuring clns-7 for other apk /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/io.github.coemathieuhub.carnet
+10-27 20:04:27.717 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:27.810 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:27.917 I/IntentFilterIntentOp( 1420): Verifying IntentFilter. verificationId:3 scheme:"https" hosts:"coemathieu-hub.github.io" package:"io.github.coemathieuhub.carnet". [CONTEXT service_id=244 ]
+10-27 20:04:28.159 I/AppsFilter(  552): interaction: PackageSetting{af7bb56 com.android.microdroid.empty_payload/10192} -> PackageSetting{11327d7 io.github.coemathieuhub.carnet/10209} BLOCKED
+10-27 20:04:28.232 E/AppHibernationService(  552): Package io.github.coemathieuhub.carnet is not installed for user 0
+10-27 20:04:28.234 E/AppHibernationService(  552): Package io.github.coemathieuhub.carnet is not installed for any user
+10-27 20:04:28.234 E/AppHibernationService(  552): Package io.github.coemathieuhub.carnet is not installed for user 0
+10-27 20:04:28.234 E/AppHibernationService(  552): Package io.github.coemathieuhub.carnet is not installed for any user
+10-27 20:04:28.239 D/CarrierSvcBindHelper( 1072): onPackageAdded: io.github.coemathieuhub.carnet
+10-27 20:04:28.270 D/TWALauncherActivity( 2027): Using url from Manifest: https://coemathieu-hub.github.io/
+10-27 20:04:28.278 D/TWAProviderPicker( 2027): Found TWA provider, finishing search: com.android.chrome
+10-27 20:04:28.281 I/TopTaskTracker( 1216): onTaskMovedToFront: (moved taskInfo to front) taskId=8, baseIntent=Intent { flg=0x10000000 cmp=io.github.coemathieuhub.carnet/.LauncherActivity }
+10-27 20:04:28.391 D/ImsResolver( 1072): maybeAddedImsService, packageName: io.github.coemathieuhub.carnet
+10-27 20:04:28.407 D/ShortcutService(  552): rescanPackageIfNeeded 0@io.github.coemathieuhub.carnet, forceRescan=false , isNewApp=false
+10-27 20:04:28.407 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet has 0 manifest shortcut(s), and 0 share target(s)
+10-27 20:04:28.407 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet updated, version -1 -> 6
+10-27 20:04:28.407 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet: publishing manifest shortcuts
+10-27 20:04:28.407 D/ShortcutService(  552): io.github.coemathieuhub.carnet: last reset=0, now=1793131468407, last=1793131458384: resetting
+10-27 20:04:28.426 D/CoreBackPreview(  552): Window{1393745 u0 io.github.coemathieuhub.carnet/io.github.coemathieuhub.carnet.LauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@5bfe7a8, mPriority=0, mIsAnimationCallback=false}
+10-27 20:04:28.602 W/InteractionJankMonitor( 2027): Initializing without READ_DEVICE_CONFIG permission. enabled=true, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=io.github.coemathieuhub.carnet
+10-27 20:04:28.844 I/GmsActivityDetector( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/geofencer_ad_state: open failed: ENOENT (No such file or directory)
+10-27 20:04:28.844 I/GmsActivityDetector( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:04:29.060 W/MediaProvider( 1465): Exception encountered while reading xattr:user.intdbsessionid0 from path:/data/media/0.
+10-27 20:04:29.122 I/cr_SplitCompatApp( 2086): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome isIsolated=false
+10-27 20:04:29.279 I/cr_CommandLine( 2086): COMMAND-LINE FLAGS: [_, --disable-fre, --no-default-browser-check, --no-first-run] (from /data/local/tmp/chrome-command-line)
+10-27 20:04:29.288 I/cr_LibraryLoader( 2086): Loading monochrome_64 from within /data/app/~~G5b2ALsl7mM7q9IR7gOEaQ==/com.android.chrome-Xi5cr9oAR1mu-neutTjuMA==/Chrome.apk
+10-27 20:04:29.340 I/cr_Linker( 2086): loadLibraryImplLocked: monochrome_64, relroMode=1
+10-27 20:04:29.440 D/TwaLauncher( 2027): Launching Trusted Web Activity.
+10-27 20:04:29.505 E/SystemServiceRegistry( 1011): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:29.534 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:29.535 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:29.639 I/cr_LibraryLoader( 2086): Successfully loaded native library
+10-27 20:04:29.643 I/cr_CachingUmaRecorder( 2086): Flushed 18 samples from 17 histograms, 0 samples were dropped.
+10-27 20:04:29.691 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:29.701 I/cr_SplitCompatClassLoader( 2086): Splits: null
+10-27 20:04:29.740 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:29.747 I/BLASTSyncEngine(  552): Unfinished container: Task{909f11b #8 type=standard A=10209:io.github.coemathieuhub.carnet}
+10-27 20:04:29.757 V/WindowManager(  552):         {WCT{RemoteToken{a1743a4 Task{909f11b #8 type=standard A=10209:io.github.coemathieuhub.carnet}}} m=OPEN f=MOVE_TO_TOP leash=Surface(name=Task=8)/@0x60f5cd1 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0 taskParent=-1},
+10-27 20:04:29.760 I/cr_CompositorSurfaceMgr( 2086): Transitioning to surface with format: -1
+10-27 20:04:29.813 I/SdkSandboxManager(  552): No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10209, mPackageName='io.github.coemathieuhub.carnet, mAppProcessToken='null'}
+10-27 20:04:29.856 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:29.856 W/cr_PartnerCustomize( 2086): Another initializeAsync is already in progress.
+10-27 20:04:29.932 I/cr_StartSurfaceConfig( 2086): Recorded Startup.Android.FirstDrawCompletedTime.NoInstant = 234 ms
+10-27 20:04:30.040 I/AppsFilter(  552): interaction: PackageSetting{af7bb56 com.android.microdroid.empty_payload/10192} -> PackageSetting{395d4ef io.github.coemathieuhub.carnet/10209} BLOCKED
+10-27 20:04:30.132 W/ModernMediaScanner( 1465): Failed to visit /system/media: java.nio.file.NoSuchFileException: /system/media
+10-27 20:04:30.146 W/ModernMediaScanner( 1465): Failed to visit /oem/media: java.nio.file.NoSuchFileException: /oem/media
+10-27 20:04:30.190 D/CoreBackPreview(  552): Window{1393745 u0 io.github.coemathieuhub.carnet/io.github.coemathieuhub.carnet.LauncherActivity}: Setting back callback null
+10-27 20:04:30.203 W/InputManager-JNI(  552): Input channel object '1393745 io.github.coemathieuhub.carnet/io.github.coemathieuhub.carnet.LauncherActivity (client)' was disposed without first being removed with the input manager!
+10-27 20:04:30.307 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.307 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.307 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.308 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.308 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.308 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.352 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.352 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:30.549 I/cr_ZygotePreload( 2214): Loaded Zygote. version=124.0.6367.219 minSdkVersion=29 isBundle=true
+10-27 20:04:30.582 I/cr_LibraryLoader( 2214): Loading monochrome_64 from within /data/app/~~G5b2ALsl7mM7q9IR7gOEaQ==/com.android.chrome-Xi5cr9oAR1mu-neutTjuMA==/Chrome.apk
+10-27 20:04:30.582 I/cr_Linker( 2214): loadLibraryImplLocked: monochrome_64, relroMode=1
+10-27 20:04:30.882 I/cr_CombinedPProvider( 2086): #linkNativeInternal() 0
+10-27 20:04:30.882 I/cr_PolicyProvider( 2086): #setManagerAndSource() 0
+10-27 20:04:30.883 I/cr_PolicyCacheProvider( 2086): #refresh() true
+10-27 20:04:30.948 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.129 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.249 D/ShortcutService(  552): Saving package item io.github.coemathieuhub.carnet to /data/system_ce/0/shortcut_service/packages/io.github.coemathieuhub.carnet.xml
+10-27 20:04:31.305 I/cr_SplitCompatApp( 2265): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 isIsolated=true
+10-27 20:04:31.411 I/cr_SmsProviderGms( 2086): construction successfull GD3@bdf391c, DD3@3787ea4
+10-27 20:04:31.416 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.431 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.464 D/ShortcutService(  552): adding package: io.github.coemathieuhub.carnet userId0
+10-27 20:04:31.464 D/ShortcutService(  552): handlePackageAdded: io.github.coemathieuhub.carnet user=0
+10-27 20:04:31.464 D/ShortcutService(  552): rescanPackageIfNeeded 0@io.github.coemathieuhub.carnet, forceRescan=true , isNewApp=false
+10-27 20:04:31.465 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet has 0 manifest shortcut(s), and 0 share target(s)
+10-27 20:04:31.465 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet updated, version 6 -> 6
+10-27 20:04:31.465 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet: publishing manifest shortcuts
+10-27 20:04:31.515 W/AsyncOperation( 1189): OperationException[Status{statusCode=Empty (package not registered?) or malformed snapshot token for null: , resolution=null}]
+10-27 20:04:31.545 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.553 I/cr_ChildProcessService( 2265): Creating new ChildProcessService pid=2265
+10-27 20:04:31.584 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.587 E/PhenotypeFlagCommitter( 2086): java.util.concurrent.TimeoutException: Timed out waiting for Task
+10-27 20:04:31.587 I/cr_PhenotypeFact( 2086): Received no configuration for com.google.android.partnersetup
+10-27 20:04:31.607 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.645 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:31.722 I/cr_PartnerCustUma( 2086): Partner Customization delegate: 0.
+10-27 20:04:31.722 W/cr_PartnerCustomize( 2086): Partner homepage must be HTTP(S) or NewTabPage. Got invalid URL ""
+10-27 20:04:31.749 W/cr_KnoxSettingsProvider( 2086): Permission to read device policy denied.
+10-27 20:04:31.749 I/cr_CombinedPProvider( 2086): #registerProvider() provider:RG2@d493796 isPolicyCacheEnabled:true policyProvidersSize:0
+10-27 20:04:31.749 I/cr_PolicyProvider( 2086): #setManagerAndSource() 0
+10-27 20:04:31.750 I/cr_CombinedPProvider( 2086): #registerProvider() provider:Yh@b208f17 isPolicyCacheEnabled:false policyProvidersSize:1
+10-27 20:04:31.750 I/cr_PolicyProvider( 2086): #setManagerAndSource() 1
+10-27 20:04:31.752 I/cr_AppResProvider( 2086): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+10-27 20:04:31.752 I/cr_PolicyProvider( 2086): #notifySettingsAvailable() 1
+10-27 20:04:31.752 I/cr_CombinedPProvider( 2086): #onSettingsAvailable() 1
+10-27 20:04:31.831 I/cr_EnterpriseInfoImpl( 2086): #setCacheResult() deviceOwned:false profileOwned:false
+10-27 20:04:31.831 I/cr_EnterpriseInfo( 2086): #getManagedStateForNative() rO0@c593722
+10-27 20:04:31.832 I/cr_PolicyProvider( 2086): #notifySettingsAvailable() 0
+10-27 20:04:31.832 I/cr_CombinedPProvider( 2086): #onSettingsAvailable() 0
+10-27 20:04:31.832 I/cr_CombinedPProvider( 2086): #flushPolicies()
+10-27 20:04:31.832 I/cr_PolicyService( 2086): #onPolicyServiceInitialized()
+10-27 20:04:31.832 I/cr_PolicyProvider( 2086): #notifySettingsAvailable() 0
+10-27 20:04:31.832 I/cr_CombinedPProvider( 2086): #onSettingsAvailable() 0
+10-27 20:04:31.833 I/cr_CombinedPProvider( 2086): #flushPolicies()
+10-27 20:04:31.834 I/cr_CompositorSurfaceMgr( 2086): Transitioning to surface with format: -1
+10-27 20:04:31.835 I/cr_CompositorSurfaceMgr( 2086): surfaceCreated format: 0
+10-27 20:04:31.886 W/cr_media( 2086): BLUETOOTH_CONNECT permission is missing.
+10-27 20:04:31.898 W/cr_media( 2086): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+10-27 20:04:31.905 W/cr_ContextualSearch( 2086): Not allowed to be active! Checking reasons:
+10-27 20:04:31.907 W/cr_ContextualSearch( 2086): !isIncognito: true getFirstRunFlowComplete: false !isContextualSearchDisabled: true isDefaultSearchEngineGoogle: true !needToCheckForSearchEnginePromo: true !isRunningInCompatibilityMode: true !isShowingErrorPage: true isDeviceOnline: false
+10-27 20:04:31.969 I/cr_LibraryLoader( 2265): Successfully loaded native library
+10-27 20:04:31.978 I/cr_CachingUmaRecorder( 2265): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:31.996 W/cr_ActivityDispatcher( 2086): CustomTabsIntent#shouldAlwaysUseBrowserUI() = false
+10-27 20:04:32.020 I/cr_ADCP ( 2086): No customization source found
+10-27 20:04:32.034 I/cr_VideoPersist( 2086): Exited picture in picture with reason: 0
+10-27 20:04:32.088 I/cr_OriginVerifier( 2086): Device is offline, checking saved verification result.
+10-27 20:04:32.241 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:32.273 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:32.430 D/CarrierSvcBindHelper( 1072): onPackageModified: io.github.coemathieuhub.carnet
+10-27 20:04:32.492 I/cr_SplitCompatApp( 2302): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:privileged_process0 isIsolated=false
+10-27 20:04:32.532 I/cr_CronetLibraryLoader( 1189): Cronet version: 126.0.6452.4, arch: x86_64
+10-27 20:04:32.780 I/cr_ChildProcessService( 2302): Creating new ChildProcessService pid=2302
+10-27 20:04:32.847 W/WPCategoryProvider( 2308): android.content.pm.PackageManager$NameNotFoundException: com.google.pixel.livewallpaper
+10-27 20:04:32.852 D/ImsResolver( 1072): maybeAddedImsService, packageName: io.github.coemathieuhub.carnet
+10-27 20:04:33.117 I/Launcher.IconCache( 1216): Database bulk icon loading failed, using fallback bulk icon loading for: ComponentInfo{io.github.coemathieuhub.carnet/io.github.coemathieuhub.carnet.LauncherActivity}
+10-27 20:04:33.131 I/cr_LibraryLoader( 2302): Loading monochrome_64 from within /data/app/~~G5b2ALsl7mM7q9IR7gOEaQ==/com.android.chrome-Xi5cr9oAR1mu-neutTjuMA==/Chrome.apk
+10-27 20:04:33.131 I/cr_Linker( 2302): loadLibraryImplLocked: monochrome_64, relroMode=2
+10-27 20:04:33.152 I/cr_LibraryLoader( 2302): Successfully loaded native library
+10-27 20:04:33.153 I/cr_CachingUmaRecorder( 2302): Flushed 4 samples from 4 histograms, 0 samples were dropped.
+10-27 20:04:33.263 W/FontLog ( 1189): java.util.concurrent.ExecutionException: bpcw: Failed to process request
+10-27 20:04:33.263 W/FontLog ( 1189): Caused by: m.mg: Exception in CronetUrlRequest: net::ERR_INTERNET_DISCONNECTED, ErrorCode=2, InternalErrorCode=-106, Retryable=false
+10-27 20:04:33.492 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:33.502 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:33.503 E/cr_PartnerBMReader( 2086): ATTENTION: not using partner bookmarks as none were provided
+10-27 20:04:33.512 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:33.558 D/ProfileInstaller( 2027): Installing profile for io.github.coemathieuhub.carnet
+10-27 20:04:33.598 I/cr_SplitCompatApp( 2450): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 isIsolated=true
+10-27 20:04:33.674 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.675 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.685 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.685 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.685 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.687 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.691 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.696 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.698 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.709 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.709 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.709 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.710 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.710 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.710 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.735 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.736 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.736 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.736 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.736 W/FontLog ( 1189): No resolver, short-circuit {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} for io.github.coemathieuhub.carnet to failure [CONTEXT service_id=132 ]
+10-27 20:04:33.762 I/AppWidgetServiceImpl(  552): Updating package stopped masked state for uid 10209 package io.github.coemathieuhub.carnet isStopped false
+10-27 20:04:33.764 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.764 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.765 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.773 I/SafetyLabelChangedBroadcastReceiver(  915): received broadcast packageName: io.github.coemathieuhub.carnet, current user: UserHandle{0}, packageChangeEvent: NEW_INSTALL, intent user: UserHandle{0}
+10-27 20:04:33.773 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.779 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.780 I/cr_ChildProcessService( 2450): Creating new ChildProcessService pid=2450
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.786 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.787 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.788 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:33.805 D/ShortcutService(  552): Saving package item io.github.coemathieuhub.carnet to /data/system_ce/0/shortcut_service/packages/io.github.coemathieuhub.carnet.xml
+10-27 20:04:34.013 I/cr_LibraryLoader( 2450): Successfully loaded native library
+10-27 20:04:34.013 I/cr_CachingUmaRecorder( 2450): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:34.054 I/AppsFilter(  552): interaction: PackageSetting{af7bb56 com.android.microdroid.empty_payload/10192} -> PackageSetting{395d4ef io.github.coemathieuhub.carnet/10209} BLOCKED
+10-27 20:04:34.142 W/ogle.android.as( 1479): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:34.303 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:34.304 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:34.585 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:34.623 W/PackageManager( 1479): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:34.812 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:34.825 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:34.856 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:34.859 E/cr_VariationsSessionInt( 2086): Timeout while querying Phenotype experiments
+10-27 20:04:34.893 W/cr_CrashFileManager( 2086): /data/user/0/com.android.chrome/cache/Crash Reports does not exist or is not a directory
+10-27 20:04:34.896 W/cr_CrashFileManager( 2086): /data/user/0/com.android.chrome/cache/Crash Reports does not exist or is not a directory
+10-27 20:04:34.896 W/cr_CrashFileManager( 2086): /data/user/0/com.android.chrome/cache/Crash Reports does not exist or is not a directory
+10-27 20:04:35.438 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:35.444 I/cr_BindingManager( 2086): Visible binding enabled: maxSize=-1
+10-27 20:04:35.457 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:35.575 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:35.593 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:35.765 I/cr_A11yState( 2086): Enabled accessibility services list updated.
+10-27 20:04:35.766 I/cr_A11yState( 2086): Informing listeners of changes.
+10-27 20:04:35.766 I/cr_A11yState( 2086): New AccessibilityState: State{isScreenReaderEnabled=false, isTouchExplorationEnabled=false, isPerformGesturesEnabled=false, isAnyAccessibilityServiceEnabled=false, isAccessibilityToolPresent=false, isSpokenFeedbackServicePresent=false, isTextShowPasswordEnabled=true, isOnlyPasswordManagersEnabled=false}
+10-27 20:04:35.785 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:35.847 W/AiAiFed ( 1479): java.lang.IllegalArgumentException: Unsupported response code3
+10-27 20:04:35.964 W/AsyncOperation( 1189): OperationException[Status{statusCode=No config packages for log source, or config package not registered, resolution=null}]
+10-27 20:04:36.020 E/WifiStaIfaceAidlImpl(  552): setDtimMultiplier failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+10-27 20:04:36.025 I/netd    (  356): networkAddInterface(100, wlan0) -> ServiceSpecificException(64, "Machine is not on the network") <0.08ms>
+10-27 20:04:36.028 W/ConnectivityService(  552): Exception adding interface: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:36.049 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.apps.nexuslauncheruser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.049 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.asuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.049 D/ShortcutService(  552): Getting shortcuts for launcher= com.android.systemuiuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.050 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.apps.nexuslauncheruser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.050 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.asuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.050 D/ShortcutService(  552): Getting shortcuts for launcher= com.android.systemuiuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:36.057 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.058 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.081 I/netd    (  356): networkAddRouteParcel(100, RouteInfoParcel{destination: fe80::/64, ifName: wlan0, nextHop: , mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.05ms>
+10-27 20:04:36.097 I/cr_SplitCompatApp( 2622): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 isIsolated=true
+10-27 20:04:36.148 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.188 D/ShortcutService(  552): changing package: io.github.coemathieuhub.carnet userId0
+10-27 20:04:36.188 D/ShortcutService(  552): handlePackageChanged: io.github.coemathieuhub.carnet user=0
+10-27 20:04:36.188 D/ShortcutService(  552): rescanPackageIfNeeded 0@io.github.coemathieuhub.carnet, forceRescan=true , isNewApp=false
+10-27 20:04:36.188 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet has 0 manifest shortcut(s), and 0 share target(s)
+10-27 20:04:36.188 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet updated, version 6 -> 6
+10-27 20:04:36.188 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet: publishing manifest shortcuts
+10-27 20:04:36.192 D/ShortcutService(  552): changing package: io.github.coemathieuhub.carnet userId0
+10-27 20:04:36.192 D/ShortcutService(  552): handlePackageChanged: io.github.coemathieuhub.carnet user=0
+10-27 20:04:36.192 D/ShortcutService(  552): rescanPackageIfNeeded 0@io.github.coemathieuhub.carnet, forceRescan=true , isNewApp=false
+10-27 20:04:36.192 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet has 0 manifest shortcut(s), and 0 share target(s)
+10-27 20:04:36.192 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet updated, version 6 -> 6
+10-27 20:04:36.193 D/ShortcutService(  552): Package io.github.coemathieuhub.carnet: publishing manifest shortcuts
+10-27 20:04:36.242 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.350 I/netd    (  356): networkAddRouteParcel(100, RouteInfoParcel{destination: 10.0.2.0/24, ifName: wlan0, nextHop: , mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.04ms>
+10-27 20:04:36.350 E/ConnectivityService(  552): Exception in addRoute for non-gateway: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:36.350 I/netd    (  356): networkAddRouteParcel(100, RouteInfoParcel{destination: 0.0.0.0/0, ifName: wlan0, nextHop: 10.0.2.2, mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.01ms>
+10-27 20:04:36.350 E/ConnectivityService(  552): Exception in addRoute for gateway: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:36.441 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.441 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.441 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:36.462 I/netd    (  356): networkAddRouteParcel(100, RouteInfoParcel{destination: fec0::/64, ifName: wlan0, nextHop: , mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.01ms>
+10-27 20:04:36.462 I/netd    (  356): networkAddRouteParcel(100, RouteInfoParcel{destination: ::/0, ifName: wlan0, nextHop: fe80::2, mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.02ms>
+10-27 20:04:36.476 W/A       ( 1690): (REDACTED) Exception while fetching versionCode for package[%s].
+10-27 20:04:36.476 W/A       ( 1690): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tv.dreamx
+10-27 20:04:36.573 W/AsyncOperation( 1189): OperationException[Status{statusCode=unknown status code: 29503, resolution=null}]
+10-27 20:04:36.584 W/A       ( 1690): (REDACTED) Exception while fetching versionCode for package[%s].
+10-27 20:04:36.584 W/A       ( 1690): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tv.launcherx
+10-27 20:04:36.610 E/WifiStaIfaceAidlImpl(  552): setRoamingMode failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+10-27 20:04:36.611 E/WifiStaIfaceAidlImpl(  552): setDtimMultiplier failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+10-27 20:04:36.622 D/ShortcutService(  552): Saving package item io.github.coemathieuhub.carnet to /data/system_ce/0/shortcut_service/packages/io.github.coemathieuhub.carnet.xml
+10-27 20:04:36.705 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:36.705 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:36.740 W/FileUtils(  552): android.system.ErrnoException: chmod failed: ENOENT (No such file or directory)
+10-27 20:04:36.812 I/cr_CronetLibraryLoader( 2301): Cronet version: 126.0.6452.4, arch: x86_64
+10-27 20:04:37.061 D/PackageUpdatedTask( 1216): Package updated: mOp=ADD packages=[io.github.coemathieuhub.carnet]
+10-27 20:04:37.198 I/NearmissAnalysisInfo( 1690): java.util.concurrent.TimeoutException: Waited 10 milliseconds (plus 1 milliseconds, 694193 nanoseconds delay) for i@f851668[status=PENDING, info=[inputFuture=[cf@4ee6a81[status=PENDING, info=[delegate=[h@ebcd726[status=PENDING, info=[inputFuture=[com.google.apps.tiktok.concurrent.an@d595f67[status=PENDING, info=[callable=[com.google.android.libraries.storage.protostore.el@ac93114], trial=[com.google.apps.tiktok.concurrent.ao@e162dbd[status=PENDING, setFuture=[du@e8f3fb2[status=PENDING, setFuture=[bd@e128b03[status=PENDING, info=[futures=[com.google.apps.tiktok.concurrent.an@b924a80[status=PENDING, info=[callable=[com.google.android.libraries.storage.protostore.bn@efce8b9], trial=[com.google.apps.tiktok.concurrent.ao@8ada4fe[status=PENDING, setFuture=[du@4a8d45f[status=PENDING, setFuture=[i@d118eac[status=PENDING, info=[inputFuture=[h@efa5775[status=PENDING, setFuture=[com.google.apps.tiktok.concurrent.an@bb130a[status=PENDING, info=[callable=[com.google.android.libraries.storage.protostore.ca@330577b], trial=[com.google.apps.tiktok.concurrent.ao@a5ee998[status=PENDING, setFuture=[du@925f5f1[status=PENDING, info=[task=[running=[NOT STARTED YET], propagating=[com.google.android.libraries.storage.protostore.ca@330577b]]]]]]]]]]]], function=[Functions.constant(null)]]]]]]]]]]]]]]]]]]]]], function=[propagating=[com.google.android.libraries.storage.protostore.ej@f7f55d6]]]]]]]], function=[com.google.android.apps.gsa.nga.shared.f.a.dp@ee2f057]]]
+10-27 20:04:37.204 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:37.223 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:37.278 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.424 D/SessionCommitReceiver( 1216): Removing PromiseIcon for package: io.github.coemathieuhub.carnet, install reason: 0, alreadyAddedPromiseIcon: false
+10-27 20:04:37.571 I/AiAiEcho( 1479): AppFetcherImpl onPackageChanged io.github.coemathieuhub.carnet.
+10-27 20:04:37.576 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.722 I/VoiceDataManager( 2595): Caused by: java.util.concurrent.CancellationException: Task was cancelled.
+10-27 20:04:37.726 E/WifiStaIfaceAidlImpl(  552): stopRssiMonitoring failed with service-specific exception: android.os.ServiceSpecificException:  (code 5)
+10-27 20:04:37.751 I/AiAiEcho( 1479): AppIndexer Package:[io.github.coemathieuhub.carnet] UserProfile:[0] Enabled:[true].
+10-27 20:04:37.751 I/AiAiEcho( 1479): AppFetcherImplV2 updateApps package:[io.github.coemathieuhub.carnet], userId:[0], reason:[package is updated.].
+10-27 20:04:37.783 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.804 D/PackageUpdatedTask( 1216): Package updated: mOp=UPDATE packages=[io.github.coemathieuhub.carnet]
+10-27 20:04:37.835 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.893 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.904 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.918 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:37.959 W/cr_ContextualSearch( 2086): Not allowed to be active! Checking reasons:
+10-27 20:04:37.959 W/cr_ContextualSearch( 2086): !isIncognito: true getFirstRunFlowComplete: false !isContextualSearchDisabled: true isDefaultSearchEngineGoogle: true !needToCheckForSearchEnginePromo: true !isRunningInCompatibilityMode: true !isShowingErrorPage: false isDeviceOnline: true
+10-27 20:04:37.975 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:37.982 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.050 W/gle.android.gms( 1420): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:38.267 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.267 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.272 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.apps.nexuslauncheruser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:38.273 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.asuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:38.273 D/ShortcutService(  552): Getting shortcuts for launcher= com.android.systemuiuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:38.274 I/cr_omaha( 2086): Scheduled using JobService
+10-27 20:04:38.275 E/cr_BkgrdTaskJS( 2086): Tried finishing non-current BackgroundTask.
+10-27 20:04:38.287 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.312 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.408 W/ChimeraSrvcProxy( 1189): Failed to read the buffer size file. Using default NullBinder reply size. java.io.FileNotFoundException: /data/user_de/0/com.google.android.gms/files/binder_buffer_size.txt: open failed: ENOENT (No such file or directory)
+10-27 20:04:38.424 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:38.478 E/PhenotypeFlagCommitter( 1420): java.util.concurrent.TimeoutException: Timed out waiting for Task
+10-27 20:04:38.506 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.518 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.523 W/BestClock(  552): java.time.DateTimeException: Missing network time fix
+10-27 20:04:38.539 W/.android.chrome( 2086): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:38.669 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:38.723 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.737 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.757 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.764 W/s.nexuslauncher( 1216): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:38.858 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.858 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:38.873 D/CarrierSvcBindHelper( 1072): onPackageModified: io.github.coemathieuhub.carnet
+10-27 20:04:38.884 D/ImsResolver( 1072): maybeAddedImsService, packageName: io.github.coemathieuhub.carnet
+10-27 20:04:39.053 E/A       ( 1690): com.google.android.libraries.geller.portable.GellerException: Code: INVALID_ARGUMENT, Message: Account name is null.
+10-27 20:04:39.289 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:39.297 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:39.305 W/WifiService(  552): Permission violation - getConfiguredNetworks not allowed for uid=10140, packageName=com.google.android.settings.intelligence, reason=java.lang.SecurityException: UID 10140 has no location permission
+10-27 20:04:39.346 I/cr_SplitCompatApp( 2821): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2 isIsolated=true
+10-27 20:04:39.465 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:39.469 I/cr_ChildProcessService( 2821): Creating new ChildProcessService pid=2821
+10-27 20:04:39.533 I/cr_LibraryLoader( 2821): Successfully loaded native library
+10-27 20:04:39.550 I/cr_CachingUmaRecorder( 2821): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:39.633 I/cr_CronetLibraryLoader( 1420): Cronet version: 126.0.6452.4, arch: x86_64
+10-27 20:04:39.969 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:39.970 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:40.149 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:40.435 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:40.447 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:40.490 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:40.500 E/constellation( 1420): java.io.IOException: AUTHENTICATION_FAILED
+10-27 20:04:40.559 D/ActivityManager(  552): freezing 2027 io.github.coemathieuhub.carnet
+10-27 20:04:40.779 D/ShortcutService(  552): Getting shortcuts for launcher= com.google.android.asuser=0 pkg=io.github.coemathieuhub.carnet
+10-27 20:04:40.900 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:40.965 I/Blockstore( 1420): [DataStoreImpl] Clearing Blockstore Data for package io.github.coemathieuhub.carnet [CONTEXT service_id=258 ]
+10-27 20:04:41.699 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:41.835 E/etxo    ( 1189): RuntimeException while executing runnable etyd{aasn@6490779} with executor MoreExecutors.directExecutor()
+10-27 20:04:41.835 E/etxo    ( 1189): java.lang.NullPointerException: Attempt to get length of null array
+10-27 20:04:42.189 I/cr_CronetLibraryLoader( 1690): Cronet version: 127.0.6493.0, arch: x86_64
+10-27 20:04:42.563 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:43.123 D/PackageUpdatedTask( 1216): Package updated: mOp=UPDATE packages=[io.github.coemathieuhub.carnet]
+10-27 20:04:43.423 W/gle.android.gms( 1420): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:44.029 I/cr_SplitCompatApp( 2998): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3 isIsolated=true
+10-27 20:04:44.194 E/gclu    ( 1420): java.lang.RuntimeException: ManagedChannel allocation site
+10-27 20:04:44.229 I/cr_SplitCompatApp( 3018): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4 isIsolated=true
+10-27 20:04:44.241 E/FirebaseMessaging( 2380): Topic sync or token retrieval failed on hard failure exceptions: java.util.concurrent.ExecutionException: java.io.IOException: AUTHENTICATION_FAILED. Won't retry the operation.
+10-27 20:04:44.345 I/cr_ChildProcessService( 2998): Creating new ChildProcessService pid=2998
+10-27 20:04:44.391 I/cr_SplitCompatApp( 3027): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:5 isIsolated=true
+10-27 20:04:44.418 I/cr_ChildProcessService( 3018): Creating new ChildProcessService pid=3018
+10-27 20:04:44.423 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:44.427 I/cr_ChildProcessService( 3027): Creating new ChildProcessService pid=3027
+10-27 20:04:44.485 W/SemanticLocation( 1189): java.util.concurrent.TimeoutException: Waited 10000 milliseconds (plus 57 milliseconds, 171073 nanoseconds delay) for etvv@bdc6d2f[status=PENDING, info=[function=[ddbg@778ff3c]]]
+10-27 20:04:44.518 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:44.522 I/cr_SplitCompatApp( 3045): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:6 isIsolated=true
+10-27 20:04:44.527 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:44.661 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:44.788 I/cr_SplitCompatApp( 3090): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:7 isIsolated=true
+10-27 20:04:44.897 I/cr_ChildProcessService( 3045): Creating new ChildProcessService pid=3045
+10-27 20:04:44.939 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:45.021 E/SystemServiceRegistry( 1011): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:45.151 I/cr_SplitCompatApp( 3110): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:8 isIsolated=true
+10-27 20:04:45.240 I/cr_ChildProcessService( 3090): Creating new ChildProcessService pid=3090
+10-27 20:04:45.314 I/cr_LibraryLoader( 3027): Successfully loaded native library
+10-27 20:04:45.314 I/cr_CachingUmaRecorder( 3027): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.317 I/cr_LibraryLoader( 3018): Successfully loaded native library
+10-27 20:04:45.318 I/cr_CachingUmaRecorder( 3018): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.327 I/cr_LibraryLoader( 2998): Successfully loaded native library
+10-27 20:04:45.373 I/cr_LibraryLoader( 3045): Successfully loaded native library
+10-27 20:04:45.374 I/cr_CachingUmaRecorder( 3045): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.381 I/cr_ChildProcessService( 3110): Creating new ChildProcessService pid=3110
+10-27 20:04:45.413 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:45.421 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:45.422 I/cr_CachingUmaRecorder( 2998): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.564 I/cr_SplitCompatApp( 3122): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:9 isIsolated=true
+10-27 20:04:45.645 I/cr_LibraryLoader( 3090): Successfully loaded native library
+10-27 20:04:45.645 I/cr_CachingUmaRecorder( 3090): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.647 I/cr_LibraryLoader( 3110): Successfully loaded native library
+10-27 20:04:45.647 I/cr_CachingUmaRecorder( 3110): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:45.686 I/cr_SplitCompatApp( 3139): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:10 isIsolated=true
+10-27 20:04:45.699 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:45.725 I/cr_ChildProcessService( 3122): Creating new ChildProcessService pid=3122
+10-27 20:04:45.779 W/ActivityManager(  552): Exception when unbinding service com.android.chrome/org.chromium.content.app.SandboxedProcessService0:4
+10-27 20:04:45.779 W/ActivityManager(  552): android.os.DeadObjectException
+10-27 20:04:45.781 E/PackageManager(  552): java.util.concurrent.TimeoutException: [Optimistic Bind] Didn't bind to resolver in time!
+10-27 20:04:45.962 I/cr_SplitCompatApp( 3183): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:11 isIsolated=true
+10-27 20:04:46.007 I/cr_ChildProcessService( 3139): Creating new ChildProcessService pid=3139
+10-27 20:04:46.051 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:46.097 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:46.140 I/cr_ChildProcessService( 3183): Creating new ChildProcessService pid=3183
+10-27 20:04:46.327 I/cr_LibraryLoader( 3183): Successfully loaded native library
+10-27 20:04:46.378 I/cr_LibraryLoader( 3139): Successfully loaded native library
+10-27 20:04:46.378 I/cr_CachingUmaRecorder( 3139): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:46.386 I/cr_LibraryLoader( 3122): Successfully loaded native library
+10-27 20:04:46.393 I/cr_CachingUmaRecorder( 3122): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:46.401 I/cr_CachingUmaRecorder( 3183): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:04:46.536 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:46.536 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:46.546 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:46.583 E/DeviceChannelFetcher( 1690): java.util.NoSuchElementException: No value present
+10-27 20:04:46.659 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:46.659 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:46.705 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:46.788 W/s.nexuslauncher( 1216): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:47.605 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:47.717 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:47.760 W/SemanticLocation( 1189): [MDD] ModelBundleMetadata: File not found: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/default_model_bundle_metadata.pb: open failed: ENOENT (No such file or directory) [CONTEXT service_id=173 ]
+10-27 20:04:47.760 W/SemanticLocation( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/default_model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+10-27 20:04:47.760 W/SemanticLocation( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:04:47.762 W/SemanticLocation( 1189): [MDD] ModelBundleMetadata: File not found: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory) [CONTEXT service_id=173 ]
+10-27 20:04:47.762 W/SemanticLocation( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+10-27 20:04:47.762 W/SemanticLocation( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:04:48.137 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:48.208 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:48.239 W/SemanticLocation( 1189): [MDD] ModelBundleMetadata: File not found: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory) [CONTEXT service_id=173 ]
+10-27 20:04:48.239 W/SemanticLocation( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+10-27 20:04:48.239 W/SemanticLocation( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:04:48.350 W/AsyncOperation( 1189): OperationException[Status{statusCode=Stale snapshot for com.google.android.libraries.consentverifier#com.google.android.googlequicksearchbox(change count changed - expected 1  but was 0), resolution=null}]
+10-27 20:04:48.368 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:48.723 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:48.956 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:49.063 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:49.078 E/SystemServiceRegistry( 1011): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:49.408 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:49.408 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:49.790 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:49.797 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:50.181 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:51.126 I/netd    (  356): networkAddInterface(101, eth0) -> ServiceSpecificException(64, "Machine is not on the network") <0.11ms>
+10-27 20:04:51.126 W/ConnectivityService(  552): Exception adding interface: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:51.127 I/netd    (  356): networkAddRouteParcel(101, RouteInfoParcel{destination: 10.0.2.0/24, ifName: eth0, nextHop: , mtu: 0}) -> ServiceSpecificException(64, "Machine is not on the network") <0.17ms>
+10-27 20:04:51.127 E/ConnectivityService(  552): Exception in addRoute for non-gateway: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:51.128 I/netd    (  356): networkAddRouteParcel(101, RouteInfoParcel{destination: 0.0.0.0/0, ifName: eth0, nextHop: 10.0.2.2, mtu: 1500}) -> ServiceSpecificException(64, "Machine is not on the network") <0.05ms>
+10-27 20:04:51.130 E/ConnectivityService(  552): Exception in addRoute for gateway: android.os.ServiceSpecificException: Machine is not on the network (code 64)
+10-27 20:04:51.181 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:52.183 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:52.202 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:52.259 W/AsyncOperation( 1189): OperationException[Status{statusCode=unknown status code: 29503, resolution=null}]
+10-27 20:04:52.507 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:04:52.508 E/SystemServiceRegistry( 1011): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:52.873 W/Looper  ( 1189): java.lang.RuntimeException: Handler (angj) {89bae21} sendMessageAtTime() called with no mQueue
+10-27 20:04:53.616 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:04:53.633 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:04:53.697 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:04:53.829 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:53.829 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:53.868 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:53.895 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:04:53.947 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:04:54.031 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:04:54.051 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:04:54.057 W/ndroid.settings( 1073): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:54.290 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:54.331 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:54.474 W/gle.android.gms( 1420): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:54.559 E/Settings( 1073): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.accessibility.magnifier
+10-27 20:04:54.560 E/Settings( 1073): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tips
+10-27 20:04:54.643 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:04:54.772 W/ndroid.settings( 1073): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:04:54.795 E/SystemServiceRegistry( 1073): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:54.887 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:04:54.998 W/GLSUser ( 1189): [AppCertManager] Exception while requesting key: 
+10-27 20:04:54.998 W/GLSUser ( 1189): java.util.concurrent.ExecutionException: bpcw: Parse Proto Exception with response code 400
+10-27 20:04:54.998 W/GLSUser ( 1189): Caused by: bpcw: Parse Proto Exception with response code 400
+10-27 20:04:55.137 E/SystemServiceRegistry( 1011): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:04:55.273 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:55.273 W/Telephony( 1072): registerImsRegistrationCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:55.330 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:04:55.407 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:55.551 W/Telephony( 1072): registerMmTelCapabilityCallback: registration failed, no ImsService available. Exception: code: 1
+10-27 20:04:56.294 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:56.514 E/IndexablesProvider( 3635): java.lang.IllegalStateException: We should initialize FormFactorUtils before getting instance.
+10-27 20:04:56.518 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:04:56.623 W/GnpSdk  ( 3594): java.lang.NullPointerException: Attempt to invoke interface method 'java.lang.Object eeaz.b()' on a null object reference
+10-27 20:04:56.779 W/Safetyhub.EmergencySearchIndexablesProvider( 3600): java.util.concurrent.ExecutionException: java.lang.IllegalStateException: No account, cannot provide search indexables
+10-27 20:04:56.779 W/Safetyhub.EmergencySearchIndexablesProvider( 3600): Caused by: java.lang.IllegalStateException: No account, cannot provide search indexables
+10-27 20:04:56.798 W/Safetyhub.EmergencySearchIndexablesProvider( 3600): java.util.concurrent.ExecutionException: java.lang.IllegalStateException: No account, cannot provide search indexables
+10-27 20:04:56.798 W/Safetyhub.EmergencySearchIndexablesProvider( 3600): Caused by: java.lang.IllegalStateException: No account, cannot provide search indexables
+10-27 20:04:57.060 I/BugleRcs( 3594): android.content.pm.PackageManager$NameNotFoundException: com.google.android.ims
+10-27 20:04:57.332 E/BlockableFutures( 3594): java.lang.IllegalStateException: Cannot block on non-blocking thread: BG Thread #0
+10-27 20:04:57.337 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:04:59.734 W/AsyncOperation( 1189): OperationException[Status{statusCode=unknown status code: 29503, resolution=null}]
+10-27 20:05:00.000 E/RecoverySnapshotStorage(  552): java.io.FileNotFoundException: /data/system/recoverablekeystore/snapshots/10143.xml: open failed: ENOENT (No such file or directory)
+10-27 20:05:00.000 E/RecoverySnapshotStorage(  552): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:05:00.223 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.accessibility.VibrationMainSwitchPreferenceController
+10-27 20:05:00.223 W/SliceDataConverter( 1073): Caused by: java.lang.reflect.InvocationTargetException
+10-27 20:05:00.223 W/SliceDataConverter( 1073): Caused by: java.lang.RuntimeException: Can't create handler inside thread Thread[binder:1073_1,5,main] that has not called Looper.prepare()
+10-27 20:05:00.330 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:00.392 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.applications.credentials.CredentialManagerPreferenceController
+10-27 20:05:00.392 W/SliceDataConverter( 1073): Caused by: java.lang.reflect.InvocationTargetException
+10-27 20:05:00.392 W/SliceDataConverter( 1073): Caused by: java.lang.RuntimeException: Can't create handler inside thread Thread[binder:1073_1,5,main] that has not called Looper.prepare()
+10-27 20:05:00.396 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.accessibility.VibrationMainSwitchPreferenceController
+10-27 20:05:00.396 W/SliceDataConverter( 1073): Caused by: java.lang.reflect.InvocationTargetException
+10-27 20:05:00.396 W/SliceDataConverter( 1073): Caused by: java.lang.RuntimeException: Can't create handler inside thread Thread[binder:1073_1,5,main] that has not called Looper.prepare()
+10-27 20:05:00.404 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.development.DevelopmentMemtagFooterPreferenceController
+10-27 20:05:00.404 W/SliceDataConverter( 1073): Caused by: java.lang.ClassNotFoundException: com.android.settings.development.DevelopmentMemtagFooterPreferenceController
+10-27 20:05:00.404 W/SliceDataConverter( 1073): Caused by: java.lang.ClassNotFoundException: com.android.settings.development.DevelopmentMemtagFooterPreferenceController
+10-27 20:05:00.435 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.applications.appinfo.ManageAppLocalePreferenceController
+10-27 20:05:00.435 W/SliceDataConverter( 1073): Caused by: java.lang.ClassNotFoundException: com.android.settings.applications.appinfo.ManageAppLocalePreferenceController
+10-27 20:05:00.435 W/SliceDataConverter( 1073): Caused by: java.lang.ClassNotFoundException: com.android.settings.applications.appinfo.ManageAppLocalePreferenceController
+10-27 20:05:00.451 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:05:00.492 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.android.settings.fuelgauge.batteryusage.BatteryChartPreferenceController
+10-27 20:05:00.492 W/SliceDataConverter( 1073): Caused by: java.lang.NoSuchMethodException: com.android.settings.fuelgauge.batteryusage.BatteryChartPreferenceController.<init> [class android.content.Context, class java.lang.String]
+10-27 20:05:00.522 W/SliceDataConverter( 1073): java.lang.IllegalStateException: Invalid preference controller: com.google.android.settings.accessibility.AdaptiveVibrationTogglePreferenceController
+10-27 20:05:00.522 W/SliceDataConverter( 1073): Caused by: java.lang.reflect.InvocationTargetException
+10-27 20:05:00.522 W/SliceDataConverter( 1073): Caused by: java.lang.RuntimeException: Can't create handler inside thread Thread[binder:1073_1,5,main] that has not called Looper.prepare()
+10-27 20:05:00.564 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:00.657 W/Conscrypt( 1189): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:00.660 E/RecoverySnapshotStorage(  552): java.io.FileNotFoundException: /data/system/recoverablekeystore/snapshots/10143.xml: open failed: ENOENT (No such file or directory)
+10-27 20:05:00.660 E/RecoverySnapshotStorage(  552): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:05:00.977 W/RcsClientLib( 3594): java.lang.IllegalStateException: JibeService Not Initialized
+10-27 20:05:00.977 W/RcsClientLib( 3594): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3250)
+10-27 20:05:00.977 W/RcsClientLib( 3594): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:00.977 W/RcsClientLib( 3594): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:00.977 W/RcsClientLib( 3594): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:00.977 W/RcsClientLib( 3594): 	at com.google.android.aidl.BaseProxy.transactAndReadExceptionReturnVoid(PG:11)
+10-27 20:05:01.342 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:01.409 E/VS.BluetoothShim( 1489): java.lang.NoSuchMethodException: android.bluetooth.BluetoothHeadset.startScoUsingVirtualVoiceCall [class android.bluetooth.BluetoothDevice]
+10-27 20:05:01.571 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:01.630 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:05:01.637 E/BugleRcsEngine( 3808): java.lang.IllegalArgumentException: Receiver not registered: com.google.android.ims.receiver.sip.DebugOptionsReceiver@c34cb08
+10-27 20:05:02.045 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:05:02.269 E/PhenotypeFlagCommitter( 1420): java.util.concurrent.TimeoutException: Timed out waiting for Task
+10-27 20:05:02.291 W/s.nexuslauncher( 1216): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:05:02.610 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:05:02.734 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:05:02.941 E/gclu    ( 1420): java.lang.RuntimeException: ManagedChannel allocation site
+10-27 20:05:02.950 E/gclu    ( 1420): java.lang.RuntimeException: ManagedChannel allocation site
+10-27 20:05:02.970 E/gclu    ( 1420): java.lang.RuntimeException: ManagedChannel allocation site
+10-27 20:05:03.030 W/PeoplePU( 1420): android.content.pm.PackageManager$NameNotFoundException: ComponentInfo{com.google.android.gms/com.google.android.gms.people.sync.focus.ContactsSyncAdapterService}
+10-27 20:05:03.473 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:03.773 W/SemanticLocation( 1189): [MDD] ModelBundleMetadata: File not found: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory) [CONTEXT service_id=173 ]
+10-27 20:05:03.773 W/SemanticLocation( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+10-27 20:05:03.773 W/SemanticLocation( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:05:03.795 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:03.832 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:03.884 W/AsyncOperation( 1189): OperationException[Status{statusCode=Stale snapshot (committed configuration changed) for com.google.android.partnersetup#com.google.android.partnersetup, resolution=null}]
+10-27 20:05:03.955 W/SemanticLocation( 1189): [MDD] ModelBundleMetadata: File not found: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory) [CONTEXT service_id=173 ]
+10-27 20:05:03.955 W/SemanticLocation( 1189): java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+10-27 20:05:03.955 W/SemanticLocation( 1189): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-27 20:05:04.224 E/ApplicationPropertiesBu( 1690): java.lang.NumberFormatException: For input string: "messages"
+10-27 20:05:04.473 W/AsyncOperation( 1189): OperationException[Status{statusCode=Empty (package not registered?) or malformed snapshot token for null: , resolution=null}]
+10-27 20:05:04.513 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:04.638 I/ActivityManager(  552): Force stopping io.github.coemathieuhub.carnet appid=10209 user=0: from pid 3958
+10-27 20:05:04.639 W/A       ( 1690): (REDACTED) Exception while fetching versionCode for package[%s].
+10-27 20:05:04.639 W/A       ( 1690): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tv.dreamx
+10-27 20:05:04.658 W/A       ( 1690): (REDACTED) Exception while fetching versionCode for package[%s].
+10-27 20:05:04.658 W/A       ( 1690): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tv.launcherx
+10-27 20:05:04.682 I/ActivityManager(  552): Killing 2027:io.github.coemathieuhub.carnet/u0a209 (adj 999): stop io.github.coemathieuhub.carnet due to from pid 3958
+10-27 20:05:04.697 I/AppsFilter(  552): interaction: PackageSetting{af7bb56 com.android.microdroid.empty_payload/10192} -> PackageSetting{989f231 io.github.coemathieuhub.carnet/10209} BLOCKED
+10-27 20:05:04.731 V/ActivityManager(  552): Got obituary of 2027:io.github.coemathieuhub.carnet
+10-27 20:05:04.739 I/AppWidgetServiceImpl(  552): Updating package stopped masked state for uid 10209 package io.github.coemathieuhub.carnet isStopped true
+10-27 20:05:04.744 D/CarrierSvcBindHelper( 1072): onHandleForceStop: [io.github.coemathieuhub.carnet]
+10-27 20:05:04.804 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:04.807 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:04.807 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:04.808 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:05.100 E/A       ( 1690): java.lang.IllegalStateException: No account found.
+10-27 20:05:05.136 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:05.246 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:05.257 E/A       ( 1690): com.google.android.libraries.geller.portable.GellerException: Code: INVALID_ARGUMENT, Message: Account name is null.
+10-27 20:05:05.363 W/FileUtils(  552): android.system.ErrnoException: chmod failed: ENOENT (No such file or directory)
+10-27 20:05:05.910 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:05.941 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:06.149 W/ModernMediaScanner( 1465): android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: files._data (code 2067 SQLITE_CONSTRAINT_UNIQUE)
+10-27 20:05:06.330 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:06.864 W/PeoplePU( 1420): android.content.pm.PackageManager$NameNotFoundException: ComponentInfo{com.google.android.gms/com.google.android.gms.people.sync.focus.ContactsSyncAdapterService}
+10-27 20:05:06.869 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ContactsSyncAdapterService}
+10-27 20:05:06.869 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:06.869 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:06.869 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:06.869 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:06.869 W/PeoplePU( 1420): Caused by: android.os.RemoteException: Remote stack trace:
+10-27 20:05:06.876 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ContactsSyncAdapterService}
+10-27 20:05:06.876 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:06.876 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:06.876 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:06.876 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:06.878 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ProxyGalProvider}
+10-27 20:05:06.878 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:06.878 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:06.878 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:06.878 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:07.260 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:07.260 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:07.260 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:07.260 E/AppOps  (  552): java.lang.SecurityException: Specified package "android" under uid 10199 but it is not
+10-27 20:05:07.583 W/MediaProvider( 1465): java.io.IOException: Failed to update quota type for /storage/emulated/0/Android
+10-27 20:05:07.584 W/MediaProvider( 1465): java.io.IOException: Failed to update quota type for /storage/emulated/0/Android/media
+10-27 20:05:07.728 W/AsyncOperation( 1189): OperationException[Status{statusCode=Stale snapshot for com.google.android.gms.settings.platform(change count changed - expected 5  but was 4), resolution=null}]
+10-27 20:05:07.729 W/PlatformConfigurator( 1189): java.util.concurrent.ExecutionException: alqy: 29501: Stale snapshot for com.google.android.gms.settings.platform(change count changed - expected 5  but was 4)
+10-27 20:05:07.780 I/ActivityTaskManager(  552): START u0 {flg=0x10000000 cmp=io.github.coemathieuhub.carnet/.LauncherActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=3
+10-27 20:05:08.027 W/.apps.wellbeing( 1355): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:05:08.620 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:05:08.673 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:05:08.692 W/PackageManager( 1216): android.content.res.Resources$NotFoundException: String resource ID #0x7f130786
+10-27 20:05:08.746 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:05:08.758 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment$1@e4a21d3, e: java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+10-27 20:05:08.786 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:05:08.791 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:05:08.824 W/ndroid.settings( 1073): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:05:08.875 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:05:09.054 E/Settings( 1073): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.accessibility.magnifier
+10-27 20:05:09.055 E/Settings( 1073): android.content.pm.PackageManager$NameNotFoundException: com.google.android.apps.tips
+10-27 20:05:09.101 E/HardwareInfoFeatureProviderImpl( 1073): java.lang.NumberFormatException: For input string: "E"
+10-27 20:05:09.168 E/SystemServiceRegistry( 1073): android.os.ServiceManager$ServiceNotFoundException: No service published for: ethernet
+10-27 20:05:09.213 E/JavaBinder( 1073): *** Uncaught remote exception! Exceptions are not yet supported across processes. Client PID 3497 UID 10140.
+10-27 20:05:09.213 E/JavaBinder( 1073): android.database.StaleDataException: Attempted to access a cursor after it has been closed.
+10-27 20:05:09.366 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:09.416 W/BaseSearchIndex( 1073): Error initializing controller in fragment: com.android.settings.network.NetworkDashboardFragment$1@84c0ab9, e: java.lang.IllegalArgumentException: Lifecycle must be set
+10-27 20:05:10.038 D/SettingsSliceProvider( 1073): java.lang.IllegalStateException: Invalid Slices key from path: wifi_calling
+10-27 20:05:11.467 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/model.smfb.metadata: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/model.smfb.metadata
+10-27 20:05:11.592 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/model.smfb: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/model.smfb
+10-27 20:05:12.660 D/StrictMode( 3594): 	at android.os.Parcel.readExceptionCode(Parcel.java:3187)
+10-27 20:05:12.660 D/StrictMode( 3594): 	at android.database.DatabaseUtils.readExceptionFromParcel(DatabaseUtils.java:152)
+10-27 20:05:12.702 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:12.828 I/cr_CronetLibraryLoader( 3594): Cronet version: 126.0.6452.4, arch: x86_64
+10-27 20:05:13.262 I/cr_CronetUrlRequestContext( 3594): destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@e062ab4
+10-27 20:05:14.005 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@5e2f001} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.005 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:14.006 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@4f320e7} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.006 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:14.006 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@bab9f0b} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.006 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:14.006 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@d8d8b3d} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.006 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:14.006 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@f46e483} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.006 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:14.009 E/dqod    ( 3594): RuntimeException while executing runnable dqra{dkqj@e4c9e39} with executor MoreExecutors.directExecutor()
+10-27 20:05:14.009 E/dqod    ( 3594): java.lang.NullPointerException: Attempt to read from field 'java.lang.String cwru.b' on a null object reference in method 'void cyar.b(java.lang.Object)'
+10-27 20:05:16.761 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/en.fb.metadata: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/en.fb.metadata
+10-27 20:05:16.966 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/en.fb: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/en.fb
+10-27 20:05:17.580 I/cr_CronetUrlRequestContext( 3594): destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@cbcfdd6
+10-27 20:05:17.597 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/en.model.metadata: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/en.model.metadata
+10-27 20:05:17.616 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/en.model: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/en.model
+10-27 20:05:17.805 I/cr_CronetUrlRequestContext( 1420): destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@cff7405
+10-27 20:05:18.573 W/AsyncOperation( 1189): OperationException[Status{statusCode=Stale snapshot for com.google.android.ims.library(change count changed - expected 1  but was 0), resolution=null}]
+10-27 20:05:18.998 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/08202014-metadata.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/08202014-metadata.txt
+10-27 20:05:19.000 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/08202014-pins.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/08202014-pins.txt
+10-27 20:05:19.335 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/09252026-sms-denylist-metadata.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/09252026-sms-denylist-metadata.txt
+10-27 20:05:19.353 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/09252026-sms-denylist.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/09252026-sms-denylist.txt
+10-27 20:05:19.693 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/ifw-empty-metadata.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/ifw-empty-metadata.txt
+10-27 20:05:19.709 W/ModernMediaScanner( 1465): Failed to visit /data/data/com.android.providers.downloads/cache/ifw-empty.xml: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/ifw-empty.xml
+10-27 20:05:21.411 E/AmbientMusicServiceMana( 1479): xrv: java.lang.reflect.InvocationTargetException
+10-27 20:05:21.411 E/AmbientMusicServiceMana( 1479): Caused by: java.lang.reflect.InvocationTargetException
+10-27 20:05:21.411 E/AmbientMusicServiceMana( 1479): Caused by: java.lang.IllegalStateException: No underlying SoundTriggerModule available
+10-27 20:05:22.198 W/AsyncOperation( 1189): OperationException[Status{statusCode=Stale snapshot for com.google.android.platform.aicore(change count changed - expected 5  but was 4), resolution=null}]
+10-27 20:05:22.199 W/PlatformConfigurator( 1189): java.util.concurrent.ExecutionException: alqy: 29501: Stale snapshot for com.google.android.platform.aicore(change count changed - expected 5  but was 4)
+10-27 20:05:22.963 W/GmsPipelineLogger( 1420): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Class java.lang.Object.getClass()' on a null object reference
+10-27 20:05:23.253 E/AiAiCaptions( 1479): android.os.RemoteException: Task was cancelled.
+10-27 20:05:31.190 I/cr_media( 2086): Create MediaDrmBridge with level L3 and origin CE1C1203802B23B96A58B6089EECC48F
+10-27 20:05:31.431 I/cr_media( 2086): Provisioning origin ID CE1C1203802B23B96A58B6089EECC48F
+10-27 20:05:31.623 I/cr_media( 2086): Create MediaDrmBridge with level L1 and origin CE1C1203802B23B96A58B6089EECC48F
+10-27 20:05:31.635 E/cr_media( 2086): Failed to set security level L1
+10-27 20:05:31.635 E/cr_media( 2086): java.lang.IllegalArgumentException: {}: BAD_VALUE
+10-27 20:05:31.635 E/cr_media( 2086): cdm err: 0, oem err: 0, ctx: 0
+10-27 20:05:31.635 E/cr_media( 2086): ============================== Beginning of DRM Plugin Log ==============================
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.744 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.759 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.761 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.761 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.769 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.769 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.772 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.775 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.777 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.780 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.783 I [(0):] L3 Terminate.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.800 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.800 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.801 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.805 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.806 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:04:51.853 I [(0):] L3 Terminate.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.218 I No hidl drm factories found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.219 E Failed to find passthrough drm factories
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.334 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.335 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.335 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.335 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.338 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.339 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.341 I No hidl drm factories found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.342 E Failed to find passthrough drm factories
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.344 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.346 I [(0):] L3 Terminate.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.348 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.348 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.348 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [device_files.cpp(2048):RetrieveHashedFile] File does not exist: path = /data/vendor/mediadrm/IDM1013/L3/usgtable.bin, error = FileNotFound_ENoEnt
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [device_files.cpp(1745):RetrieveUsageTableInfo] Unable to retrieve usage table file
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.353 W [cdm_usage_table.cpp(199):RestoreTable] Could not retrieve usage table
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.356 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.360 I [cdm_engine.cpp(1118):GetProvisioningRequest] cert_type = Widevine
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.589 I [cdm_engine.cpp(1194):HandleProvisioningResponse] response_size = 4820, security_level = Default
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.621 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.623 I No hidl drm factories found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.624 E Failed to find passthrough drm factories
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.624 E Failed to find passthrough drm factories
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.624 I No hidl drm factories found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.624 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.624 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.629 I [(0):] L3 Terminate.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.629 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.629 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.629 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.635 E/cr_media( 2086):   10-27 20:05:31.634 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.635 E/cr_media( 2086): ============================== End of DRM Plugin Log ==============================
+10-27 20:05:31.635 E/cr_media( 2086): 	at android.media.MediaDrm.setPropertyString(Native Method)
+10-27 20:05:31.635 E/cr_media( 2086): 	at org.chromium.media.MediaDrmBridge.create(chromium-TrichromeChromeGoogle6432.aab-stable-636771938:104)
+10-27 20:05:31.635 E/cr_media( 2086): Security level L1 not supported!
+10-27 20:05:31.642 I/cr_media( 2086): Create MediaDrmBridge with level L3 and origin FD94B38B163AFDC5B923E36D446E5579
+10-27 20:05:31.701 I/cr_media( 2086): Provisioning origin ID FD94B38B163AFDC5B923E36D446E5579
+10-27 20:05:31.872 I/cr_media( 2086): Create MediaDrmBridge with level L1 and origin FD94B38B163AFDC5B923E36D446E5579
+10-27 20:05:31.899 E/cr_media( 2086): Failed to set security level L1
+10-27 20:05:31.899 E/cr_media( 2086): java.lang.IllegalArgumentException: {}: BAD_VALUE
+10-27 20:05:31.899 E/cr_media( 2086): cdm err: 0, oem err: 0, ctx: 0
+10-27 20:05:31.899 E/cr_media( 2086): ============================== Beginning of DRM Plugin Log ==============================
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.806 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.806 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.806 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.806 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.806 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:04:51.853 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.218 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.219 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.334 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.335 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.335 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.335 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.338 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.339 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.341 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.342 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.344 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.346 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.348 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.348 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.348 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [device_files.cpp(2048):RetrieveHashedFile] File does not exist: path = /data/vendor/mediadrm/IDM1013/L3/usgtable.bin, error = FileNotFound_ENoEnt
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [device_files.cpp(1745):RetrieveUsageTableInfo] Unable to retrieve usage table file
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [cdm_usage_table.cpp(199):RestoreTable] Could not retrieve usage table
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.353 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.356 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.358 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.360 I [cdm_engine.cpp(1118):GetProvisioningRequest] cert_type = Widevine
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.589 I [cdm_engine.cpp(1194):HandleProvisioningResponse] response_size = 4820, security_level = Default
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.621 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.623 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.624 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.624 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.624 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.624 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.624 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.629 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.629 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.629 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.629 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.634 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.642 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.642 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.645 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.646 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.646 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.646 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.648 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.649 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.649 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.650 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.655 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.656 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.656 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.656 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.668 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.669 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.669 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.669 I [cdm_usage_table.cpp(203):RestoreTable] Found usage table to restore: entry_count = 0
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.669 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.670 I [cdm_engine.cpp(1118):GetProvisioningRequest] cert_type = Widevine
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.795 I [cdm_engine.cpp(1194):HandleProvisioningResponse] response_size = 4820, security_level = Default
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.870 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.876 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.876 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.878 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.878 I No hidl drm factories found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.879 E Failed to find passthrough drm factories
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.880 I [cdm_engine.cpp(1092):IsSecurityLevelSupported] level = L1
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.883 I [(0):] L3 Terminate.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.885 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.885 I [oemcrypto_adapter_dynamic.cpp(826):Initialize] Level 3 Build Info (v18): {"soc_vendor":"L3_33100","soc_model":"X86 64 bit","ta_ver":"18.1.0+Feb 20 2024_20:28:28_","uses_opk":false,"tee_os":"none","tee_os_ver":"0.0.0","form_factor":"L3","implementer":"Widevine","fused":false}
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.885 I [(0):] Level3 Library 33100 Feb 20 2024 20:28:28
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 I [oemcrypto_adapter_dynamic.cpp(841):Initialize] L3 Initialized. Trying L1.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 W [oemcrypto_adapter_dynamic.cpp(854):Initialize] Could not load oemcrypto from path liboemcrypto.so.  dlopen failed: library "liboemcrypto.so" not found
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 W [oemcrypto_adapter_dynamic.cpp(858):Initialize] Could not load oemcrypto. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 E [oemcrypto_adapter_dynamic.cpp(1326):ValidateOrInstallL1KeyboxOrCert] L1 not initialized. Falling back to L3
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 I [file_utils.cpp(38):Exists] stat failed: ENOENT
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 W [oemcrypto_adapter_dynamic.cpp(1531):OEMCrypto_InitializeAndCheckKeybox] Keybox error: 25. Falling back to L3.
+10-27 20:05:31.899 E/cr_media( 2086):   10-27 20:05:31.894 I [oemcrypto_adapter_dynamic.cpp(890):Level1Terminate] L1 Terminate not needed
+10-27 20:05:31.899 E/cr_media( 2086): ============================== End of DRM Plugin Log ==============================
+10-27 20:05:31.899 E/cr_media( 2086): 	at android.media.MediaDrm.setPropertyString(Native Method)
+10-27 20:05:31.899 E/cr_media( 2086): 	at org.chromium.media.MediaDrmBridge.create(chromium-TrichromeChromeGoogle6432.aab-stable-636771938:104)
+10-27 20:05:31.899 E/cr_media( 2086): Security level L1 not supported!
+10-27 20:05:32.841 I/cr_SplitCompatApp( 4405): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:12 isIsolated=true
+10-27 20:05:32.860 I/cr_ChildProcessService( 4405): Creating new ChildProcessService pid=4405
+10-27 20:05:32.874 I/cr_LibraryLoader( 4405): Successfully loaded native library
+10-27 20:05:32.874 I/cr_CachingUmaRecorder( 4405): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:32.903 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:32.964 W/ThreadPoolForeg( 4405): type=1400 audit(0.0:73): avc:  denied  { setattr } for  name="cr_en-us_500000_index.bin" dev="dm-46" ino=344854 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:app_data_file:s0:c145,c256,c512,c768 tclass=file permissive=0
+10-27 20:05:33.163 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:33.302 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:33.485 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:34.350 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:34.663 W/Conscrypt( 1420): Could not set socket write timeout: java.net.SocketException: Socket closed
+10-27 20:05:34.752 I/cr_SplitCompatApp( 4435): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:13 isIsolated=true
+10-27 20:05:34.761 I/cr_ChildProcessService( 4435): Creating new ChildProcessService pid=4435
+10-27 20:05:34.766 I/cr_LibraryLoader( 4435): Successfully loaded native library
+10-27 20:05:34.766 I/cr_CachingUmaRecorder( 4435): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:34.934 W/GLSUser ( 1189): [AppCertManager] Exception while requesting key: 
+10-27 20:05:34.934 W/GLSUser ( 1189): java.util.concurrent.ExecutionException: bpcw: Parse Proto Exception with response code 400
+10-27 20:05:34.934 W/GLSUser ( 1189): Caused by: bpcw: Parse Proto Exception with response code 400
+10-27 20:05:36.510 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:36.665 I/cr_SplitCompatApp( 4463): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:14 isIsolated=true
+10-27 20:05:36.680 I/cr_ChildProcessService( 4463): Creating new ChildProcessService pid=4463
+10-27 20:05:36.684 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ContactsSyncAdapterService}
+10-27 20:05:36.684 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:36.684 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:36.684 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:36.684 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:36.684 W/PeoplePU( 1420): Caused by: android.os.RemoteException: Remote stack trace:
+10-27 20:05:36.690 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ContactsSyncAdapterService}
+10-27 20:05:36.690 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:36.690 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:36.690 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:36.690 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:36.699 W/PeoplePU( 1420): java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ProxyGalProvider}
+10-27 20:05:36.699 W/PeoplePU( 1420): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3246)
+10-27 20:05:36.699 W/PeoplePU( 1420): 	at android.os.Parcel.createException(Parcel.java:3226)
+10-27 20:05:36.699 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3209)
+10-27 20:05:36.699 W/PeoplePU( 1420): 	at android.os.Parcel.readException(Parcel.java:3151)
+10-27 20:05:36.707 I/cr_LibraryLoader( 4463): Successfully loaded native library
+10-27 20:05:36.708 I/cr_CachingUmaRecorder( 4463): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:37.270 W/TapAndPay( 1189): java.lang.NullPointerException: NfcAdapter is null
+10-27 20:05:38.772 I/cr_SplitCompatApp( 4501): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:15 isIsolated=true
+10-27 20:05:38.787 I/cr_ChildProcessService( 4501): Creating new ChildProcessService pid=4501
+10-27 20:05:38.802 I/cr_LibraryLoader( 4501): Successfully loaded native library
+10-27 20:05:38.802 I/cr_CachingUmaRecorder( 4501): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:39.476 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:39.478 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:41.000 I/cr_SplitCompatApp( 4528): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:16 isIsolated=true
+10-27 20:05:41.011 I/cr_ChildProcessService( 4528): Creating new ChildProcessService pid=4528
+10-27 20:05:41.020 I/cr_LibraryLoader( 4528): Successfully loaded native library
+10-27 20:05:41.022 I/cr_CachingUmaRecorder( 4528): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:41.710 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:41.747 D/dasx    ( 3594): Starting download: https://c.tenor.com/L-cr_zEMUKIAAAAk/tenor.gif
+10-27 20:05:41.747 V/dasx    ( 3594): Is http uri, downloading (uri: https://c.tenor.com/L-cr_zEMUKIAAAAk/tenor.gif)
+10-27 20:05:42.246 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:42.474 I/ChimeraSrvcProxy( 1189): NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl
+10-27 20:05:42.749 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:43.097 I/ActivityManager(  552): Force stopping io.github.coemathieuhub.carnet appid=10209 user=0: from pid 4557
+10-27 20:05:43.098 I/AppsFilter(  552): interaction: PackageSetting{af7bb56 com.android.microdroid.empty_payload/10192} -> PackageSetting{989f231 io.github.coemathieuhub.carnet/10209} BLOCKED
+10-27 20:05:43.119 I/AppWidgetServiceImpl(  552): Updating package stopped masked state for uid 10209 package io.github.coemathieuhub.carnet isStopped true
+10-27 20:05:43.119 D/CarrierSvcBindHelper( 1072): onHandleForceStop: [io.github.coemathieuhub.carnet]
+10-27 20:05:43.137 W/ndroid.settings( 1073): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~7MgtFabEhtYL6qOxa3Iv-A==/io.github.coemathieuhub.carnet-E3MBUDl6s0D3xJJTh0gCCQ==/base.apk' with 1 weak references
+10-27 20:05:43.333 W/NetworkScheduler( 1189): java.lang.IllegalArgumentException: Only the following extra parameter types are supported: Integer, Long, Double, String, Boolean, and nested Bundles with the same restrictions.
+10-27 20:05:43.375 I/cr_SplitCompatApp( 4560): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:17 isIsolated=true
+10-27 20:05:43.392 I/cr_ChildProcessService( 4560): Creating new ChildProcessService pid=4560
+10-27 20:05:43.397 I/cr_LibraryLoader( 4560): Successfully loaded native library
+10-27 20:05:43.397 I/cr_CachingUmaRecorder( 4560): Flushed 3 samples from 3 histograms, 0 samples were dropped.
+10-27 20:05:45.821 I/cr_SplitCompatApp( 4577): Launched version=124.0.6367.219 minSdkVersion=29 isBundle=true processName=com.android.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:18 isIsolated=true
+10-27 20:05:45.828 I/cr_ChildProcessService( 4577): Creating new ChildProcessService pid=4577
+10-27 20:05:45.831 I/cr_LibraryLoader( 4577): Successfully loaded native library
+10-27 20:05:45.832 I/cr_CachingUmaRecorder( 4577): Flushed 3 samples from 3 histograms, 0 samples were dropped.
