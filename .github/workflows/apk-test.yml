@@ -4,9 +4,10 @@ name: Test APK (émulateur)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/apk-test.yml', 'tests/apk-emulateur.sh']
+  # Après chaque fabrication réussie de l'APK
+  workflow_run:
+    workflows: ['APK Android']
+    types: [completed]
 
 permissions:
   contents: write
@@ -15,6 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v4
 

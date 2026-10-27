@@ -6,7 +6,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:manageSpaceActivity="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity">
 
         <!-- Lien de confiance avec le site : vérifié via /.well-known/assetlinks.json -->
         <meta-data
@@ -43,6 +44,14 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="coemathieu-hub.github.io" />
             </intent-filter>
+        </activity>
+
+        <!-- Obligatoire : au lancement, la bibliothèque crée le raccourci « Paramètres du site » vers cet écran
+             (sans cette déclaration, l'app plante au démarrage) -->
+        <activity android:name="com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity">
+            <meta-data
+                android:name="android.support.customtabs.trusted.MANAGE_SPACE_URL"
+                android:value="@string/launchUrl" />
         </activity>
 
         <activity android:name="com.google.androidbrowserhelper.trusted.FocusActivity" />

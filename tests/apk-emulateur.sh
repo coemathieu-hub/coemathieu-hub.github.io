@@ -13,6 +13,8 @@ for essai in 1 2; do
   sleep 25
   adb exec-out screencap -p > $OUT/ecran-$essai.png
   adb shell dumpsys activity activities | grep -E "topResumedActivity|mResumedActivity" > $OUT/activite-$essai.txt 2>&1
+  # Succès attendu : la fenêtre de Chrome (Trusted Web Activity) au premier plan, pas l'écran d'accueil
+  if grep -qiE "customtabs|chrome" $OUT/activite-$essai.txt; then echo "OUVERTE" >> $OUT/activite-$essai.txt; else echo "PAS OUVERTE" >> $OUT/activite-$essai.txt; fi
   adb shell am force-stop $PKG
   sleep 3
 done
