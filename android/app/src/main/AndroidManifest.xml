@@ -13,8 +13,9 @@
             android:name="asset_statements"
             android:resource="@string/assetStatements" />
 
+        <!-- Lanceur maison (LauncherActivity.java) : ne plante jamais sur un défaut signalé par Chrome -->
         <activity
-            android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
+            android:name=".LauncherActivity"
             android:exported="true"
             android:label="@string/appName">
             <meta-data

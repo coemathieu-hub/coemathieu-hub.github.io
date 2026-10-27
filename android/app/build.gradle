@@ -43,4 +43,6 @@ android {
 
 dependencies {
     implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.4'
+    // Déjà embarqué par androidbrowserhelper ; déclaré pour compiler LauncherActivity.java
+    implementation 'androidx.browser:browser:1.10.0'
 }
