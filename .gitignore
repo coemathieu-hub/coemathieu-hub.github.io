@@ -1,0 +1,13 @@
+# Données personnelles : jamais dans ce dépôt public
+*PRIVE*
+*prive*
+carnet-sauvegarde-*.json
+carnet-depart*.json
+# Outils
+node_modules/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+.DS_Store

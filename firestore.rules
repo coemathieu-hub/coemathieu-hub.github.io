@@ -1,0 +1,62 @@
+rules_version = '2';
+// Règles de sécurité du Carnet de voyage.
+// Un voyage n'est lisible et modifiable que par ses membres.
+// On devient membre en présentant le code secret du lien d'invitation.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function tripPath(tripId) { return /databases/$(database)/documents/trips/$(tripId); }
+    function isMember(tripId) { return signedIn() && exists(/databases/$(database)/documents/trips/$(tripId)/members/$(request.auth.uid)); }
+    function isOwner(tripId) { return signedIn() && get(tripPath(tripId)).data.ownerUid == request.auth.uid; }
+    // Miniature de photo limitée (~330 Ko d'image encodée)
+    function thumbOk(coll) { return coll != 'photos' || request.resource.data.get('thumb', '').size() < 450000; }
+
+    // Liste personnelle de mes voyages
+    match /userTrips/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /trips/{tripId} {
+      allow create: if signedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if isMember(tripId);
+      // Seul le créateur change le propriétaire ou le lien d'invitation
+      allow update: if isMember(tripId)
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && (request.resource.data.get('inviteToken', '') == resource.data.get('inviteToken', '') || isOwner(tripId));
+      allow delete: if isOwner(tripId);
+
+      match /members/{uid} {
+        allow read: if isMember(tripId);
+        // Rejoindre : créer SON propre document membre avec le bon code,
+        // ou être le créateur du voyage (lors de sa création).
+        allow create: if signedIn() && request.auth.uid == uid
+          && request.resource.data.role in ['member', 'owner']
+          && (getAfter(tripPath(tripId)).data.ownerUid == request.auth.uid
+              || (request.resource.data.role == 'member'
+                  && request.resource.data.token == get(tripPath(tripId)).data.inviteToken));
+        // Chacun modifie son nom / son voyageur, sans changer son rôle
+        allow update: if signedIn() && request.auth.uid == uid && request.resource.data.role == resource.data.role;
+        // Exclure (créateur) ou quitter (soi-même)
+        allow delete: if isOwner(tripId) || (signedIn() && request.auth.uid == uid);
+      }
+
+      // Historique : on ne peut qu'ajouter des lignes, à son nom
+      match /history/{id} {
+        allow read: if isMember(tripId);
+        allow create: if isMember(tripId) && request.resource.data.by == request.auth.uid;
+        allow delete: if isOwner(tripId);
+      }
+
+      // Données du voyage
+      match /{coll}/{id} {
+        allow read: if isMember(tripId);
+        allow create, update: if isMember(tripId) && thumbOk(coll)
+          && coll in ['travelers', 'days', 'steps', 'tips', 'expenses', 'bookings', 'photos', 'checklist'];
+        // Suppression définitive (vider la corbeille) : créateur seulement
+        allow delete: if isOwner(tripId)
+          && coll in ['travelers', 'days', 'steps', 'tips', 'expenses', 'bookings', 'photos', 'checklist'];
+      }
+    }
+  }
+}

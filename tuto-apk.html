@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Installer Carnet de voyage</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" href="icons/icon-192.png">
+    <style>
+    :root{--bg:#000;--card:#1C1C1E;--text:#fff;--muted:#A1A1A6;--accent:#7FA6FF;--line:#2C2C2E;--warn:#33280F;--warnfg:#F5D58A;color-scheme:dark}
+    @media (prefers-color-scheme: light){:root{--bg:#F2F2F7;--card:#fff;--text:#111114;--muted:#5C5C63;--accent:#2457D6;--line:#E5E5EA;--warn:#FFF4D6;--warnfg:#6B4300;color-scheme:light}}
+    html{background:var(--bg);color:var(--text)}
+    body{margin:0 auto;max-width:760px;padding:16px 16px 60px;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    h1{font-size:26px;margin:8px 0 12px}h2{font-size:21px;margin:32px 0 10px;padding-top:12px;border-top:1px solid var(--line)}h3{font-size:17px;margin:22px 0 6px}
+    a{color:var(--accent);word-break:break-word}code{background:var(--card);padding:1px 6px;border-radius:6px;font-size:14px}
+    pre{background:var(--card);padding:12px;border-radius:12px;overflow-x:auto}pre code{padding:0}
+    blockquote{margin:12px 0;padding:10px 14px;background:var(--warn);color:var(--warnfg);border-radius:12px}
+    table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+    li{margin:4px 0}hr{border:0;border-top:1px solid var(--line);margin:24px 0}strong{font-weight:650}
+    header#title-block-header{display:none}
+    </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Installer Carnet de voyage</h1>
+</header>
+<h1 id="installer--carnet-de-voyage--sur-vos-téléphones">Installer «
+Carnet de voyage » sur vos téléphones</h1>
+<h2 id="ce-que-vous-allez-obtenir">Ce que vous allez obtenir</h2>
+<ul>
+<li>L'application <strong>Carnet de voyage</strong> en ligne à l'adresse
+<a
+href="https://coemathieu-hub.github.io/">https://coemathieu-hub.github.io/</a>.</li>
+<li>Une <strong>icône sur l'écran d'accueil</strong> du Z Fold et des
+téléphones de la famille, qui ouvre l'app en plein écran.</li>
+<li>En option, un <strong>fichier APK</strong> à installer, comme une
+application classique.</li>
+<li>La <strong>synchronisation</strong> entre vos téléphones, et des
+invités qui rejoignent un voyage avec un simple lien.</li>
+</ul>
+<p><strong>Temps estimé : environ 30 minutes la première fois</strong>,
+tout depuis le téléphone :</p>
+<ul>
+<li>10 min pour la mise en ligne et la synchro ;</li>
+<li>5 min pour l'installation ;</li>
+<li>15 min pour l'APK.</li>
+</ul>
+<h3 id="avant-de-commencer">Avant de commencer</h3>
+<ul>
+<li>Le <strong>Z Fold</strong>, avec <strong>Chrome</strong> (déjà
+installé sur les téléphones Samsung).</li>
+<li>Votre <strong>compte GitHub</strong> (déjà créé) : <a
+href="https://github.com">https://github.com</a>.</li>
+<li>Un <strong>compte Google</strong> pour Firebase : <a
+href="https://console.firebase.google.com">https://console.firebase.google.com</a>.</li>
+<li>Un <strong>gestionnaire de mots de passe</strong>, par exemple celui
+de Google, intégré à Chrome, pour ranger un mot de passe important
+(étape 7).</li>
+</ul>
+<blockquote>
+<p>Les noms de boutons peuvent varier un peu selon la version de
+l'application ou du site. Cherchez le libellé le plus proche ; en cas de
+doute, la rubrique « Dépannage » est en fin de page.</p>
+</blockquote>
+<hr />
+<h2 id="partie-1--mettre-lapp-en-ligne">Partie 1 · Mettre l'app en
+ligne</h2>
+<p><strong>Mettre en ligne</strong> veut dire publier l'app sur un
+<strong>hébergement HTTPS</strong> : un site web sécurisé, accessible
+depuis n'importe quel appareil. Ici, c'est <strong>GitHub
+Pages</strong>, gratuit.</p>
+<h3 id="étape-1--créer-le-dépôt-github">Étape 1 · Créer le dépôt
+GitHub</h3>
+<p>Un <strong>dépôt</strong> est le dossier en ligne qui contient les
+fichiers de l'app.</p>
+<ol type="1">
+<li>Ouvrez <a href="https://github.com/new">https://github.com/new</a>
+dans Chrome.</li>
+<li>Dans <strong>Repository name</strong>, tapez exactement :
+<pre><code>coemathieu-hub.github.io</code></pre></li>
+<li>Choisissez <strong>Public</strong>.</li>
+<li>Cochez <strong>Add a README file</strong>.</li>
+<li>Touchez <strong>Create repository</strong>.</li>
+</ol>
+<p><strong>Vous devez voir</strong> une page avec le nom
+<code>coemathieu-hub/coemathieu-hub.github.io</code> et un fichier
+<code>README.md</code>. <strong>Sinon</strong> : si GitHub dit que le
+nom existe déjà, le dépôt est déjà créé. Passez à l'étape 2.</p>
+<h3 id="étape-2--prévenir-claude">Étape 2 · Prévenir Claude</h3>
+<ol type="1">
+<li>Écrivez à Claude : « dépôt fait ».</li>
+</ol>
+<p>Claude y dépose les fichiers de l'app. <strong>Vous devez
+voir</strong> ensuite, dans le dépôt, les fichiers
+<code>index.html</code>, <code>sw.js</code>,
+<code>manifest.webmanifest</code> et les dossiers <code>icons</code> et
+<code>android</code>.</p>
+<h3 id="étape-3--vérifier-que-le-site-saffiche">Étape 3 · Vérifier que
+le site s'affiche</h3>
+<ol type="1">
+<li>Attendez 2 minutes après le dépôt des fichiers.</li>
+<li>Ouvrez <a
+href="https://coemathieu-hub.github.io/">https://coemathieu-hub.github.io/</a>.</li>
+</ol>
+<p><strong>Vous devez voir</strong> l'écran <strong>Carnet de
+voyage</strong>, avec les boutons « Nouveau voyage » et « Rejoindre
+».</p>
+<p><strong>Sinon (page 404)</strong> :</p>
+<ol type="1">
+<li>Dans le dépôt, touchez <strong>Settings</strong>, puis
+<strong>Pages</strong> dans le menu.</li>
+<li>Sous <strong>Build and deployment</strong>, choisissez
+<strong>Deploy from a branch</strong>.</li>
+<li>Choisissez la branche <strong>main</strong> et le dossier <strong>/
+(root)</strong>, puis touchez <strong>Save</strong>.</li>
+<li>Attendez 2 minutes et rouvrez le lien.</li>
+</ol>
+<h3 id="étape-4--créer-le-projet-firebase-la-synchro">Étape 4 · Créer le
+projet Firebase (la synchro)</h3>
+<p><strong>Firebase</strong> est le service gratuit de Google qui
+synchronise vos voyages entre les téléphones.</p>
+<ol type="1">
+<li>Ouvrez <a
+href="https://console.firebase.google.com">https://console.firebase.google.com</a>
+et touchez <strong>Créer un projet</strong> (ou <strong>Ajouter un
+projet</strong>).</li>
+<li>Nom : <code>carnet-de-voyage</code>. Touchez
+<strong>Continuer</strong>.</li>
+<li><strong>Désactivez Google Analytics</strong>, puis touchez
+<strong>Créer le projet</strong>.</li>
+<li>Dans le menu, ouvrez <strong>Créer</strong> (ou
+<strong>Build</strong>) → <strong>Firestore Database</strong> →
+<strong>Créer une base de données</strong>.
+<ul>
+<li>Choisissez un emplacement en Europe, par exemple
+<code>europe-west9 (Paris)</code>.</li>
+<li>Choisissez le <strong>mode production</strong>, puis
+<strong>Créer</strong>.</li>
+</ul></li>
+<li>Dans le menu, ouvrez <strong>Créer</strong> →
+<strong>Authentication</strong> → <strong>Commencer</strong> →
+<strong>Anonyme</strong> → activez l'interrupteur →
+<strong>Enregistrer</strong>.</li>
+<li>Touchez la <strong>roue dentée</strong> → <strong>Paramètres du
+projet</strong>. Sous <strong>Vos applications</strong>, touchez l'icône
+<strong>Web <code>&lt;/&gt;</code></strong>.
+<ul>
+<li>Surnom : <code>carnet</code>.</li>
+<li>Ne cochez pas Hosting.</li>
+<li>Touchez <strong>Enregistrer l'application</strong>.</li>
+</ul></li>
+<li>Copiez le bloc qui commence par
+<code>const firebaseConfig = {</code> et envoyez-le à Claude. Ce n'est
+pas un secret.</li>
+</ol>
+<p><strong>Vous devez voir</strong>, à l'étape 7, un bloc contenant
+<code>apiKey</code>, <code>projectId</code> et <code>appId</code>.</p>
+<h3 id="étape-5--coller-les-règles-de-sécurité">Étape 5 · Coller les
+règles de sécurité</h3>
+<p>Les <strong>règles</strong> décident qui peut lire quoi. Ici, seuls
+les membres d'un voyage y ont accès.</p>
+<ol type="1">
+<li>Dans Firebase, ouvrez <strong>Firestore Database</strong> → onglet
+<strong>Règles</strong>.</li>
+<li>Effacez tout le texte affiché.</li>
+<li>Collez les règles. Deux moyens de les obtenir :
+<ul>
+<li>dans l'app : <strong>Réglages</strong> → <strong>Règles de sécurité
+Firestore</strong> → <strong>Copier les règles</strong> ;</li>
+<li>ou le fichier <code>firestore.rules</code> du dépôt.</li>
+</ul></li>
+<li>Touchez <strong>Publier</strong>.</li>
+</ol>
+<p><strong>Vous devez voir</strong> « Règles publiées » ou une date de
+publication. <strong>Sinon</strong> : si Firebase signale une erreur de
+syntaxe, vérifiez que tout le texte a été collé, du début
+(<code>rules_version</code>) à la dernière accolade.</p>
+<hr />
+<h2 id="partie-2--installer-lapp-sans-apk-recommandé">Partie 2 ·
+Installer l'app sans APK (recommandé)</h2>
+<p>Une <strong>PWA</strong> (application web installable) est le site
+web lui-même, installé avec une icône. Elle fonctionne hors ligne et se
+met à jour toute seule.</p>
+<h3 id="étape-6--installer-sur-le-z-fold">Étape 6 · Installer sur le Z
+Fold</h3>
+<ol type="1">
+<li>Ouvrez <a
+href="https://coemathieu-hub.github.io/">https://coemathieu-hub.github.io/</a>
+dans <strong>Chrome</strong>.</li>
+<li>Touchez le menu <strong>⋮</strong> en haut à droite.</li>
+<li>Touchez <strong>Installer l'application</strong>. Si ce choix
+n'apparaît pas, touchez <strong>Ajouter à l'écran
+d'accueil</strong>.</li>
+<li>Confirmez avec <strong>Installer</strong>.</li>
+</ol>
+<p><strong>Vous devez voir</strong> l'icône bleue <strong>Carnet de
+voyage</strong> sur l'écran d'accueil. Ouverte depuis l'icône, l'app
+s'affiche <strong>sans barre d'adresse</strong>. <strong>Sinon</strong>
+: si seul « Ajouter à l'écran d'accueil » existe, l'app fonctionne quand
+même. Ouvrez-la une fois en ligne pour qu'elle se garde pour le hors
+ligne.</p>
+<p>C'est suffisant pour tout utiliser. L'APK (partie 3) est un
+<strong>plus</strong> : une vraie application Android dans la liste des
+applis.</p>
+<hr />
+<h2 id="partie-3--générer-lapk-fichier-dinstallation-android">Partie 3 ·
+Générer l'APK (fichier d'installation Android)</h2>
+<p>Un <strong>APK</strong> est le fichier d'installation d'une
+application Android. Celui-ci est une <strong>TWA</strong> (<em>Trusted
+Web Activity</em>) : une application qui affiche l'app en ligne en plein
+écran, sans barre d'adresse. Ses mises à jour viennent donc du site :
+<strong>pas besoin de refaire l'APK</strong> à chaque nouveauté.</p>
+<h3 id="étape-7--créer-le-mot-de-passe-de-la-clé-de-signature">Étape 7 ·
+Créer le mot de passe de la clé de signature</h3>
+<p>La <strong>clé de signature</strong> est la carte d'identité de votre
+APK : Android refuse une mise à jour qui n'est pas signée par la même
+clé. GitHub la crée pour vous ; vous ne choisissez que son mot de
+passe.</p>
+<ol type="1">
+<li>Inventez un mot de passe d'<strong>au moins 16 caractères</strong>,
+par exemple trois mots et des chiffres.</li>
+<li><strong>Rangez-le tout de suite</strong> dans votre gestionnaire de
+mots de passe, sous le nom <code>Carnet de voyage – clé APK</code>.</li>
+<li>Dans le dépôt GitHub, ouvrez <strong>Settings</strong> →
+<strong>Secrets and variables</strong> → <strong>Actions</strong>.</li>
+<li>Touchez <strong>New repository secret</strong>.</li>
+<li>Dans <strong>Name</strong>, tapez exactement :
+<pre><code>KEYSTORE_PASSWORD</code></pre></li>
+<li>Dans <strong>Secret</strong>, collez votre mot de passe.</li>
+<li>Touchez <strong>Add secret</strong>.</li>
+</ol>
+<p><strong>Vous devez voir</strong> <code>KEYSTORE_PASSWORD</code> dans
+la liste des secrets. GitHub ne vous le remontrera jamais : c'est
+normal.</p>
+<h3 id="étape-8--lancer-la-fabrication-de-lapk">Étape 8 · Lancer la
+fabrication de l'APK</h3>
+<ol type="1">
+<li>Dans le dépôt, touchez l'onglet <strong>Actions</strong>. Sur
+téléphone, il peut être dans le menu <strong>⋯</strong>.</li>
+<li>Dans la liste à gauche (ou en haut), touchez <strong>APK
+Android</strong>.</li>
+<li>Touchez <strong>Run workflow</strong>, laissez
+<strong>main</strong>, puis touchez le bouton vert <strong>Run
+workflow</strong>.</li>
+<li>Attendez environ 5 minutes et rafraîchissez la page.</li>
+</ol>
+<p><strong>Vous devez voir</strong> une coche <strong>verte</strong> à
+côté de l'exécution. <strong>Sinon (croix rouge)</strong> : prévenez
+Claude, qui lit le journal de fabrication, ou ouvrez l'exécution pour
+voir le message. La cause la plus fréquente est un secret absent ou mal
+nommé : refaites l'étape 7.</p>
+<p>Lors de la première fabrication, GitHub crée la clé de signature, la
+range <strong>chiffrée</strong> dans le dépôt
+(<code>android/keystore.p12</code>) et publie le fichier de vérification
+<code>/.well-known/assetlinks.json</code>. Ce fichier permet à l'APK de
+s'afficher sans barre d'adresse.</p>
+<h3 id="étape-9--télécharger-lapk-sur-le-z-fold">Étape 9 · Télécharger
+l'APK sur le Z Fold</h3>
+<ol type="1">
+<li>Ouvrez ce lien dans Chrome :
+<pre><code>https://github.com/coemathieu-hub/coemathieu-hub.github.io/releases/latest/download/carnet-de-voyage.apk</code></pre></li>
+<li>Si Chrome avertit que « ce type de fichier peut être dangereux »,
+touchez <strong>Télécharger quand même</strong>. C'est votre propre
+fichier.</li>
+</ol>
+<p><strong>Vous devez voir</strong> une notification « Téléchargement
+terminé : carnet-de-voyage.apk ».</p>
+<h3 id="étape-10--installer-lapk">Étape 10 · Installer l'APK</h3>
+<ol type="1">
+<li><p>Touchez la notification du téléchargement, ou ouvrez l'app
+<strong>Mes fichiers</strong> → <strong>Téléchargements</strong> →
+<code>carnet-de-voyage.apk</code>.</p></li>
+<li><p>Si Android affiche « Pour votre sécurité, l'installation
+d'applications inconnues est bloquée » :</p>
+<ol type="1">
+<li>touchez <strong>Paramètres</strong> ;</li>
+<li>activez <strong>Autoriser à partir de cette source</strong> pour
+Chrome (ou Mes fichiers) ;</li>
+<li>revenez en arrière.</li>
+</ol></li>
+<li><p>Touchez <strong>Installer</strong>.</p></li>
+<li><p>Si <strong>Play Protect</strong> affiche une alerte («
+Application non sécurisée » ou « Développeur inconnu ») :</p>
+<ol type="1">
+<li>touchez <strong>Plus de détails</strong> ;</li>
+<li>touchez <strong>Installer quand même</strong>.</li>
+</ol>
+<p>Si Play Protect propose d'<strong>envoyer l'application pour
+analyse</strong>, vous pouvez accepter ou refuser : cela ne change rien
+à l'installation.</p></li>
+<li><p>Touchez <strong>Ouvrir</strong>.</p></li>
+</ol>
+<p><strong>Vous devez voir</strong> l'app en plein écran, <strong>sans
+barre d'adresse</strong>. <strong>Sinon (une barre avec l'adresse en
+haut)</strong> : voir « Dépannage », point 1.</p>
+<p>Par sécurité, vous pouvez ensuite désactiver « Autoriser à partir de
+cette source » (étape 10, point 2).</p>
+<hr />
+<h2
+id="partie-4--les-autres-téléphones-de-la-famille-et-les-invités">Partie
+4 · Les autres téléphones de la famille et les invités</h2>
+<h3 id="un-proche-sur-android">Un proche sur Android</h3>
+<ol type="1">
+<li>Envoyez-lui le <strong>lien d'invitation</strong> du voyage. Dans
+l'app : <strong>Plus</strong> → <strong>Membres et invitation</strong> →
+<strong>Partager</strong>.</li>
+<li>La personne installe l'app, au choix :
+<ul>
+<li>en <strong>PWA</strong> (étape 6) ;</li>
+<li>ou avec l'<strong>APK</strong> (étapes 9 et 10) : envoyez-lui le
+lien de l'étape 9.</li>
+</ul></li>
+<li>Elle ouvre le lien d'invitation, tape son prénom, puis
+<strong>Rejoindre</strong>.</li>
+<li>Elle choisit son prénom à la question « Qui es-tu ? ».</li>
+</ol>
+<p>Aucune inscription, aucun mot de passe. Avec l'APK installée, les
+liens d'invitation s'ouvrent directement dans l'app.</p>
+<h3 id="un-invité-sur-iphone-procédure-séparée">Un invité sur iPhone
+(procédure séparée)</h3>
+<p>Sur iPhone, il n'y a pas d'APK : on installe la PWA depuis Safari.
+<strong>Il faut installer avant de rejoindre</strong>, car l'app
+installée ne partage pas ses données avec Safari.</p>
+<ol type="1">
+<li>Ouvrir le lien d'invitation dans <strong>Safari</strong> et toucher
+<strong>Copier le lien</strong>.</li>
+<li>Toucher <strong>Partager</strong> (le carré avec une flèche vers le
+haut), puis <strong>Sur l'écran d'accueil</strong>, puis
+<strong>Ajouter</strong>.</li>
+<li>Ouvrir <strong>Carnet de voyage</strong> depuis l'écran
+d'accueil.</li>
+<li>Toucher <strong>Rejoindre</strong>, coller le lien, taper son
+prénom.</li>
+</ol>
+<hr />
+<h2 id="mises-à-jour">Mises à jour</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Ce qui change</th>
+<th>Que faire ?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nouveautés de l'app (écrans, calculs, corrections)</td>
+<td><strong>Rien</strong> : la PWA et l'APK se mettent à jour seules à
+la réouverture. Pour forcer : <strong>Réglages</strong> →
+<strong>Rechercher une mise à jour</strong>.</td>
+</tr>
+<tr class="even">
+<td>Vos voyages</td>
+<td>Synchronisés automatiquement entre les membres.</td>
+</tr>
+<tr class="odd">
+<td>Nom de l'app, icône ou adresse du site</td>
+<td>Relancer l'étape 8, puis réinstaller l'APK par-dessus (étapes 9 et
+10). Vos données sont conservées.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="à-ne-jamais-perdre">À ne jamais perdre</h2>
+<blockquote>
+<p><strong>Le mot de passe <code>KEYSTORE_PASSWORD</code></strong>,
+rangé dans votre gestionnaire de mots de passe et dans le secret
+GitHub.</p>
+<p><strong>La clé <code>android/keystore.p12</code></strong>, dans le
+dépôt GitHub. Elle est chiffrée par ce mot de passe. Téléchargez-en une
+copie dans Google Drive : dans le dépôt, ouvrez <code>android</code> →
+<code>keystore.p12</code> → <strong>Download</strong>.</p>
+<p><strong>Si vous les perdez</strong> : impossible de mettre à jour
+l'APK installée. Il faudra la désinstaller et installer une nouvelle
+APK. Les voyages synchronisés ne sont pas perdus, ils sont dans
+Firebase, mais les modifications faites hors ligne et pas encore
+envoyées le seraient.</p>
+<p><strong>Vos voyages</strong> : faites régulièrement une sauvegarde
+(<strong>Réglages</strong> → <strong>Tout sauvegarder</strong>) et
+rangez le fichier dans Google Drive. L'app vous le rappelle avant chaque
+départ et au retour.</p>
+</blockquote>
+<hr />
+<h2 id="dépannage">Dépannage</h2>
+<ol type="1">
+<li><strong>Une barre d'adresse s'affiche en haut de l'APK.</strong> Le
+site n'a pas encore publié le fichier de vérification, ou le téléphone
+l'a vérifié trop tôt.
+<ul>
+<li>Ouvrez <a
+href="https://coemathieu-hub.github.io/.well-known/assetlinks.json">https://coemathieu-hub.github.io/.well-known/assetlinks.json</a>
+: vous devez voir un texte qui contient
+<code>sha256_cert_fingerprints</code>.</li>
+<li>Si la page est introuvable, attendez 10 minutes.</li>
+<li>Ensuite, désinstallez l'APK et réinstallez-la.</li>
+</ul></li>
+<li><strong>« Application non installée » ou conflit lors d'une mise à
+jour.</strong> L'ancienne APK a été signée avec une autre clé.
+Désinstallez l'ancienne version puis installez la nouvelle. Les voyages
+synchronisés reviennent.</li>
+<li><strong>L'installation est bloquée.</strong> Autorisez
+l'installation depuis Chrome ou Mes fichiers (étape 10, point 2). Si
+Play Protect bloque, touchez <strong>Plus de détails</strong> →
+<strong>Installer quand même</strong>.</li>
+<li><strong>La fabrication de l'APK est en échec (croix rouge).</strong>
+Vérifiez que le secret s'appelle exactement
+<code>KEYSTORE_PASSWORD</code> et fait au moins 12 caractères, puis
+relancez l'étape 8. Sinon, prévenez Claude : il lit le journal sur la
+branche <code>apk-logs</code>.</li>
+<li><strong>L'app ne se synchronise pas.</strong> Le badge en haut
+indique l'état :
+<ul>
+<li><strong>Hors ligne</strong> ou <strong>N en attente</strong> : les
+modifications partiront au retour du réseau ;</li>
+<li><strong>Local</strong> : le voyage est sur ce téléphone seulement.
+Partagez-le avec <strong>Plus</strong> → <strong>Partager ce
+voyage</strong>.</li>
+<li>Si un message parle de permissions, vérifiez les règles Firestore
+(étape 5).</li>
+</ul></li>
+<li><strong>Le lien d'invitation ne fonctionne plus.</strong> Le
+créateur du voyage a peut-être changé le lien. Demandez-lui un nouveau
+lien (<strong>Plus</strong> → <strong>Membres et
+invitation</strong>).</li>
+<li><strong>L'app affiche une ancienne version.</strong> Fermez-la
+complètement et rouvrez-la, en ligne. Ou <strong>Réglages</strong> →
+<strong>Rechercher une mise à jour</strong>.</li>
+<li><strong>Sur iPhone, le voyage n'apparaît pas après avoir
+rejoint.</strong> Le lien a été ouvert dans Safari et non dans l'app
+installée. Ouvrez l'app depuis l'écran d'accueil →
+<strong>Rejoindre</strong> → collez le lien.</li>
+</ol>
+<hr />
+<h2 id="mini-glossaire">Mini-glossaire</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Terme</th>
+<th>Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>APK</strong></td>
+<td>Fichier d'installation d'une application Android.</td>
+</tr>
+<tr class="even">
+<td><strong>PWA</strong></td>
+<td>Site web installable comme une application : icône, plein écran,
+hors ligne.</td>
+</tr>
+<tr class="odd">
+<td><strong>TWA</strong></td>
+<td>APK qui affiche un site de confiance en plein écran, sans barre
+d'adresse.</td>
+</tr>
+<tr class="even">
+<td><strong>Hébergement HTTPS</strong></td>
+<td>Site web accessible de partout, avec une connexion sécurisée (le
+cadenas).</td>
+</tr>
+<tr class="odd">
+<td><strong>GitHub Pages</strong></td>
+<td>Hébergement gratuit de GitHub qui publie les fichiers du dépôt.</td>
+</tr>
+<tr class="even">
+<td><strong>Dépôt</strong></td>
+<td>Dossier en ligne, sur GitHub, qui contient les fichiers de
+l'app.</td>
+</tr>
+<tr class="odd">
+<td><strong>Manifeste</strong></td>
+<td>Petit fichier qui décrit l'app au téléphone : nom, icône,
+couleurs.</td>
+</tr>
+<tr class="even">
+<td><strong>Service worker</strong></td>
+<td>Petit programme qui garde l'app sur le téléphone pour qu'elle marche
+sans réseau.</td>
+</tr>
+<tr class="odd">
+<td><strong>Clé de signature</strong></td>
+<td>Carte d'identité de l'APK. Android n'accepte une mise à jour que si
+elle est signée par la même clé.</td>
+</tr>
+<tr class="even">
+<td><strong>Secret GitHub</strong></td>
+<td>Valeur cachée (ici le mot de passe de la clé) que seuls les robots
+de GitHub peuvent lire.</td>
+</tr>
+<tr class="odd">
+<td><strong>Workflow / Actions</strong></td>
+<td>Robot de GitHub qui fabrique l'APK à votre place.</td>
+</tr>
+<tr class="even">
+<td><strong>Firebase / Firestore</strong></td>
+<td>Service de Google qui stocke et synchronise les voyages.</td>
+</tr>
+<tr class="odd">
+<td><strong>Play Protect</strong></td>
+<td>Contrôle de sécurité d'Android qui avertit pour les applis
+installées hors Play Store.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

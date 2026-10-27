@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appName">Carnet de voyage</string>
+    <string name="launchUrl">https://coemathieu-hub.github.io/</string>
+    <string name="assetStatements" translatable="false">[{ \"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": { \"namespace\": \"web\", \"site\": \"https://coemathieu-hub.github.io\" } }]</string>
+</resources>

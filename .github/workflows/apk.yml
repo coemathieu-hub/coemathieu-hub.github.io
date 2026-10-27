@@ -1,0 +1,131 @@
+# Fabrique l'APK Android (Trusted Web Activity) sur les serveurs de GitHub.
+# Rien à installer : onglet Actions → « APK Android » → Run workflow.
+# Prérequis unique : le secret KEYSTORE_PASSWORD (voir TUTO_APK.md, étape 7).
+name: APK Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['android/**', '.github/workflows/apk.yml']
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: apk
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      PKG: io.github.coemathieuhub.carnet
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier le secret KEYSTORE_PASSWORD
+        id: secret
+        run: |
+          if [ -z "$KEYSTORE_PASSWORD" ]; then
+            if [ "${{ github.event_name }}" = "push" ]; then
+              # Envoi de fichiers avant l'étape 7 du tuto : on attend le secret, sans échec
+              echo "::notice::Secret KEYSTORE_PASSWORD pas encore créé : APK non fabriquée (TUTO_APK.md, étape 7)."
+              echo "ok=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::error::Le secret KEYSTORE_PASSWORD est absent. Voir TUTO_APK.md, étape 7."
+            echo "ERREUR : secret KEYSTORE_PASSWORD absent (TUTO_APK.md, étape 7)" > build.log
+            exit 1
+          fi
+          if [ ${#KEYSTORE_PASSWORD} -lt 12 ]; then
+            echo "::error::KEYSTORE_PASSWORD doit faire au moins 12 caractères."
+            echo "ERREUR : mot de passe trop court (12 caractères minimum)" > build.log
+            exit 1
+          fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        if: steps.secret.outputs.ok == 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.secret.outputs.ok == 'true'
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Clé de signature (créée une seule fois) et assetlinks.json
+        if: steps.secret.outputs.ok == 'true'
+        run: |
+          if [ ! -f android/keystore.p12 ]; then
+            keytool -genkeypair -storetype PKCS12 -keystore android/keystore.p12 -alias carnet \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass "$KEYSTORE_PASSWORD" -keypass "$KEYSTORE_PASSWORD" \
+              -dname "CN=Carnet de voyage, O=Famille, C=FR"
+            echo "Nouvelle clé de signature créée."
+          fi
+          FP=$(keytool -list -v -storetype PKCS12 -keystore android/keystore.p12 -alias carnet -storepass "$KEYSTORE_PASSWORD" | grep -m1 'SHA256:' | sed 's/.*SHA256: *//' | tr -d '[:space:]')
+          if [ -z "$FP" ]; then echo "::error::Empreinte introuvable : mot de passe différent de celui de la clé existante ?"; echo "ERREUR : empreinte introuvable (mot de passe ?)" > build.log; exit 1; fi
+          echo "FP=$FP" >> "$GITHUB_ENV"
+          mkdir -p .well-known
+          printf '[{"relation":["delegate_permission/common.handle_all_urls"],"target":{"namespace":"android_app","package_name":"%s","sha256_cert_fingerprints":["%s"]}}]\n' "$PKG" "$FP" > .well-known/assetlinks.json
+          cat .well-known/assetlinks.json
+
+      - name: Compiler l'APK
+        if: steps.secret.outputs.ok == 'true'
+        run: |
+          set -o pipefail
+          cd android
+          VERSION_CODE=${{ github.run_number }} KEYSTORE_FILE="$PWD/keystore.p12" gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../build.log
+          cp app/build/outputs/apk/release/app-release.apk ../carnet-de-voyage.apk
+          ls -la ../carnet-de-voyage.apk
+
+      - name: Enregistrer la clé chiffrée et assetlinks.json dans le dépôt
+        if: steps.secret.outputs.ok == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add android/keystore.p12 .well-known/assetlinks.json
+          if ! git diff --cached --quiet; then
+            git commit -m "APK : clé de signature (chiffrée) et assetlinks.json"
+            git push
+            # Les envois du robot ne relancent pas GitHub Pages : on le demande explicitement
+            gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Relance de Pages non autorisée : elle se fera au prochain envoi."
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Publier l'APK (Releases)
+        if: steps.secret.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="apk-1.0.${{ github.run_number }}"
+          gh release create "$TAG" carnet-de-voyage.apk \
+            --title "Carnet de voyage 1.0.${{ github.run_number }}" \
+            --notes "APK Android (Trusted Web Activity) qui ouvre https://coemathieu-hub.github.io/. Empreinte SHA-256 de la signature : $FP" \
+            --latest
+
+      - name: Journal (branche apk-logs, lisible par Claude)
+        if: always() && steps.secret.outputs.ok != 'false'
+        run: |
+          mkdir -p /tmp/journal
+          cp build.log /tmp/journal/build.log 2>/dev/null || echo "pas de journal de compilation" > /tmp/journal/build.log
+          {
+            echo "run=${{ github.run_number }}"
+            echo "statut=${{ job.status }}"
+            echo "empreinte=$FP"
+            echo "date=$(date -u +%FT%TZ)"
+            curl -s -o /dev/null -w "pages_index=%{http_code}\n" https://coemathieu-hub.github.io/ || true
+            curl -s -o /dev/null -w "pages_assetlinks=%{http_code}\n" https://coemathieu-hub.github.io/.well-known/assetlinks.json || true
+          } > /tmp/journal/statut.txt
+          cd /tmp/journal
+          git init -q
+          git checkout -q -b apk-logs
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -qm "Journal APK ${{ github.run_number }}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" apk-logs
