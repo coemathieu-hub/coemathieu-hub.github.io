@@ -1,0 +1,50 @@
+# Test de l'APK publiée sur un émulateur Android : journal (logcat) et captures d'écran.
+# Résultats sur la branche apk-test (lisible par Claude). Onglet Actions → « Test APK (émulateur) » → Run workflow.
+name: Test APK (émulateur)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/apk-test.yml', 'tests/apk-emulateur.sh']
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Activer l'accélération KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Télécharger l'APK publiée
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download -R "${{ github.repository }}" --pattern carnet-de-voyage.apk -D .
+
+      - name: Lancer l'APK sur l'émulateur (Android 15, avec Chrome)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          script: bash tests/apk-emulateur.sh
+
+      - name: Résultats (branche apk-test)
+        if: always()
+        run: |
+          mkdir -p out && cp -r out /tmp/resultats
+          echo "statut=${{ job.status }} run=${{ github.run_number }} date=$(date -u +%FT%TZ)" > /tmp/resultats/statut.txt
+          cd /tmp/resultats
+          git init -q && git checkout -q -b apk-test && git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -qm "Test APK ${{ github.run_number }}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" apk-test
