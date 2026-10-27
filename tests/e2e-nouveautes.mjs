@@ -26,22 +26,19 @@ const MAP = [
 const results = []; const ok = (n, c, x) => { results.push({ n, ok: !!c }); console.log((c ? '✔ ' : '✘ ') + n + (x ? ' — ' + x : '')); };
 const sp = s => String(s).replace(/[\u00a0\u202f]/g, ' ');
 
-// Pièces jointes de test : un récap Word (généré) et une « photo »
+// Pièces jointes de test (fictives) : budget d'un voyage passé, budget d'un voyage à venir, une « photo »
 const docx = require(join(LIB, 'docx'));
-const doc = new docx.Document({ sections: [{ children: [
-  new docx.Paragraph('Récap budget Islande, juillet 2019'),
-  new docx.Table({ rows: [['Vol Genève - Reykjavik', '1 200 €'], ['Location 4x4', '640 €']].map(r => new docx.TableRow({ children: r.map(t => new docx.TableCell({ children: [new docx.Paragraph(t)] })) })) }),
-] }] });
-const DOCX = join(OUT, 'recap-islande.docx'); writeFileSync(DOCX, await docx.Packer.toBuffer(doc));
+const mkDocx = async (name, lines) => { const f = join(OUT, name); writeFileSync(f, await docx.Packer.toBuffer(new docx.Document({ sections: [{ children: lines.map(l => new docx.Paragraph(l)) }] }))); return f; };
+const DOCX = await mkDocx('budget-islande.docx', ['BUDGET ISLANDE 2019 du 10 au 17 juillet', 'VOL GENEVE – REYKJAVIK : 1200 euros', 'LOCATION 4X4 : 640 euros', 'Logement Vik : 900 euros + taxe séjour 12 euros', 'Jumelles pour les macareux', 'TOTAL : 2800 euros']);
+const DOCX2 = await mkDocx('budget-crete.docx', ['Budget prévisionnel', 'Vol : 800 euros', 'Logement : 1000 euros', 'Location voiture : 300 euros']);
 const PHOTO = join(ROOT, 'icons/icon-512.png');
 
-// Réponse simulée de Claude (format carnet/1)
+// Réponse simulée de Claude (format carnet/1) pour la photo d'un programme
 const ANSWER = 'Voici le JSON :\n```json\n' + JSON.stringify({
-  schema: 'carnet/1', type: 'archive',
-  voyage: { nom: 'Islande 2019', emoji: '🌋', destination: 'Islande', debut: '2019-07-10', fin: '2019-07-17', devise: 'EUR' },
+  schema: 'carnet/1', type: 'auto',
   jours: [{ date: '2019-07-11', etapes: [{ nom: 'Cascade de Seljalandsfoss', type: 'panorama', cotation: 3, duree_min: 60 }] }],
-  depenses: [{ type: 'depense', titre: 'Vol Genève - Reykjavik', montant: 1200, devise: 'EUR', categorie: 'vol', date: '2019-07-10', partage: 'egal' }],
-  budget: [{ categorie: 'voiture', montant: 640, note: 'Location 4x4' }],
+  vols: [{ sens: 'aller', compagnie: 'easyJet', numero: 'U2 1234', de: 'GVA', vers: 'KEF', depart_date: '2019-07-10', depart_heure: '10:00', arrivee_date: '2019-07-10', arrivee_heure: '12:30' }],
+  notes: 'Prévoir des vêtements de pluie.',
 }) + '\n```';
 let apiReq = null;
 function sse(text) {
@@ -122,54 +119,79 @@ await p.waitForFunction(() => window.__carnet.T.loaded && Object.keys(window.__c
 const vol = await p.evaluate(() => Object.values(window.__carnet.T.bookings)[0]);
 ok('Aéroport : ville tapée sans choisir → code (ZNZ) et fuseau de la base', vol.from === 'GVA' && vol.to === 'ZNZ' && vol.toTz === 'Africa/Dar_es_Salaam', vol.from + '→' + vol.to + ' ' + vol.toTz);
 
-// --- Voyage passé à partir de documents (sans clé API : prompt à copier)
-await p.goto('http://localhost:8126/#/'); await p.waitForSelector('button.tile:has-text("Voyage passé")');
-await p.click('button.tile:has-text("Voyage passé")'); await p.waitForSelector('#sheet button:has-text("Choisir les documents")');
+// --- Importer depuis l'accueil : nouveau voyage d'après les documents, analyse sur le téléphone (sans clé)
+await p.goto('http://localhost:8126/#/'); await p.waitForSelector('button.tile:has-text("Importer")');
+await p.click('button.tile:has-text("Importer")'); await p.waitForSelector('#sheet button:has-text("Nouveau voyage d\'après les documents")');
 let fc = p.waitForEvent('filechooser');
-await p.click('#sheet button:has-text("Choisir les documents")');
+await p.click('#sheet button:has-text("Nouveau voyage d\'après les documents")');
 await (await fc).setFiles([DOCX, PHOTO]);
-await p.waitForSelector('text=Voyage passé >> nth=0'); await p.waitForSelector('.item:has-text("recap-islande.docx")', { timeout: 10000 });
+await p.waitForSelector('.item:has-text("budget-islande.docx")', { timeout: 10000 }); await p.waitForSelector('.item:has-text("icon-512.png")');
 const src = sp(await p.innerText('#app'));
 const nChars = +((src.match(/document · (\d+) caractères/) || [])[1] || 0);
-ok('Voyage passé : Word lu (texte extrait)', nChars > 40, nChars + ' caractères');
-ok('Voyage passé : photo prise en compte', /photo envoyée à Claude/.test(src));
-ok('Voyage passé : sans clé, prompt à copier proposé', await p.isVisible('button:has-text("Préparer le prompt")') && !(await p.isVisible('button:has-text("Analyser avec Claude")')));
-await p.click('button:has-text("Préparer le prompt")'); await p.waitForSelector('button:has-text("Partager vers Claude")');
-const full = await p.evaluate(() => window.__carnet.App.imp.full || '');
-ok('Prompt : dates à déduire des documents + texte du Word', /à déduire des documents/.test(full) && /Location 4x4 \| 640 €/.test(sp(full)));
-await shot('n3-voyage-passe-sources');
+ok('Import : Word lu (texte extrait)', nChars > 80, nChars + ' caractères');
+ok('Import : un seul bouton « Analyser », aucun prompt', await p.isVisible('button.btn.primary:has-text("Analyser")') && !/prompt/i.test(src));
+ok('Import : la photo est signalée « à lire par Claude »', /1 document à lire par Claude/.test(src));
+await shot('n3-import-documents');
+await p.click('button.btn.primary:has-text("Analyser")');
+await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 8000 });
+const prev = sp(await p.innerText('#impRes'));
+ok('Analyse sur le téléphone : 4 lignes de budget (voyage passé → dépenses) + notes', /dépenses \(4\)/i.test(prev) && /notes \(1\)/i.test(prev), (prev.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
+ok('Analyse : total indiqué ≠ somme des lignes, signalé', /total indiqué 2 800 €, somme des lignes 2 752 €/.test(prev));
+await shot('n4-apercu-local');
+await p.click('#impRes button:has-text("Intégrer la sélection")');
+await p.waitForFunction(() => window.__carnet.T.trip && window.__carnet.T.trip.draftImport === false, null, { timeout: 8000 });
+let tr = await p.evaluate(() => ({ ...window.__carnet.T.trip, total: Object.values(window.__carnet.T.expenses).reduce((s, e) => s + e.amountTrip, 0) }));
+ok('Voyage créé d\'après le Word : nom, dates, archivé, total 2 752 €', tr.name === 'Islande 2019' && tr.dateStart === '2019-07-10' && tr.dateEnd === '2019-07-17' && tr.archived && tr.total === 275200, tr.name + ' ' + tr.dateStart + '→' + tr.dateEnd + ' ' + tr.total);
+ok('Notes du document gardées dans le voyage', /Jumelles pour les macareux/.test((tr.notes || {}).general || ''));
+await p.waitForSelector('a.btn:has-text("Récap")', { timeout: 5000 }).catch(() => {});
+ok('Après intégration : accès direct au récap, au programme et au budget', await p.isVisible('a.btn:has-text("Récap")') && await p.isVisible('a.btn:has-text("Budget")'));
 
-// --- Analyse directe avec une clé (API simulée)
+// --- Même voyage : photo d'un programme lue par Claude (clé enregistrée, API simulée)
 await p.evaluate(() => localStorage.setItem('carnet.anthropicKey', JSON.stringify('sk-ant-test-0000')));
-await p.evaluate(() => window.__carnet.App.render ? window.__carnet.App.render() : null);
-await p.goto(p.url().replace('/imports', '/programme')); await p.goBack();
-await p.waitForSelector('button:has-text("Analyser avec Claude")', { timeout: 8000 });
-await p.click('button:has-text("Analyser avec Claude")');
+await p.goto(p.url().replace('/imports', '/plus')); await p.click('a.item:has-text("Importer des documents")');
+await p.waitForSelector('button:has-text("Fichiers")');
+fc = p.waitForEvent('filechooser'); await p.click('button:has-text("Fichiers")'); await (await fc).setFiles([PHOTO]);
+await p.waitForSelector('.item:has-text("icon-512.png")');
+ok('Avec une clé : « Analyser » confie tout à Claude', /Claude lit tous les documents/.test(await p.innerText('#app')));
+await p.click('button.btn.primary:has-text("Analyser")');
 await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 15000 });
 const h = apiReq ? apiReq.headers : {}; const b = apiReq ? apiReq.body : {};
 ok('API : modèle et repli en cas de refus', b.model === 'claude-opus-5-5' && b.fallbacks === 'default' && /server-side-fallback-2026-07-01/.test(h['anthropic-beta'] || ''), b.model);
 ok('API : clé en en-tête, accès navigateur autorisé', h['x-api-key'] === 'sk-ant-test-0000' && h['anthropic-dangerous-direct-browser-access'] === 'true');
 const blocks = (b.messages && b.messages[0].content) || [];
-ok('API : photo jointe (JPEG réduit) + prompt texte', blocks.some(x => x.type === 'image' && x.source.media_type === 'image/jpeg') && blocks.some(x => x.type === 'text' && /Location 4x4/.test(x.text)));
-await shot('n4-apercu-import');
+ok('API : photo jointe (JPEG réduit) + demande', blocks.some(x => x.type === 'image' && x.source.media_type === 'image/jpeg') && blocks.some(x => x.type === 'text' && /Extrais TOUT/.test(x.text)));
 await p.click('#impRes button:has-text("Intégrer la sélection")');
-await p.waitForFunction(() => window.__carnet.T.trip && window.__carnet.T.trip.draftImport === false, null, { timeout: 8000 });
-const tr = await p.evaluate(() => ({ ...window.__carnet.T.trip, nSteps: Object.keys(window.__carnet.T.steps).length, nExp: Object.keys(window.__carnet.T.expenses).length }));
-ok('Voyage passé : nom, dates et destination tirés des documents', tr.name === 'Islande 2019' && tr.dateStart === '2019-07-10' && tr.dateEnd === '2019-07-17' && tr.destination === 'Islande' && tr.archived, tr.name + ' ' + tr.dateStart + '→' + tr.dateEnd);
-ok('Voyage passé : étape et dépenses intégrées', tr.nSteps === 1 && tr.nExp === 2, tr.nSteps + ' étape, ' + tr.nExp + ' dépenses');
-await p.goto('http://localhost:8126/#/'); await p.waitForSelector('a.hist:has-text("Islande 2019")', { timeout: 8000 });
-ok('Accueil : le voyage reconstitué rejoint l\'historique (année 2019)', /2019/.test(await p.innerText('#app')));
+await p.waitForSelector('a.btn:has-text("Récap")');
+await p.click('a.btn:has-text("Récap")'); await p.waitForSelector('text=Organisation');
+const rec = sp(await p.innerText('#app'));
+ok('Récap complet : organisation (vol), programme, budget, notes', /Aller GVA → KEF/.test(rec) && /Seljalandsfoss/.test(rec) && /budget par catégorie/i.test(rec) && /2 752 €/.test(rec) && /vêtements de pluie/.test(await p.inputValue('textarea[name=general]')), [/Aller GVA → KEF/.test(rec), /Seljalandsfoss/.test(rec), /budget par catégorie/i.test(rec), /2 752 €/.test(rec)].join(','));
+await shot('n5-recap-complet');
+await p.evaluate(() => localStorage.removeItem('carnet.anthropicKey'));
+
+// --- Voyage à venir : un budget importé devient le budget prévu
+await p.goto('http://localhost:8126/#/'); await p.click('button.tile:has-text("Importer")');
+await p.waitForSelector('#sheet button.item:has-text("Crète ' + year + '")');
+fc = p.waitForEvent('filechooser'); await p.click('#sheet button.item:has-text("Crète ' + year + '")'); await (await fc).setFiles([DOCX2]);
+await p.waitForSelector('.item:has-text("budget-crete.docx")', { timeout: 10000 });
+await p.click('button.btn.primary:has-text("Analyser")'); await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")');
+const prev2 = sp(await p.innerText('#impRes'));
+ok('Voyage à venir : lignes reconnues comme budget prévu', /budget prévu \(3\)/i.test(prev2), (prev2.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
+await p.click('#impRes button:has-text("Intégrer la sélection")'); await p.waitForSelector('a.btn:has-text("Budget")');
+const man = await p.evaluate(() => window.__carnet.T.trip.budgetManuel || {});
+ok('Budget prévu enregistré par catégorie', man.vol === 80000 && man.logement === 100000 && man.voiture === 30000, JSON.stringify(man));
 
 // --- Programme papier depuis l'accueil
+await p.goto('http://localhost:8126/#/'); await p.waitForSelector('button.tile:has-text("Programme papier")');
 await p.click('button.tile:has-text("Programme papier")'); await p.waitForSelector('#sheet button.item:has-text("Crète ' + year + '")');
 fc = p.waitForEvent('filechooser');
 await p.click('#sheet button.item:has-text("Crète ' + year + '")');
 await (await fc).setFiles([PHOTO]);
 await p.waitForSelector('.item:has-text("icon-512.png")', { timeout: 10000 });
-ok('Programme papier : voyage choisi, photo ajoutée, type « Programme »', /Programme/.test(await p.innerText('.topbar')) && /Crète/.test(await p.evaluate(() => window.__carnet.T.trip.name)));
+ok('Programme papier : voyage choisi, photo ajoutée à l\'import', /Importer des documents/.test(await p.innerText('.topbar')) && /Crète/.test(await p.evaluate(() => window.__carnet.T.trip.name)));
 await shot('n5-programme-papier');
 
 // --- Réglages : carte de la clé
+await p.evaluate(() => localStorage.setItem('carnet.anthropicKey', JSON.stringify('sk-ant-test-0000')));
 await p.goto('http://localhost:8126/#/reglages'); await p.waitForSelector('text=Analyse directe par Claude');
 ok('Réglages : clé enregistrée, masquée', /Clé enregistrée · …0000/.test(sp(await p.innerText('#app'))) && !/sk-ant-test-0000/.test(await p.innerText('#app')));
 

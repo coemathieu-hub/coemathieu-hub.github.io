@@ -230,3 +230,44 @@ test('aéroports : base OurAirports, recherche par code, ville, nom français, p
   assert.equal(C.airportTz('HER'), 'Europe/Athens');
   assert.equal(C.airportTz('JFK'), 'America/New_York');
 });
+
+test('analyse sur le téléphone : budget Word (dates, nom, lignes, compléments, total contrôlé)', () => {
+  const text = 'BUDGET CRETE 2027  du 3 AU 10 MAI\nVOL GENEVE – HERAKLION : 980 euros\nTRAJET GENEVE AR : 40 euros péage + elec ?\nLOCATION VOITURE AUTOUNION : 300 euros + 45 euros\nLogement Chania : 900 euros + taxe séjour 21 euros\nRESTO : 600 euros\nEntrées sites : 80 euros\n TOTAL  2900 euros';
+  const { obj, found } = C.localAnalyze([{ name: 'BUDGET CRETE.docx', text }], { trip: { draftImport: true } });
+  assert.deepEqual(obj.voyage, { debut: '2027-05-03', fin: '2027-05-10', nom: 'Crete 2027', destination: 'Crete' });
+  assert.equal(found.budget, 8);
+  const by = Object.fromEntries(obj.budget.map(b => [b.titre, b]));
+  assert.equal(by['Vol Geneve – Heraklion'].categorie, 'vol');
+  assert.equal(by['Trajet Geneve Ar'].categorie, 'trajet');
+  assert.equal(by['Trajet Geneve Ar'].montant.a_verifier, true, 'ligne avec « ? » à vérifier');
+  assert.equal(by['taxe séjour'].categorie, 'logement');
+  assert.ok(obj.budget.some(b => b.titre === 'Location Voiture Autounion (complément)' && b.montant === 45));
+  const inc = obj.incertitudes[0].replace(/[\u00a0\u202f]/g, ' ');
+  assert.ok(inc.includes('2 900 €') && inc.includes('2 966 €'), 'total indiqué ≠ somme des lignes');
+  // Voyage passé → dépenses pour information ; voyage à venir → budget prévu
+  const past = C.normalizeImport(C.routeBudget(JSON.parse(JSON.stringify(obj)), false, '2027-05-03'), { trip: { dateStart: '2027-05-03', dateEnd: '2027-05-10', currency: 'EUR' } });
+  assert.equal(past.items.filter(i => i.kind === 'expense' && i.ok).reduce((s, i) => s + i.data.amount, 0), 296600);
+  const fut = C.normalizeImport(C.routeBudget(JSON.parse(JSON.stringify(obj)), true, '2027-05-03'), { trip: { dateStart: '2027-05-03', dateEnd: '2027-05-10', currency: 'EUR' } });
+  assert.equal(fut.items.filter(i => i.kind === 'plan').length, 8);
+  assert.equal(fut.items.filter(i => i.kind === 'expense').length, 0);
+});
+
+test('analyse sur le téléphone : programme tapé (jours, cotations, horaires, prix, conseils)', () => {
+  const text = 'PROGRAMME CRÈTE 2027 du 3 au 6 mai\nLundi 3 mai : arrivée à Héraklion\n- Plage de Matala +++\n- 19h30 Dîner à la taverne\nMardi 4/05\n• Palais de Cnossos ++ 15€/adulte, gratuit moins de 6 ans\nJour 3 : Gorges d\'Imbros (rando 2 h) +\nPenser aux chaussures de marche';
+  const { obj } = C.localAnalyze([{ name: 'programme.docx', text }], { trip: { draftImport: true } });
+  const steps = obj.jours.flatMap(j => j.etapes.map(e => ({ ...e, date: j.date })));
+  const s = n => steps.find(x => x.nom.startsWith(n));
+  assert.equal(s('Plage de Matala').cotation, 3); assert.equal(s('Plage de Matala').type, 'plage'); assert.equal(s('Plage de Matala').date, '2027-05-03');
+  assert.equal(s('Dîner').heure_fixe, '19:30');
+  assert.equal(s('Palais de Cnossos').prix_adulte, 15); assert.equal(s('Palais de Cnossos').cotation, 2); assert.equal(s('Palais de Cnossos').date, '2027-05-04');
+  assert.equal(s('Gorges').date, '2027-05-05'); assert.equal(s('Gorges').type, 'rando');
+  assert.deepEqual(obj.conseils, [{ date: '2027-05-05', texte: 'Penser aux chaussures de marche', origine: 'moi' }]);
+  const n = C.normalizeImport(obj, { trip: { dateStart: '2027-05-03', dateEnd: '2027-05-06', currency: 'EUR' } });
+  assert.ok(n.items.filter(i => i.kind === 'step').every(i => i.ok));
+});
+
+test('analyse sur le téléphone : un texte qui commence par un jour n\'est pas pris pour un titre', () => {
+  const { obj } = C.localAnalyze([{ name: 'Texte collé', text: 'mardi 8/12\n- Marché de Noël +++ (20 min)\n- Patinoire' }], { trip: { dateStart: '2026-12-05', dateEnd: '2026-12-15' } });
+  assert.equal(obj.voyage, undefined);
+  assert.deepEqual(obj.jours.map(j => [j.date, j.etapes.map(e => e.nom)]), [['2026-12-08', ['Marché de Noël (20 min)', 'Patinoire']]]);
+});

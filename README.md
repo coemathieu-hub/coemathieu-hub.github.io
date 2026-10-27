@@ -7,8 +7,8 @@ Application familiale pour préparer, vivre et clôturer un voyage :
 - Jour J (trajet domicile ↔ aéroport) et voiture de location ;
 - dépenses partagées (comme Tricount) ;
 - budget prévu et réel, récap de fin de voyage ;
-- historique des voyages, voyages passés reconstitués à partir de documents (Word, PDF, mails, photos) ;
-- programme papier (même manuscrit) pris en photo puis analysé par Claude ;
+- historique des voyages ;
+- import de documents d'un voyage passé ou à venir (budget Word ou Excel, programme tapé ou manuscrit, mails, notes) : un bouton « Analyser », puis récap complet (budget, organisation, programme, notes) ;
 - aéroports proposés pendant la saisie (code, ville, pays) ;
 - exports Word et impression.
 
@@ -39,8 +39,11 @@ Elle est en ligne sur <https://coemathieu-hub.github.io/>. Elle s'installe sur l
   - Connexion anonyme Firebase, puis invitation par lien ou QR code contenant un code secret.
   - Les règles Firestore n'ouvrent un voyage qu'à ses membres.
 - **Configuration cloud** : bloc `FIREBASE_CONFIG` (section 0 de `index.html`), ou collée dans **Réglages**, ou transmise par un lien d'invitation.
-- **IA sans clé par défaut.** L'app prépare un prompt pour Claude et le partage, photos comprises, vers l'app Claude. La réponse, au format `carnet/1` (documenté dans la section 1.11), est validée puis affichée en aperçu avant intégration.
-- **Analyse directe (facultative).** Avec une clé API Anthropic saisie dans Réglages, photos, PDF scannés et texte partent directement à l'API (modèle `claude-opus-5-5`, SDK officiel en mode navigateur), avec la même validation. La clé reste sur l'appareil : elle n'est ni synchronisée ni sauvegardée. Chaque analyse est facturée sur le compte Anthropic de la personne.
+- **Import de documents, sans prompt.** Un seul bouton « Analyser » :
+  - sans clé API, l'analyse se fait sur le téléphone, gratuitement et hors ligne (section 1.11 bis) : dates et nom du voyage, lignes de budget (« Libellé : 120 euros », compléments, total indiqué contrôlé), programme daté (jours, cotations, horaires, prix), rappels en conseils, le reste en notes ;
+  - les photos, scans et écritures manuscrites ne sont lisibles que par Claude : avec une clé API Anthropic (Réglages), tout est envoyé à l'API (modèle `claude-opus-5-5`, SDK officiel en mode navigateur) ; sans clé, l'app envoie la demande et les photos à l'app Claude, puis on recolle sa réponse ;
+  - dans tous les cas, le résultat (format `carnet/1`) est validé puis montré en aperçu avant intégration. Pour un voyage à venir, un budget devient le budget prévu ; pour un voyage passé, des dépenses pour information.
+- **Clé API (facultative).** Elle reste sur l'appareil : ni synchronisée ni sauvegardée. Chaque analyse par Claude est facturée sur le compte Anthropic de la personne.
 - **Rien d'inventé.** Horaires, prix, règles locales, taux et infos pratiques sont saisis, importés ou marqués « à vérifier ». Les temps de route sont des **estimations OSRM sans trafic** (plus une marge famille), jamais présentés comme des temps Google.
 
 ## Données personnelles

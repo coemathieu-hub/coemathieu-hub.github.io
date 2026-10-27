@@ -286,7 +286,7 @@ pre.code{white-space:pre-wrap;word-break:break-word;background:var(--card2);padd
    d'invitation.
    ===================================================================== */
 const FIREBASE_CONFIG = null;
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 const APP_URL = 'https://coemathieu-hub.github.io/';
 const APK_URL = 'https://github.com/coemathieu-hub/coemathieu-hub.github.io/releases/latest/download/carnet-de-voyage.apk';
 
@@ -1172,10 +1172,155 @@ function normalizeImport(obj, ctx = {}) {
     if (amount != null) { const k = expenseKey(d); const dup = (ctx.expenses || []).find(x => !x.deletedAt && expenseKey(x) === k); if (dup) { it.dup = true; it.dupId = dup.id; } }
     items.push(it);
   }
+  // Budget prévu (voyage à venir) : montants par catégorie, sans dépense réelle
+  for (const x of obj.budget_prevu || []) {
+    const cat = oneOf(unwrap(x.categorie).v, CATEGORIES.map(c => c.k), CAT_MAP) || 'divers';
+    const it = mk('plan', 'Budget prévu · ' + CAT[cat].l + (x.note ? ' (' + x.note + ')' : '') + ' · ' + (x.montant ?? '?'));
+    const amount = money(it, 'montant', x.montant, 'montant');
+    if (amount == null) { it.ok = false; it.errors.push('montant manquant ou illisible'); }
+    it.data = { category: cat, amount, note: String(unwrap(x.note).v || '') };
+    items.push(it);
+  }
+  // Notes générales du voyage (texte non structuré repris des documents)
+  const gnotes = Array.isArray(obj.notes) ? obj.notes.map(String).join('\n') : (obj.notes ? String(obj.notes) : '');
+  if (gnotes.trim()) { const it = mk('note', 'Notes : ' + gnotes.trim().split('\n')[0].slice(0, 60)); it.data = { text: gnotes.trim() }; items.push(it); }
   const voyage = obj.voyage ? { name: String(unwrap(obj.voyage.nom).v || ''), emoji: String(unwrap(obj.voyage.emoji).v || ''), destination: String(unwrap(obj.voyage.destination).v || ''), dateStart: toDate(unwrap(obj.voyage.debut).v) || '', dateEnd: toDate(unwrap(obj.voyage.fin).v) || '', currency: String(unwrap(obj.voyage.devise).v || 'EUR').toUpperCase() } : null;
   const voyageurs = (obj.voyageurs || []).map(v => ({ name: String(unwrap(v.nom).v || '').trim(), birth: toDate(unwrap(v.naissance).v) || '', participe: v.participe_depenses !== false })).filter(v => v.name);
   const incertitudes = [...glob, ...((obj.incertitudes || []).map(String))];
   return { type: obj.type || '', items, incertitudes, voyage, voyageurs };
+}
+
+/* ---------- 1.11 bis Analyse sur le téléphone des documents texte (sans IA, hors ligne) ----------
+   Reconnaît : dates du voyage (« du 12 au 19 août 2026 »), nom (titre du document), lignes de budget
+   (« Libellé : 120 euros », plusieurs montants par ligne, total indiqué contrôlé), programme daté
+   (« Lundi 17 août… », « 17/08… », « Jour 3 », cotations +/++/+++, horaires, prix par adulte).
+   Tout le reste est gardé en notes. Résultat : un objet carnet/1, validé comme une réponse de Claude. */
+const MOIS_IDX = { janv: 1, janvier: 1, fev: 2, fevr: 2, fevrier: 2, mars: 3, avr: 4, avril: 4, mai: 5, juin: 6, juil: 7, juillet: 7, aout: 8, sept: 9, septembre: 9, oct: 10, octobre: 10, nov: 11, novembre: 11, dec: 12, decembre: 12 };
+const MOIS_RX = 'janv(?:ier)?|f[ée]vr?(?:ier)?|mars|avr(?:il)?|mai|juin|juil(?:let)?|ao[uû]t|sept(?:embre)?|oct(?:obre)?|nov(?:embre)?|d[ée]c(?:embre)?';
+const moisNum = w => MOIS_IDX[norm(w)] || null;
+const LOCAL_CATS = [ // ordre = priorité
+  ['trajet', /^trajet\b|\bpeage\b|\bautoroute\b|\btrain\b/],
+  ['parking_aeroport', /\bparking (de l |a l )?aeroport/],
+  ['vol', /\bvols?\b|\bavion\b|\bbillets? d avion\b|easyjet|ryanair|transavia|volotea|vueling|binter|air france/],
+  ['logement', /logement|\bair ?bnb\b|\bhotel\b|\bgite\b|appartement|\bvilla\b|camping|hebergement|taxe (de )?sejour|\bchambre/],
+  ['voiture', /location (de )?voiture|\bvoiture\b|cicar|locauto|europcar|hertz|\bavis\b|sixt|goldcar|\b4x4\b|siege auto|loueur/],
+  ['carburant', /essence|carburant|recharge|gasoil|diesel|lavage/],
+  ['parking', /\bparking/],
+  ['restaurants', /\bresto|restaurant|\brepas\b|dejeuner|\bdiner\b/],
+  ['courses', /courses|supermarche|epicerie|\bglaces?\b/],
+  ['loisirs', /entrees?\b|loisirs?|musee|visites?\b|activites?|excursion|billets?\b|\bsites?\b|\bparc\b/],
+  ['souvenirs', /souvenirs?|cadeaux?/],
+];
+/* Libellé en majuscules → casse normale (« LOCATION VOITURE AGENCE » → « Location Voiture Agence ») */
+function tidyLabel(t) {
+  t = String(t || '').trim(); if (!t || t !== t.toUpperCase() || !/\p{L}{3}/u.test(t)) return t;
+  return t.toLowerCase().replace(/(^|[\s'’(-])(\p{L})(\p{L}*)/gu, (x, a, b, c) => a + ((/^(de|du|des|la|le|les|et|sur|au|aux|en)$/.test(b + c) && a) ? b : b.toUpperCase()) + c);
+}
+function guessCategory(label) { const n = norm(label); for (const [k, re] of LOCAL_CATS) if (re.test(n)) return k; return 'divers'; }
+const LOCAL_TYPES = [['plage', /\bplaya\b|\bplage|\bcala\b|\bbaignade/], ['rando', /\brando|randonnee|sentier|\btrek/], ['musee', /musee|aquarium|fondation|galerie/],
+  ['resto', /\bresto|restaurant|\bbar\b|cafeteria|\bdejeuner\b|\bdiner\b/], ['piscine', /piscine/], ['panorama', /mirador|point de vue|belvedere|panorama/],
+  ['village', /village|\bpueblo\b|vieille ville|centre historique/], ['trajet', /^depart\b|^arrivee\b|aeroport|location voiture|\bvol\b|\btrajet\b/]];
+function guessStepType(label) { const n = norm(label); for (const [k, re] of LOCAL_TYPES) if (re.test(n)) return k; return 'visite'; }
+const AMOUNT_RX = /(\d{1,3}(?:[ .  ]\d{3})+|\d+)(?:,(\d{1,2}))?\s*(?:€|euros?\b|eur\b)/gi;
+const amountCents = (i, d) => parseInt(i.replace(/[ .  ]/g, ''), 10) * 100 + (d ? parseInt(d.padEnd(2, '0'), 10) : 0);
+function findDateRange(text, year0) {
+  let m = text.match(new RegExp('du\\s+(\\d{1,2})(?:er)?\\s*(' + MOIS_RX + ')?\\.?\\s*(?:au|-|–|→)\\s*(\\d{1,2})(?:er)?\\s+(' + MOIS_RX + ')\\.?(?:\\s+(\\d{4}))?', 'i'));
+  if (m) {
+    const m2 = moisNum(m[4]), m1 = m[2] ? moisNum(m[2]) : (+m[1] > +m[3] ? (m2 + 10) % 12 + 1 : m2), y = +(m[5] || year0);
+    const d0 = y - (m1 > m2 ? 1 : 0) + '-' + pad2(m1) + '-' + pad2(m[1]), d1 = y + '-' + pad2(m2) + '-' + pad2(m[3]);
+    if (isISODate(d0) && isISODate(d1) && d1 >= d0) return { debut: d0, fin: d1 };
+  }
+  m = text.match(/(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})\s*(?:au|-|–|→)\s*(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})/);
+  if (m) { const d0 = m[3] + '-' + pad2(m[2]) + '-' + pad2(m[1]), d1 = m[6] + '-' + pad2(m[5]) + '-' + pad2(m[4]); if (isISODate(d0) && isISODate(d1) && d1 >= d0) return { debut: d0, fin: d1 }; }
+  return null;
+}
+function tripNameFrom(line) {
+  if (/\d\s*(€|euros?\b)/i.test(line)) return null;
+  let t = line.replace(/\b(budget|r[ée]cap(itulatif)?|programme|d[ée]penses|voyage)\b/gi, ' ').replace(/\(?\s*du\s+\d{1,2}[\s\S]*$/i, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!t || t.length > 40 || !/\p{L}{3}/u.test(t)) return null;
+  if (t === t.toUpperCase()) t = t.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (x, a, b) => a + b.toUpperCase());
+  return { nom: t, destination: t.replace(/\b(19|20)\d{2}\b/g, '').replace(/\s+/g, ' ').trim() };
+}
+/* En-tête de jour : « Mercredi 12/08 », « 17 août 2026 », « Jour 3 » → { date, rest } */
+function dayHeader(line, year0, start) {
+  let m = line.match(new RegExp('^\\W*(?:(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\\s+)?(\\d{1,2})(?:er)?\\s*(?:[\\/.]\\s*(\\d{1,2})(?:\\s*[\\/.]\\s*(\\d{2,4}))?|\\s+(' + MOIS_RX + ')\\.?(?:\\s+(\\d{4}))?)(?![\\d\\w])', 'i'));
+  let date = null;
+  if (m) {
+    const mo = m[2] ? +m[2] : moisNum(m[4]); let y = m[3] || m[5] || year0; if (String(y).length === 2) y = '20' + y;
+    date = y + '-' + pad2(mo) + '-' + pad2(m[1]);
+  } else if ((m = line.match(/^\W*(?:jour|j)\s*(\d{1,2})\b/i)) && start) date = addDays(start, +m[1] - 1);
+  if (!m || !isISODate(date)) return null;
+  return { date, rest: line.slice(m[0].length).replace(/^[\s:–—\-=>→.,]+/, '').trim() };
+}
+function stepFrom(txt) {
+  let t = txt.replace(/^[\s\-–—•*·=>→]+/, '').trim(); if (!/\p{L}{3}/u.test(t)) return null;
+  let cot = 0; const pm = t.match(/(^|\s)(\+{1,3})(?=\s|$|[),.])/); if (pm) { cot = pm[2].length; t = (t.slice(0, pm.index) + ' ' + t.slice(pm.index + pm[0].length)).replace(/\s+/g, ' ').trim(); }
+  let heure = ''; const hm = t.match(/^(\d{1,2})\s*[h:]\s*(\d{2})?(?!\d)\s*[:\-–]?\s*/i); if (hm && +hm[1] < 24) { heure = pad2(hm[1]) + ':' + (hm[2] || '00'); t = t.slice(hm[0].length).trim(); }
+  const pa = t.match(/(\d+(?:,\d{1,2})?)\s*€\s*\/\s*adultes?/i);
+  const base = t.replace(/[\s,;(]*\d+(?:,\d{1,2})?\s*€\s*\/\s*adultes?[\s\S]*$/i, '').trim() || t;
+  const name = base.length > 70 ? base.slice(0, 70).replace(/[\s,;:(]+\S*$/, '') + '…' : base;
+  return { nom: name, type: guessStepType(t), cotation: cot || undefined, heure_fixe: heure || undefined, prix_adulte: pa ? +pa[1].replace(',', '.') : undefined, notes: base !== t || t.length > 70 ? t : '' };
+}
+function localAnalyze(sources, ctx = {}) {
+  const trip = ctx.trip || {};
+  const out = { schema: 'carnet/1', type: 'auto', voyage: {}, jours: [], budget: [], conseils: [], notes: '', incertitudes: [] };
+  const days = {}; const found = { budget: 0, steps: 0, notes: 0, docs: 0 };
+  for (const src of sources) {
+    const text = String(src.text || ''); if (!text.trim()) continue;
+    found.docs++;
+    const lines = text.split(/\r?\n/).map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    const year0 = (text.match(/\b(20\d{2})\b/) || [])[1] || String(trip.dateStart || '').slice(0, 4) || String(new Date().getFullYear());
+    const range = findDateRange(text, year0);
+    if (range && !out.voyage.debut) { out.voyage.debut = range.debut; out.voyage.fin = range.fin; }
+    const start = out.voyage.debut || (trip.draftImport ? '' : trip.dateStart);
+    const title = dayHeader(lines[0] || '', year0, start) ? null : tripNameFrom(lines[0] || ''); // une première ligne « mardi 8/12 » est un jour, pas un titre
+    if (title && !out.voyage.nom) { out.voyage.nom = title.nom; out.voyage.destination = title.destination; }
+    const colonAmounts = lines.filter(l => /[:|]\s*\d[\d .]*(,\d{1,2})?\s*(€|euros?)/i.test(l)).length;
+    const isBudget = colonAmounts >= 3 || /budget|depense|recap|cout|frais/.test(norm((src.name || '') + ' ' + (lines[0] || '')));
+    let cur = null, stated = null, sum = 0; const notes = [];
+    lines.forEach((line, k) => {
+      if (k === 0 && (title || (range && line.includes(range.debut.slice(8))))) return; // titre du document
+      const n = norm(line); const am = [...line.matchAll(AMOUNT_RX)];
+      const perPerson = /\/\s*(adultes?|enfants?|pers)|par (personne|adulte|enfant)/i.test(line);
+      if (am.length && !perPerson && (isBudget || /^total\b/.test(n) || /[:|]\s*\d/.test(line.slice(0, am[0].index + 1)))) {
+        if (/^total\b/.test(n)) { stated = amountCents(am[am.length - 1][1], am[am.length - 1][2]); return; }
+        const label = tidyLabel(line.slice(0, am[0].index).replace(/[\s:|=\-–—]+$/, '').trim()) || 'Divers';
+        const cat = guessCategory(label);
+        am.forEach((m, i) => {
+          let t = label;
+          if (i > 0) { const between = line.slice(am[i - 1].index + am[i - 1][0].length, m.index).replace(/^[\s+,;&:]+|[\s:]+$/g, '').replace(/^et\s+/i, '').trim(); t = between || label + ' (complément)'; }
+          const after = i === am.length - 1 ? line.slice(m.index + m[0].length).replace(/^[\s,;:]+/, '').trim() : '';
+          const c = amountCents(m[1], m[2]); sum += c;
+          const c2 = i > 0 && guessCategory(t) !== 'divers' ? guessCategory(t) : cat;
+          out.budget.push({ categorie: c2, titre: t, montant: /\?/.test(after) ? { valeur: c / 100, a_verifier: true, note: after } : c / 100, note: after });
+          found.budget++;
+        });
+        return;
+      }
+      const dh = dayHeader(line, year0, start);
+      if (dh && (!out.voyage.debut || (dh.date >= addDays(out.voyage.debut, -3) && dh.date <= addDays(out.voyage.fin, 3)))) {
+        cur = dh.date; days[cur] ||= [];
+        if (dh.rest) { const st = stepFrom(dh.rest); if (st) { days[cur].push(st); found.steps++; } }
+        return;
+      }
+      // Rappel (« Penser à… », « Prévoir… », « Attention… ») → conseil du jour
+      if (cur && /^\W*(penser|prevoir|attention|ne pas|ne surtout|reserver|emporter|prendre|verifier|astuce|conseil|a noter|nb)\b/.test(n)) { out.conseils.push({ date: cur, texte: line.replace(/^[\s\-–—•*·⚠!]+/, ''), origine: 'moi' }); found.steps++; return; }
+      if (cur) { const st = stepFrom(line); if (st) { days[cur].push(st); found.steps++; return; } }
+      notes.push(line);
+    });
+    if (stated != null && sum && Math.abs(stated - sum) >= 100) out.incertitudes.push('« ' + src.name + ' » : total indiqué ' + fmtMoneyShort(stated) + ', somme des lignes ' + fmtMoneyShort(sum) + ' (l\'app retient la somme des lignes).');
+    if (notes.length) { out.notes += (out.notes ? '\n\n' : '') + 'Repris de « ' + src.name + ' » :\n' + notes.join('\n'); found.notes += notes.length; }
+  }
+  out.jours = Object.keys(days).sort().map(d => ({ date: d, etapes: days[d] }));
+  if (!out.voyage.debut && !out.voyage.nom) delete out.voyage;
+  return { obj: out, found };
+}
+/* Lignes « budget » : prévisionnel pour un voyage à venir, dépenses réelles (pour information) pour un voyage passé */
+function routeBudget(obj, planned, date) {
+  const lines = obj.budget || []; delete obj.budget; if (!lines.length) return obj;
+  if (planned) obj.budget_prevu = [...(obj.budget_prevu || []), ...lines.map(b => ({ categorie: b.categorie, montant: b.montant, note: [b.titre, b.note].filter(Boolean).join(' — ') }))];
+  else obj.depenses = [...(obj.depenses || []), ...lines.map(b => ({ type: 'depense', titre: b.titre || '', montant: b.montant, categorie: b.categorie, date: b.date || date || '', partage: 'aucun', note: b.titre ? (b.note || '') : (b.note || '') }))];
+  return obj;
 }
 
 /* ---------- 1.12 Prompts pour Claude ---------- */
@@ -1206,6 +1351,7 @@ function promptHeader(kind, ctx) {
     depenses: 'Extrais les dépenses (captures Tricount, relevés, export Excel) : titre, montant, date, catégorie, payé par, participants. Les remboursements sont des "transfert".',
     generer: 'Propose un programme jour par jour réaliste avec de jeunes enfants (sieste, repas, pauses), adapté aux goûts et à la saison : activités cotées, plan B météo et conseils SPÉCIFIQUES à chaque jour (pas de conseil générique répété). Je valide ensuite.',
     archive: 'Reconstitue un voyage passé (programme et dépenses) pour l\'archiver à titre informatif. Les lignes d\'un récap budgétaire vont dans "budget".',
+    auto: 'Extrais TOUT ce qui est utile de ces documents (programme manuscrit ou tapé, récap ou budget, mails de réservation, notes) : jours et étapes cotées avec horaires et prix, réservations (vols, logements, voiture, parking), lignes de budget dans "budget" (une ligne par montant), dépenses réelles datées dans "depenses", conseils, et remarques générales dans "notes".',
   };
   return [
     'Tu m\'aides à remplir mon carnet de voyage familial (application « Carnet de voyage »).',
@@ -1228,7 +1374,7 @@ function promptHeader(kind, ctx) {
   ].filter(x => x !== '').join('\n');
 }
 const PROMPT_SCHEMA = '```json\n' + JSON.stringify({
-  schema: 'carnet/1', type: 'programme | reservations | depenses | archive',
+  schema: 'carnet/1', type: 'auto | programme | reservations | depenses | archive',
   voyage: { nom: '', emoji: '', destination: '', debut: 'AAAA-MM-JJ', fin: 'AAAA-MM-JJ', devise: 'EUR' },
   voyageurs: [{ nom: '', naissance: 'AAAA-MM-JJ', participe_depenses: true }],
   logements: [{ nom: '', recherche: 'nom + commune', adresse: '', arrivee: 'AAAA-MM-JJ', depart: 'AAAA-MM-JJ', prix: 0, taxe_sejour: 0, ref: '', avis: '' }],
@@ -1239,6 +1385,7 @@ const PROMPT_SCHEMA = '```json\n' + JSON.stringify({
   conseils: [{ date: 'AAAA-MM-JJ', texte: '', origine: 'claude|moi', a_verifier: true }],
   depenses: [{ type: 'depense|revenu|transfert', titre: '', montant: 0, devise: 'EUR', categorie: CATEGORIES.map(c => c.k).join('|'), date: '', paye_par: 'Prénom', vers: '', partage: 'egal|aucun', participants: ['Prénom'], note: '' }],
   budget: [{ categorie: 'vol', montant: 0, note: '' }],
+  notes: 'remarques générales utiles (à refaire, à éviter, infos pratiques notées dans les documents)',
   incertitudes: ['…'],
 }, null, 1) + '\n```';
 /* Découpe un prompt trop long en parties autonomes */
@@ -1266,7 +1413,7 @@ function meteoLabel(code) {
   if (code <= 77) return 'Neige'; if (code <= 82) return 'Averses'; if (code <= 86) return 'Averses de neige'; return 'Orage';
 }
 
-const Core = { SCHEMA, CATEGORIES, CAT, STEP_TYPES, DEFAULT_SETTINGS, AIRPORTS, AIRPORT_EXTRA, airportIndex, airportSearch, airportTz, TIP_RULES, fmtMoney, fmtMoneyShort, fmtSigned, parseAmount, fmtDay, fmtRange, fmtDur, addDays, dateRange, daysBetween, ageOn, youngestAge, birthdaysInRange, stepCost, splitEqual, splitWeighted, computeShares, sumValues, convert, balances, myShare, totalExpenses, settle, tzOffsetMin, zonedToUtc, flightDurationMin, tzDiffHours, orderBetween, buildTimeline, dayTipContext, ruleHits, computeTips, budgetReel, budgetPrevu, sumBudget, gmapsLinks, extractJson, normalizeImport, promptHeader, splitPrompt, hm2min, min2hm, esc, norm, meteoLabel, expenseKey, isISODate, toDate, toHM };
+const Core = { SCHEMA, CATEGORIES, CAT, STEP_TYPES, DEFAULT_SETTINGS, AIRPORTS, AIRPORT_EXTRA, airportIndex, airportSearch, airportTz, TIP_RULES, localAnalyze, routeBudget, guessCategory, findDateRange, fmtMoney, fmtMoneyShort, fmtSigned, parseAmount, fmtDay, fmtRange, fmtDur, addDays, dateRange, daysBetween, ageOn, youngestAge, birthdaysInRange, stepCost, splitEqual, splitWeighted, computeShares, sumValues, convert, balances, myShare, totalExpenses, settle, tzOffsetMin, zonedToUtc, flightDurationMin, tzDiffHours, orderBetween, buildTimeline, dayTipContext, ruleHits, computeTips, budgetReel, budgetPrevu, sumBudget, gmapsLinks, extractJson, normalizeImport, promptHeader, splitPrompt, hm2min, min2hm, esc, norm, meteoLabel, expenseKey, isISODate, toDate, toHM };
 // @@CORE-END
 
 /* =====================================================================
@@ -2430,7 +2577,8 @@ function histItem(t) {
     '<span class="hist-a">' + (st.total != null ? fmtMoneyShort(st.total, t.currency) : '') + '<span>' + (n ? n + ' jour' + (n > 1 ? 's' : '') : '') + '</span></span></a>';
 }
 VIEWS.home = () => {
-  const trips = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id);
+  const all = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id);
+  const drafts = all.filter(t => t.draftImport), trips = all.filter(t => !t.draftImport);
   const today = localISO();
   const cur = trips.filter(t => !t.archived && t.dateStart <= today && today <= t.dateEnd);
   const fut = trips.filter(t => !t.archived && t.dateStart > today).sort((a, b) => a.dateStart.localeCompare(b.dateStart));
@@ -2453,10 +2601,11 @@ VIEWS.home = () => {
     (!fam.length ? '<div class="card info"><b>Bienvenue !</b><div class="small" style="margin-top:4px">1. Renseigne <a href="#/reglages">ta famille</a> une fois (voyageurs par défaut, dates de naissance pour les âges).<br>2. Crée un voyage, rejoins-en un avec un lien, ou restaure une sauvegarde (par ex. ton fichier de départ).</div></div>' : '') +
     '<div class="tiles">' +
     tile({ href: '#/nouveau', primary: true, e: '✈️', bg: 'rgba(255,255,255,.18)', t: 'Nouveau voyage', s: 'Dates, vols, voyageurs' }) +
-    tile({ act: 'homeScan', e: '📝', bg: 'var(--warn-bg)', t: 'Programme papier', s: 'Photo d\'un programme, même manuscrit' }) +
-    tile({ act: 'homePast', e: '🗂️', bg: 'var(--ok-bg)', t: 'Voyage passé', s: 'Dépose tes documents, je reconstitue' }) +
+    tile({ act: 'homeScan', e: '📝', bg: 'var(--warn-bg)', t: 'Programme papier', s: 'Photo d\'un programme, même manuscrit (lu par Claude)' }) +
+    tile({ act: 'homePast', e: '📂', bg: 'var(--ok-bg)', t: 'Importer', s: 'Budget, programme, notes d\'un voyage passé ou à venir' }) +
     tile({ act: 'joinLink', e: '🔗', bg: 'var(--info-bg)', t: 'Rejoindre', s: 'Avec un lien d\'invitation' }) +
     '</div>' +
+    (drafts.length ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">Import en cours</h2>' + drafts.map(t => '<a class="hist" href="#/v/' + t.where + '/' + t.id + '/imports"><span class="hist-e">📂</span><span class="grow"><b style="display:block">Reprendre l\'import</b><span class="small muted">documents à analyser ou à valider</span></span>' + ic('right', 's') + '</a>').join('') + '</section>' : '') +
     (fut.length > 1 ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">Ensuite</h2>' + fut.slice(1).map(tripCard).join('') + '</section>' : '') +
     (other.length ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">Autres</h2>' + other.map(tripCard).join('') + '</section>' : '') +
     (past.length ? '<section><div class="sec-h"><h2 class="lbl">Nos voyages</h2><a class="small" href="#/comparer">Comparer</a></div>' +
@@ -2561,23 +2710,34 @@ ACT.sheetGo = el => { closeSheet(); setTimeout(() => go(el.dataset.href), 80); }
 ACT.homeScanTo = el => {
   const filesP = pickFile('image/*,application/pdf', true); // ouvert pendant l'appui : appareil photo ou galerie
   const id = el.dataset.id, where = el.dataset.where;
-  App.imp = { trip: id, kind: 'programme', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} };
+  App.imp = newImp(id, 'auto');
   closeSheet(); setTimeout(() => go('#/v/' + where + '/' + id + '/imports'), 80);
   filesP.then(files => { if (files.length) addSources(files); });
 };
-ACT.homePast = () => openSheet('<form data-form="homePast" class="stack"><h2 style="font-size:18px">🗂️ Voyage passé</h2>' +
-  '<p class="small muted" style="margin:0">Dépose les documents d\'un ancien voyage : programme, récap budgétaire (Word, Excel, PDF), mails de réservation, photos de tickets. Claude reconstitue le programme et les dépenses ; le voyage est archivé pour information.</p>' +
-  field('Nom (facultatif, sinon déduit des documents)', inp('name', '', { ph: 'Islande 2019' })) +
-  (Cloud.ready ? '<label class="row"><input type="radio" name="where" value="cloud" checked> <span>Synchronisé (visible par la famille)</span></label><label class="row"><input type="radio" name="where" value="local"> <span>Sur cet appareil seulement</span></label>' : '<input type="hidden" name="where" value="local">') +
-  '<button class="btn primary block">' + ic('upload') + 'Choisir les documents</button></form>', { label: 'Voyage passé' });
+const DRAFT_NAME = 'Voyage importé';
+ACT.homePast = () => {
+  const trips = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id && !t.denied && !t.draftImport).sort((a, b) => String(b.dateStart).localeCompare(String(a.dateStart)));
+  openSheet('<form data-form="homePast" class="stack"><h2 style="font-size:18px">📂 Importer des documents</h2>' +
+    '<p class="small muted" style="margin:0">Budget (Word, Excel, PDF), programme (tapé ou manuscrit), mails de réservation, notes, d\'un voyage passé ou à venir. L\'app en tire le programme, l\'organisation, le budget et les notes, puis le récap.</p>' +
+    (Cloud.ready ? '<div class="row small"><label class="row"><input type="radio" name="where" value="cloud" checked> Synchronisé</label><label class="row"><input type="radio" name="where" value="local"> Sur cet appareil</label></div>' : '<input type="hidden" name="where" value="local">') +
+    '<button class="btn primary block">' + ic('plus') + 'Nouveau voyage d\'après les documents</button></form>' +
+    (trips.length ? '<div class="lbl" style="margin-top:14px">Ou compléter un voyage existant</div><div class="list" style="margin-top:6px">' + trips.map(t => '<button class="item" data-act="homeImportTo" data-id="' + esc(t.id) + '" data-where="' + t.where + '"><span style="font-size:22px">' + esc((t.emoji && t.emoji.trim()) || '🧳') + '</span><span class="grow"><span class="t" style="display:block">' + esc(t.name || 'Sans nom') + '</span><span class="s">' + esc(fmtRange(t.dateStart, t.dateEnd)) + '</span></span>' + ic('upload', 's') + '</button>').join('') + '</div>' : ''), { label: 'Importer' });
+};
+ACT.homeImportTo = el => {
+  const filesP = pickFile(IMPORT_ACCEPT, true); // ouvert pendant l'appui
+  const id = el.dataset.id, where = el.dataset.where;
+  App.imp = newImp(id, 'auto');
+  closeSheet(); setTimeout(() => go('#/v/' + where + '/' + id + '/imports'), 80);
+  filesP.then(files => { if (files.length) addSources(files); });
+};
 FORMS.homePast = async (f, fd) => {
   const filesP = pickFile(IMPORT_ACCEPT, true); // ouvert pendant l'appui (exigence du navigateur)
   const where = fd.get('where') === 'cloud' && Cloud.ready ? 'cloud' : 'local';
   const id = newId(20); const today = localISO();
-  const trip = { name: fv(fd, 'name') || 'Voyage passé', emoji: '', destination: '', dateStart: today, dateEnd: today, currency: 'EUR', gouts: {}, settings: {}, inviteToken: newId(24), archived: true, draftImport: true, schema: 1, createdAt: Date.now() };
+  const trip = { name: DRAFT_NAME, emoji: '', destination: '', dateStart: today, dateEnd: today, currency: 'EUR', gouts: Object.fromEntries(GOUTS.map(g => [g.k, true])), settings: {}, inviteToken: newId(24), archived: false, draftImport: true, schema: 1, createdAt: Date.now(), jourJ: { home: LS.get('home', null) } };
   closeSheet();
   try { await saveNewTrip(id, trip, { travelers: familyTravelers() }, where); } catch (e) { toast('Création impossible : ' + e.message, 5000); return; }
-  App.imp = { trip: id, kind: 'archive', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} };
+  App.imp = newImp(id, 'auto');
   setTimeout(() => go('#/v/' + where + '/' + id + '/imports'), 80);
   const files = await filesP; if (files.length) await addSources(files);
 };
@@ -2747,7 +2907,7 @@ TRIP_VIEWS.programme = () => {
     backupReminder() + (T.trip.archived ? '<div class="card info small" style="margin-bottom:10px">Voyage archivé, repris pour information.</div>' : '') +
     bd.map(x => '<a class="banner" style="margin-bottom:8px;text-decoration:none" href="' + tripUrl('jour', x.date) + '">' + ic('cake') + '<span>' + esc(fmtDay(x.date, { cap: true })) + ' : anniversaire de ' + esc(x.traveler.name) + ' (' + x.age + ' ans)</span></a>').join('') +
     '<div class="two"><div class="side stack">' + dayList(sel) +
-    '<div class="grid2"><a class="btn sm" href="' + tripUrl('imports') + '">' + ic('sparkle', 's') + 'Claude</a><a class="btn sm" href="' + tripUrl('valise') + '">' + ic('bag', 's') + 'Valise</a></div></div>' +
+    '<div class="grid2"><a class="btn sm" href="' + tripUrl('imports') + '">' + ic('upload', 's') + 'Importer</a><a class="btn sm" href="' + tripUrl('valise') + '">' + ic('bag', 's') + 'Valise</a></div></div>' +
     '<div class="main hide-narrow">' + (sel ? dayDetail(sel) : '<div class="card muted">Aucun jour : vérifie les dates du voyage.</div>') + '</div></div>';
 };
 TRIP_VIEWS.jour = r => {
@@ -3445,16 +3605,34 @@ TRIP_VIEWS.recap = () => {
   return topbar('Récap', T.trip.name, { back: '#/' }) + (App.route.view === 'recap' ? '<div class="seg noprint" role="tablist" style="margin-bottom:12px"><a href="' + tripUrl('budget') + '" aria-selected="false">' + (T.trip.archived ? 'Budget' : 'Prévu / réel') + '</a><a href="' + tripUrl('recap') + '" aria-selected="true">Récap</a></div>' : '') + '<div class="stack">' +
     '<section class="card stack"><h2 style="font-size:20px">' + esc((T.trip.emoji ? T.trip.emoji + ' ' : '') + T.trip.name) + '</h2><div class="small muted">' + esc(fmtRange(T.trip.dateStart, T.trip.dateEnd)) + ' · ' + days.length + ' jours · ' + st.travelers + ' voyageurs</div>' +
     '<div class="stats"><div class="stat"><b>' + Math.round(km) + ' km</b><span>estimés</span></div><div class="stat"><b>' + fmtDur(route) + '</b><span>de route</span></div><div class="stat"><b>' + count('fait') + ' / ' + steps.filter(s => !s.deletedAt).length + '</b><span>étapes faites</span></div><div class="stat"><b>' + count('pas-le-temps') + '</b><span>pas eu le temps</span></div></div></section>' +
+    recapOrganisation() +
     '<section class="card"><h2 class="lbl" style="margin-bottom:8px">Itinéraire</h2>' + days.map(d => { const i = dayInfo(d); return '<div style="padding:6px 0;border-top:1px solid var(--line)"><b>' + esc(fmtDay(d, { cap: true })) + '</b><div class="small muted">' + esc(activeSteps(i.steps).map(s => s.name + (s.statut === 'fait' ? ' ✓' : s.statut === 'pas-le-temps' ? ' (pas eu le temps)' : '')).join(' · ') || '—') + '</div></div>'; }).join('') + '</section>' +
     '<section class="card"><h2 class="lbl" style="margin-bottom:8px">Top des +++</h2>' + (top.length ? top.map(s => '<div class="row small" style="padding:4px 0">' + ratingBadge(3, true) + '<span class="grow">' + esc(s.name) + '</span><span class="muted">' + esc(fmtDay(s.date, { short: true })) + '</span></div>').join('') : '<p class="small muted" style="margin:0">Aucune étape +++.</p>') + '</section>' +
     '<section class="card"><h2 class="lbl" style="margin-bottom:8px">Budget par catégorie</h2>' + CATEGORIES.filter(c => reel[c.k] || prev.b[c.k]).map(c => '<div class="row small" style="padding:5px 0;border-top:1px solid var(--line)"><span class="grow">' + esc(c.l) + '</span>' + (prev.b[c.k] ? '<span class="muted">prévu ' + fmtMoneyShort(prev.b[c.k], cur) + '</span>' : '') + '<b style="min-width:80px;text-align:right">' + fmtMoneyShort(reel[c.k], cur) + '</b></div>').join('') +
     '<div class="row" style="padding:8px 0;border-top:1px solid var(--line)"><b class="grow">Total</b><b>' + fmtMoneyShort(st.total, cur) + '</b></div><div class="small muted">' + fmtMoneyShort(st.perDay, cur) + ' par jour · ' + fmtMoneyShort(st.perPerson, cur) + ' par personne</div></section>' +
     (!T.trip.archived ? '<section class="card"><h2 class="lbl" style="margin-bottom:8px">Équilibre final</h2>' + (settl.length ? settl.map(s => '<div class="row small" style="padding:4px 0"><span class="grow">' + esc(travelerName(s.from)) + ' → ' + esc(travelerName(s.to)) + '</span><b>' + fmtMoney(s.amount, cur) + '</b></div>').join('') : '<p class="small" style="margin:0">Tout le monde est à l\'équilibre.</p>') + '</section>' : '') +
-    '<section class="card stack"><h2 class="lbl">Notes</h2><form data-form="recapNotes" class="stack">' + field('À refaire', '<textarea class="input" name="refaire" rows="3">' + esc(notes.refaire || '') + '</textarea>') + field('À éviter', '<textarea class="input" name="eviter" rows="3">' + esc(notes.eviter || '') + '</textarea>') + '<button class="btn block noprint">Enregistrer les notes</button></form></section>' +
+    '<section class="card stack"><h2 class="lbl">Notes</h2><form data-form="recapNotes" class="stack">' + field('Notes générales (reprises des documents)', '<textarea class="input" name="general" rows="' + Math.min(12, Math.max(3, String(notes.general || '').split('\n').length + 1)) + '">' + esc(notes.general || '') + '</textarea>') + field('À refaire', '<textarea class="input" name="refaire" rows="3">' + esc(notes.refaire || '') + '</textarea>') + field('À éviter', '<textarea class="input" name="eviter" rows="3">' + esc(notes.eviter || '') + '</textarea>') + '<button class="btn block noprint">Enregistrer les notes</button></form></section>' +
     '<section class="card"><h2 class="lbl" style="margin-bottom:8px">Avis sur les prestataires</h2>' + (avis.length ? avis.map(b => '<div class="small" style="padding:4px 0"><b>' + esc(b.loueur || b.name || b.nom || b.compagnie || b.type) + '</b> : ' + esc(b.avis) + '</div>').join('') : '<p class="small muted" style="margin:0">Ajoute un avis dans Logistique (logement, voiture…).</p>') + '</section>' +
     '<div class="grid2 noprint"><button class="btn" data-act="exportRecap">' + ic('file') + 'Récap .docx</button><a class="btn" href="' + tripUrl('imprimer', 'recap') + '">' + ic('print') + 'Imprimer / PDF</a></div></div>';
 };
-FORMS.recapNotes = (f, fd) => { write([{ coll: '', id: T.id, patch: { notes: { refaire: fv(fd, 'refaire'), eviter: fv(fd, 'eviter') } } }]); toast('Notes enregistrées'); };
+FORMS.recapNotes = (f, fd) => { write([{ coll: '', id: T.id, patch: { notes: { general: fv(fd, 'general'), refaire: fv(fd, 'refaire'), eviter: fv(fd, 'eviter') } } }]); toast('Notes enregistrées'); };
+/* Organisation : vols, logements, voitures, parkings (réservations du voyage) */
+function organisationLines() {
+  const cur = T.trip.currency || 'EUR'; const bk = live('bookings');
+  const price = b => b.prix ? ' · ' + fmtMoneyShort(b.prix, cur) : '';
+  const L = (icn, title, sub) => ({ icn, title, sub });
+  return [
+    ...bk.filter(b => b.type === 'vol').sort((a, b) => String(a.depDate).localeCompare(b.depDate)).map(b => L('plane', (b.sens === 'retour' ? 'Retour ' : b.sens === 'aller' ? 'Aller ' : 'Vol ') + (b.from || '?') + ' → ' + (b.to || '?'), [b.depDate ? fmtDay(b.depDate, { short: true }) + (b.depTime ? ' ' + b.depTime : '') : '', [b.compagnie, b.numero].filter(Boolean).join(' '), b.ref ? 'réf. ' + b.ref : ''].filter(Boolean).join(' · ') + price(b))),
+    ...bk.filter(b => b.type === 'logement').map(b => L('home', b.name || 'Logement', [b.checkin && b.checkout ? fmtRange(b.checkin, b.checkout) : '', b.address || ''].filter(Boolean).join(' · ') + price(b))),
+    ...bk.filter(b => b.type === 'voiture').map(b => L('key', 'Voiture · ' + (b.loueur || 'location'), [b.priseDate ? 'prise ' + fmtDay(b.priseDate, { short: true }) + (b.priseTime ? ' ' + b.priseTime : '') : '', b.retourDate ? 'retour ' + fmtDay(b.retourDate, { short: true }) + (b.retourTime ? ' ' + b.retourTime : '') : ''].filter(Boolean).join(' · ') + price(b))),
+    ...bk.filter(b => b.type === 'parking').map(b => L('parking', 'Parking · ' + (b.nom || ''), [b.terminal, b.navette].filter(Boolean).join(' · ') + price(b))),
+  ];
+}
+function recapOrganisation() {
+  const lines = organisationLines(); if (!lines.length) return '';
+  return '<section class="card"><h2 class="lbl" style="margin-bottom:4px">Organisation</h2>' + lines.map(l => '<div class="row small" style="padding:6px 0;border-top:1px solid var(--line);align-items:flex-start">' + ic(l.icn, 's') + '<span class="grow"><b>' + esc(l.title) + '</b><span class="muted" style="display:block">' + esc(l.sub) + '</span></span></div>').join('') + '</section>';
+}
+
 
 /* =====================================================================
    11. VOYAGE — menu Plus, voyageurs, logistique (vols, Jour J, logements,
@@ -3470,7 +3648,7 @@ TRIP_VIEWS.plus = r => {
     it(tripUrl('voyage'), 'edit', 'Voyage et voyageurs', 'Dates, goûts, âges, réglages de la journée') +
     it(tripUrl('logistique'), 'plane', 'Logistique', 'Vols, Jour J, logements, voiture, parking') +
     it(tripUrl('valise'), 'bag', 'Valise et checklists', 'Liste commune et listes perso') +
-    it(tripUrl('imports'), 'sparkle', 'Imports et génération via Claude', 'Programme manuscrit, mails, captures, programme sur mesure') +
+    it(tripUrl('imports'), 'upload', 'Importer des documents', 'Budget, programme (même manuscrit), réservations, notes') +
     it(tripUrl('exports'), 'file', 'Exports et sauvegarde', 'Carnet Word, récap, impression, JSON') +
     it(tripUrl('membres'), 'link', T.where === 'cloud' ? 'Membres et invitation' : 'Partager ce voyage', T.where === 'cloud' ? Object.keys(T.members).length + ' membre(s)' : 'Actuellement sur cet appareil seulement') +
     it(tripUrl('recap'), 'chart', 'Récap de fin de voyage') +
@@ -3784,28 +3962,32 @@ const IMPORT_KINDS = [
   { k: 'generer', l: 'Générer un programme', d: 'Programme sur mesure selon dates, logements, âges, goûts et saison', ic: 'sparkle' },
   { k: 'archive', l: 'Voyage passé', d: 'Programme et récap budgétaire d\'un ancien voyage, pour information', ic: 'history' },
 ];
+const newImp = (trip, kind) => ({ trip, kind: kind || 'auto', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} });
 TRIP_VIEWS.imports = () => {
-  const I = App.imp && App.imp.trip === T.id ? App.imp : (App.imp = { trip: T.id, kind: null, sources: [], text: '', prompts: null, answer: '', result: null, sel: {} });
-  if (!I.kind) return topbar('Imports via Claude', T.trip.name) + '<div class="stack" style="max-width:760px"><p class="small muted" style="margin:0 4px">L\'app prépare un prompt complet ; tu le colles dans Claude (app ou web) avec les photos si besoin, puis tu recolles sa réponse ici. Rien n\'est enregistré sans ta validation.</p>' +
-    IMPORT_KINDS.map(k => '<button class="item" data-act="impKind" data-k="' + k.k + '">' + ic(k.ic) + '<span class="grow"><span class="t" style="display:block">' + esc(k.l) + '</span><span class="s">' + esc(k.d) + '</span></span>' + ic('right', 's') + '</button>').join('') + '</div>';
-  const K = IMPORT_KINDS.find(k => k.k === I.kind);
+  const I = App.imp && App.imp.trip === T.id ? App.imp : (App.imp = newImp(T.id));
+  if (!I.kind || !['auto', 'generer'].includes(I.kind)) I.kind = 'auto';
   App.after.push(bindDrop);
-  const images = I.sources.filter(s => s.kind === 'image');
-  return topbar(K.l, 'Imports via Claude', { back: tripUrl('imports') }).replace('href="' + tripUrl('imports') + '"', 'href="#" data-act="impReset"') + '<div class="stack" style="max-width:820px">' +
-    // 1. Source
-    (I.kind !== 'generer' ? '<section class="card stack"><h2 class="lbl">1 · Source</h2><div class="grid2"><button class="btn" data-act="impCamera">' + ic('camera') + 'Prendre en photo</button><button class="btn" data-act="impPick">' + ic('upload') + 'Choisir des fichiers</button></div><div class="drop" id="drop" tabindex="0"><div>… ou dépose-les ici</div><div class="tiny">Photos (même manuscrites), PDF, Word, mails .eml/.msg, Excel, texte</div></div>' +
-      (I.sources.length ? '<div class="list">' + I.sources.map((s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' + esc(s.kind) + (s.kind === 'image' ? ' · photo envoyée à Claude' : ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + (s.empty ? ' · <span class="verif">aucun texte lisible (scan ?) : le fichier est envoyé à Claude</span>' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>').join('') + '</div>' : '') +
-      field('Ou colle un texte', '<textarea class="input" id="impText" data-input="impText" rows="4" placeholder="Programme, notes, texte d\'un mail…">' + esc(I.text) + '</textarea>') + '</section>' : '<section class="card small">Le prompt contient les dates, les logements, les âges des enfants jour par jour, vos goûts et la saison. Les étapes déjà prévues sont indiquées pour éviter les doublons.</section>') +
-    // 2. Prompt
-    (hasClaudeKey() ? '<section class="card stack"><h2 class="lbl">2 · Analyse par Claude</h2><button class="btn primary block" data-act="impAnalyze"' + (I.busy ? ' disabled' : '') + '>' + ic('sparkle') + (I.busy ? 'Analyse en cours…' : 'Analyser avec Claude') + '</button><div id="impProg" class="small muted" style="text-align:center">' + (I.busy ? 'Envoi des documents…' : 'Photos, PDF scannés et texte sont envoyés ensemble ; rien n\'est enregistré sans ta validation.') + '</div></section>' : '') +
-    '<section class="card stack"><h2 class="lbl">' + (hasClaudeKey() ? 'Ou via l\'app Claude (copier-coller)' : '2 · Prompt pour Claude') + '</h2><button class="btn' + (hasClaudeKey() ? '' : ' primary') + ' block" data-act="impBuild">' + ic('sparkle') + 'Préparer le prompt</button>' + (hasClaudeKey() ? '' : '<p class="tiny muted" style="margin:0">Astuce : avec une clé API Claude (Réglages), l\'analyse se fait directement ici en un appui.</p>') +
-    (I.prompts ? I.prompts.map((p, i) => '<div class="card tight" style="background:var(--card2)"><div class="row"><b class="grow">' + (I.prompts.length > 1 ? 'Partie ' + (i + 1) + '/' + I.prompts.length : 'Prompt') + '</b><span class="tiny muted">' + p.length + ' caractères</span></div><div class="grid2" style="margin-top:8px"><button class="btn" data-act="impCopy" data-i="' + i + '">' + ic('copy') + 'Copier</button><button class="btn" data-act="impShare" data-i="' + i + '">' + ic('share') + 'Partager vers Claude</button></div></div>').join('') +
-      (images.length || I.kind === 'programme' ? '<div class="banner small">' + ic('camera') + '<span>« Partager vers Claude » envoie le prompt <b>et</b> ' + (images.length ? 'les photos' : 'les fichiers') + '. Si Claude ne reçoit que le texte, joins-y ' + (images.length ? images.map(s => esc(s.name)).join(', ') : 'la photo du programme') + ' (le prompt est aussi copié).</span></div>' : '') +
-      (I.prompts.length > 1 ? '<p class="small muted" style="margin:0">Données trop longues : envoie chaque partie dans une conversation, puis recolle chaque réponse ci-dessous (une à la fois).</p>' : '') : '') + '</section>' +
-    // 3. Réponse
-    '<section class="card stack"><h2 class="lbl">3 · Réponse de Claude</h2><textarea class="input" id="impAns" data-input="impAns" rows="5" placeholder="Colle ici toute la réponse (le bloc JSON est repéré automatiquement)">' + esc(I.answer) + '</textarea><button class="btn primary block" data-act="impParse">Analyser la réponse</button></section>' +
-    (I.result ? '<div id="impRes">' + previewHTML(I) + '</div>' : '') + '</div>';
+  const key = hasClaudeKey(), gen = I.kind === 'generer';
+  const srcs = I.sources.filter(s => !s.dup), unread = srcs.filter(s => s.kind === 'image' || s.empty);
+  const srcItem = (s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' +
+    (s.kind === 'image' ? 'photo · lue par Claude' : s.empty ? '<span class="verif">pas de texte lisible (scan ou manuscrit) : lu par Claude</span>' : esc(s.kind) + ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>';
+  const sources = '<section class="card stack"><h2 class="lbl">Documents</h2><p class="small muted" style="margin:0">Budget, programme (même manuscrit), réservations, notes… d\'un voyage passé ou à venir.</p>' +
+    '<div class="grid2"><button class="btn" data-act="impCamera">' + ic('camera') + 'Photo</button><button class="btn" data-act="impPick">' + ic('upload') + 'Fichiers</button></div>' +
+    '<div class="drop" id="drop" tabindex="0"><div class="tiny">… ou dépose-les ici : Word, PDF, Excel, mails, photos, texte</div></div>' +
+    (I.sources.length ? '<div class="list">' + I.sources.map(srcItem).join('') + '</div>' : '') +
+    '<details' + (I.text ? ' open' : '') + '><summary class="small" style="cursor:pointer">Coller un texte</summary><textarea class="input" id="impText" data-input="impText" rows="4" style="margin-top:8px" placeholder="Programme, notes, texte d\'un mail…">' + esc(I.text) + '</textarea></details></section>';
+  const go = '<section class="card stack"><button class="btn primary block" data-act="' + (gen ? 'impGen' : 'impGo') + '"' + (I.busy ? ' disabled' : '') + '>' + ic('sparkle') + (I.busy ? 'Analyse en cours…' : gen ? 'Proposer un programme' : 'Analyser') + '</button>' +
+    '<div id="impProg" class="small muted" style="text-align:center">' + (I.busy ? 'Envoi des documents à Claude…' : gen ? (key ? 'Claude propose un programme selon les dates, les âges, vos goûts et la saison.' : 'Sans clé API, la demande part vers l\'app Claude.') : key ? 'Claude lit tous les documents, y compris photos et écriture manuscrite.' : 'Analyse sur le téléphone, gratuite et hors ligne : budgets, programmes tapés, notes.') + '</div></section>';
+  const needClaude = !key && !gen && unread.length ? '<section class="card warn stack"><div class="small"><b>' + unread.length + ' document' + (unread.length > 1 ? 's' : '') + ' à lire par Claude</b> (photo, scan, écriture manuscrite) : ' + esc(unread.map(s => s.name).join(', ')) + '.</div>' +
+    '<div class="grid2"><a class="btn sm" href="#/reglages">Activer Claude</a><button class="btn sm" data-act="impShare">' + ic('share', 's') + 'Envoyer à l\'app Claude</button></div><p class="tiny muted" style="margin:0">« Activer Claude » : clé API dans Réglages, lecture en un appui. « Envoyer à l\'app Claude » : gratuit, puis tu recolles sa réponse ici.</p></section>' : '';
+  const shared = I.shared && !key ? '<section class="card stack"><h2 class="lbl">Réponse de l\'app Claude</h2><textarea class="input" id="impAns" data-input="impAns" rows="4" placeholder="Colle ici toute la réponse de Claude">' + esc(I.answer) + '</textarea><button class="btn primary block" data-act="impParse">Valider la réponse</button></section>' : '';
+  const done = I.done ? '<section class="card ok stack"><b>' + ic('check', 's') + ' ' + esc(I.done) + '</b><div class="grid3"><a class="btn sm" href="' + tripUrl('recap') + '">Récap</a><a class="btn sm" href="' + tripUrl('programme') + '">Programme</a><a class="btn sm" href="' + tripUrl('budget') + '">Budget</a></div></section>' : '';
+  return topbar(gen ? 'Proposer un programme' : 'Importer des documents', T.trip.name, { back: tripUrl('plus') }) + '<div class="stack" style="max-width:820px">' + done +
+    (gen ? '<section class="card small">Le programme proposé tient compte des dates, des logements, des âges des enfants jour par jour, de vos goûts et de la saison, sans dupliquer les étapes déjà prévues.</section>' : sources) +
+    go + needClaude + shared + (I.result ? '<div id="impRes">' + previewHTML(I) + '</div>' : '') +
+    '<button class="btn ghost block" data-act="impMode">' + (gen ? ic('upload', 's') + 'Importer des documents' : ic('sparkle', 's') + 'Proposer un programme avec Claude') + '</button></div>';
 };
+ACT.impMode = () => { const I = App.imp; App.imp = { ...newImp(T.id, I.kind === 'generer' ? 'auto' : 'generer'), sources: I.sources, text: I.text }; scheduleRender(); };
 ACT.impKind = el => { App.imp.kind = el.dataset.k; App.imp.prompts = null; App.imp.result = null; scheduleRender(); };
 ACT.impReset = () => { App.imp = null; scheduleRender(); };
 INP.impText = el => { App.imp.text = el.value; };
@@ -3848,12 +4030,12 @@ function buildImportPrompt() {
     if (car) chunks.push('### Voiture de location\n' + car);
     if (existing.length) chunks.push('### Déjà prévu (ne pas dupliquer, compléter)\n' + existing.join('\n'));
   } else {
-    if (existing.length && (I.kind === 'programme' || I.kind === 'archive')) chunks.push('### Étapes déjà dans l\'app (pour repérer les doublons)\n' + existing.join('\n'));
-    if (I.kind === 'depenses' || I.kind === 'reservations') { const ex = live('expenses').slice(0, 300).map(e => e.date + ' | ' + e.title + ' | ' + (e.amount / 100).toFixed(2) + ' ' + e.currency).join('\n'); if (ex) chunks.push('### Dépenses déjà saisies (ne pas les reprendre)\n' + ex); }
+    if (existing.length && ['programme', 'archive', 'auto'].includes(I.kind)) chunks.push('### Étapes déjà dans l\'app (pour repérer les doublons)\n' + existing.join('\n'));
+    if (['depenses', 'reservations', 'auto'].includes(I.kind)) { const ex = live('expenses').slice(0, 300).map(e => e.date + ' | ' + e.title + ' | ' + (e.amount / 100).toFixed(2) + ' ' + e.currency).join('\n'); if (ex) chunks.push('### Dépenses déjà saisies (ne pas les reprendre)\n' + ex); }
     I.sources.filter(s => !s.dup).forEach((s, n) => chunks.push('### Source ' + (n + 1) + ' : ' + s.name + ' (' + s.kind + ')' + (s.subject ? '\nObjet : ' + s.subject : '') + (s.date ? '\nDate : ' + s.date : '') + (s.from ? '\nDe : ' + s.from : '') + '\n' + (s.kind === 'image' ? '[image jointe dans la conversation]' : s.text)));
     if (I.text.trim()) chunks.push('### Texte collé\n' + I.text.trim());
     if (!chunks.some(c => c.startsWith('### Source') || c.startsWith('### Texte'))) {
-      if (I.kind === 'programme' || I.kind === 'depenses' || I.kind === 'archive') chunks.push('### Source\n[photo(s) ou capture(s) jointe(s) dans la conversation]');
+      if (['programme', 'depenses', 'archive', 'auto'].includes(I.kind)) chunks.push('### Source\n[photo(s) ou document(s) joint(s)]');
       else { toast('Ajoute au moins une source'); return false; }
     }
   }
@@ -3864,44 +4046,76 @@ function buildImportPrompt() {
 /* Fichiers à transmettre tels quels : photos et PDF sans texte lisible (scans) */
 const importFiles = I => I.sources.filter(s => !s.dup && s.file && (s.kind === 'image' || (s.kind === 'pdf' && s.empty))).map(s => s.file);
 ACT.impCopy = async el => toast((await copyText(App.imp.prompts[+el.dataset.i])) ? 'Prompt copié : colle-le dans Claude' : 'Copie impossible');
-ACT.impShare = async el => {
-  const text = App.imp.prompts[+el.dataset.i]; const files = +el.dataset.i === 0 ? importFiles(App.imp) : [];
+/* Envoi vers l'app Claude (sans clé) : demande complète + photos, puis réponse recollée ici */
+ACT.impShare = async () => {
+  const I = App.imp; if (!buildImportPrompt()) return;
+  const text = I.full; const files = importFiles(I);
+  await copyText(text);
+  I.shared = true; scheduleRender();
   if (files.length && navigator.canShare && navigator.canShare({ files })) {
-    await copyText(text);
-    try { await navigator.share({ title: 'Prompt Carnet de voyage', text, files }); } catch (e) { if (e.name !== 'AbortError') toast('Partage impossible : prompt copié, joins les photos dans Claude', 5000); }
+    try { await navigator.share({ title: 'Carnet de voyage', text, files }); } catch (e) { if (e.name !== 'AbortError') toast('Partage impossible : la demande est copiée, colle-la dans Claude avec les photos', 6000); }
     return;
   }
-  shareText(text, 'Prompt Carnet de voyage');
+  shareText(text, 'Carnet de voyage');
 };
+/* Bouton « Analyser » : Claude si une clé est enregistrée, sinon analyse sur le téléphone */
+ACT.impGo = () => {
+  const I = App.imp; const srcs = I.sources.filter(s => !s.dup);
+  if (!srcs.length && !I.text.trim()) { toast('Ajoute au moins un document'); return; }
+  if (hasClaudeKey()) return ACT.impAnalyze();
+  const texts = srcs.filter(s => s.text && s.text.trim()).map(s => ({ name: s.name, text: s.text }));
+  if (I.text.trim()) texts.push({ name: 'Texte collé', text: I.text });
+  const { obj, found } = localAnalyze(texts, { trip: T.trip });
+  const unread = srcs.filter(s => s.kind === 'image' || s.empty).length;
+  if (!found.budget && !found.steps && !(obj.notes || '').trim()) { I.result = null; scheduleRender(); toast(unread ? 'Ces documents doivent être lus par Claude (photo, scan ou écriture manuscrite)' : 'Rien de reconnu dans ces documents', 6000); return; }
+  setPreview(obj, []);
+  toast(found.budget + ' ligne(s) de budget, ' + found.steps + ' étape(s) et conseil(s) reconnus' + (unread ? ' · ' + unread + ' document(s) à lire par Claude' : ''), 5000);
+};
+ACT.impGen = () => hasClaudeKey() ? ACT.impAnalyze() : ACT.impShare();
 ACT.impAnalyze = async () => {
   const I = App.imp; if (I.busy) return;
   if (!buildImportPrompt()) return;
   I.busy = true; scheduleRender();
   try {
     const ans = await claudeAnalyze(I.full, importFiles(I), n => { const el = $('#impProg'); if (el) el.textContent = 'Claude rédige… ' + n + ' caractères reçus'; });
-    I.answer = ans; I.busy = false; ACT.impParse(); toast('Analyse reçue : vérifie l\'aperçu');
-    setTimeout(() => { const r = $('#impRes'); if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120);
+    I.answer = ans; I.busy = false;
+    const r = extractJson(ans);
+    if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
+    setPreview(r.obj, r.fixes); toast('Analyse reçue : vérifie l\'aperçu');
   } catch (e) { I.busy = false; scheduleRender(); toast('Analyse impossible : ' + e.message, 7000); }
 };
 ACT.impParse = () => {
   const I = App.imp; const ans = ($('#impAns') || {}).value || I.answer; I.answer = ans;
   const r = extractJson(ans);
   if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
+  setPreview(r.obj, r.fixes);
+};
+/* Budget prévisionnel (voyage à venir) ou dépenses pour information (voyage passé) */
+function budgetIsPlanned(voyage) {
+  const t = T.trip; const v = voyage || {};
+  const end = t.draftImport ? (toDate(unwrap(v.fin).v) || '') : t.dateEnd;
+  if (t.archived && !t.draftImport) return false;
+  return !!end && end >= localISO();
+}
+function setPreview(obj, fixes) {
+  const I = App.imp; I.done = null;
   let tctx = T.trip;
-  if (T.trip.draftImport && r.obj.voyage) { const a = toDate(unwrap(r.obj.voyage.debut).v), b = toDate(unwrap(r.obj.voyage.fin).v); if (a && b && b >= a) tctx = { ...T.trip, dateStart: a, dateEnd: b, currency: String(unwrap(r.obj.voyage.devise).v || T.trip.currency || 'EUR').toUpperCase() }; }
-  const n = normalizeImport(r.obj, { trip: tctx, travelers: travelersSorted(), steps: live('steps'), expenses: live('expenses'), bookings: live('bookings') });
-  n.fixes = r.fixes || [];
+  if (T.trip.draftImport && obj.voyage) { const a = toDate(unwrap(obj.voyage.debut).v), b = toDate(unwrap(obj.voyage.fin).v); if (a && b && b >= a) tctx = { ...T.trip, dateStart: a, dateEnd: b, currency: String(unwrap(obj.voyage.devise).v || T.trip.currency || 'EUR').toUpperCase() }; }
+  routeBudget(obj, budgetIsPlanned(obj.voyage), tctx.dateStart);
+  const n = normalizeImport(obj, { trip: tctx, travelers: travelersSorted(), steps: live('steps'), expenses: live('expenses'), bookings: live('bookings') });
+  n.fixes = fixes || [];
   I.result = n; I.sel = {};
   n.items.forEach((it, k) => { I.sel[k] = it.ok && !it.dup; });
   scheduleRender();
-};
+  setTimeout(() => { const r = $('#impRes'); if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120);
+}
 function previewHTML(I) {
   const R = I.result;
-  if (R.error) return '<section class="card bad">' + esc(R.error) + '<div class="small">Vérifie que tu as collé toute la réponse de Claude, ou redemande-lui « uniquement le bloc JSON carnet/1 ».</div></section>';
-  const groups = [['step', 'Étapes'], ['daynote', 'Notes des jours'], ['tip', 'Conseils'], ['booking', 'Réservations'], ['expense', 'Dépenses']];
+  if (R.error) return '<section class="card bad">' + esc(R.error) + '<div class="small">Vérifie que toute la réponse de Claude a été collée, ou relance l\'analyse.</div></section>';
+  const groups = [['step', 'Programme'], ['daynote', 'Notes des jours'], ['tip', 'Conseils'], ['booking', 'Organisation (réservations)'], ['plan', 'Budget prévu'], ['expense', 'Dépenses'], ['note', 'Notes']];
   const nSel = Object.values(I.sel).filter(Boolean).length;
   const newTrav = (R.voyageurs || []).filter(v => !travelersSorted().some(t => norm(t.name) === norm(v.name)));
-  return '<section class="card stack"><h2 class="lbl">4 · Aperçu avant intégration</h2>' +
+  return '<section class="card stack"><h2 class="lbl">Aperçu avant intégration</h2>' +
     (R.fixes.length ? '<div class="small muted">Corrections automatiques : ' + esc(R.fixes.join(', ')) + '.</div>' : '') +
     (R.incertitudes.length ? '<div class="banner small">' + ic('warn') + '<div><b>Incertitudes signalées</b><ul style="margin:4px 0 0;padding-left:18px">' + R.incertitudes.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div></div>' : '') +
     (newTrav.length ? '<div class="small">Voyageurs nouveaux qui seront ajoutés : ' + esc(newTrav.map(v => v.name).join(', ')) + '</div>' : '') +
@@ -3924,16 +4138,19 @@ function applyImport() {
     const dates = R.items.filter((it, k) => I.sel[k] && it.ok && it.data && isISODate(it.data.date)).map(it => it.data.date).sort();
     const d0 = v.dateStart || dates[0], d1 = v.dateEnd || dates[dates.length - 1];
     if (isISODate(d0) && isISODate(d1) && d1 >= d0) { p.dateStart = d0; p.dateEnd = d1; }
-    if (v.name && (T.trip.name === 'Voyage passé' || !T.trip.name)) p.name = v.name;
+    if (v.name && (T.trip.name === DRAFT_NAME || !T.trip.name)) p.name = v.name;
     for (const k of ['destination', 'emoji']) if (v[k] && !T.trip[k]) p[k] = v[k];
     if (v.currency && v.currency !== T.trip.currency) p.currency = v.currency;
+    p.archived = (p.dateEnd || T.trip.dateEnd) < localISO(); // voyage à venir : pas archivé
     ops.push({ coll: '', id: T.id, patch: p });
   } else if (R.voyage) { const p = {}; for (const k of ['destination', 'emoji']) if (!T.trip[k] && R.voyage[k]) p[k] = R.voyage[k]; if (Object.keys(p).length) ops.push({ coll: '', id: T.id, patch: p }); }
   const lastOrder = {}; const ids = travelersSorted().map(t => t.id);
-  let n = 0;
+  let n = 0; const plan = {}, noteTxt = [], count = {};
   R.items.forEach((it, k) => {
-    if (!I.sel[k] || !it.ok) return; n++;
+    if (!I.sel[k] || !it.ok) return; n++; count[it.kind] = (count[it.kind] || 0) + 1;
     const d = { ...it.data };
+    if (it.kind === 'plan') { plan[d.category] = (plan[d.category] || 0) + d.amount; return; }
+    if (it.kind === 'note') { noteTxt.push(d.text); return; }
     if (it.kind === 'step') {
       if (it.dup && it.dupId) { delete d.order; ops.push({ coll: 'steps', id: it.dupId, patch: d }); return; }
       if (lastOrder[d.date] == null) { const last = stepsOn(d.date).slice(-1)[0]; lastOrder[d.date] = last ? last.order : 0; }
@@ -3950,10 +4167,15 @@ function applyImport() {
       if (it.dup && it.dupId) ops.push({ coll: 'expenses', id: it.dupId, patch: d }); else ops.push({ coll: 'expenses', id: 'e' + newId(14), set: d });
     }
   });
+  // Budget prévu : chaque catégorie importée remplace la précédente (le document fait foi)
+  if (Object.keys(plan).length) ops.push({ coll: '', id: T.id, patch: { budgetManuel: { ...(T.trip.budgetManuel || {}), ...plan } } });
+  if (noteTxt.length) { const nt = { ...(T.trip.notes || {}) }; nt.general = [nt.general, ...noteTxt].filter(Boolean).join('\n\n'); ops.push({ coll: '', id: T.id, patch: { notes: nt } }); }
   write(ops);
-  toast(n + ' élément(s) intégré(s)');
-  App.imp = { trip: T.id, kind: I.kind, sources: [], text: '', prompts: I.prompts, answer: '', result: null, sel: {} };
-  scheduleRender();
+  const L = { step: ['étape', 'étapes'], tip: ['conseil', 'conseils'], booking: ['réservation', 'réservations'], expense: ['dépense', 'dépenses'], plan: ['ligne de budget prévu', 'lignes de budget prévu'], note: ['bloc de notes', 'blocs de notes'], daynote: ['note de jour', 'notes de jour'] };
+  const done = Object.entries(count).map(([k, c]) => c + ' ' + (L[k] ? L[k][c > 1 ? 1 : 0] : k)).join(', ');
+  App.imp = { ...newImp(T.id, I.kind), done: 'Intégré : ' + (done || n + ' élément(s)') };
+  toast('Intégré');
+  scheduleRender(); window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* =====================================================================
@@ -4074,6 +4296,8 @@ async function buildRecapDocx() {
   rows.push([[new D.TextRun({ text: 'Total', bold: true })], fmtMoney(sumBudget(prev.b), cur), [new D.TextRun({ text: fmtMoney(st.total, cur), bold: true })], sumBudget(prev.b) ? fmtSigned(st.total - sumBudget(prev.b), cur) : '']);
   ch.push(dTable(D, rows, [40, 20, 20, 20], ['Catégorie', 'Prévu', 'Réel', 'Écart']));
   ch.push(dP(D, 'Coût par jour : ' + fmtMoney(st.perDay, cur) + ' · par personne : ' + fmtMoney(st.perPerson, cur) + '. Total toujours calculé à partir des lignes.', { run: { size: 20 } }));
+  const org = organisationLines();
+  if (org.length) { ch.push(dP(D, 'Organisation', { heading: D.HeadingLevel.HEADING_1 })); for (const l of org) ch.push(new D.Paragraph({ children: [new D.TextRun({ text: l.title + ' : ', bold: true }), new D.TextRun({ text: l.sub })] })); }
   ch.push(dP(D, 'Itinéraire', { heading: D.HeadingLevel.HEADING_1 }));
   let km = 0, rt = 0;
   for (const d of tripDays()) { const i = dayInfo(d); km += i.tl.km; rt += i.tl.routeMin; ch.push(new D.Paragraph({ children: [new D.TextRun({ text: fmtDay(d, { cap: true }) + ' : ', bold: true }), new D.TextRun(activeSteps(i.steps).map(s => s.name + (s.statut === 'fait' ? ' ✓' : s.statut === 'pas-le-temps' ? ' (pas eu le temps)' : '')).join(', ') || '—')] })); }
@@ -4083,7 +4307,7 @@ async function buildRecapDocx() {
   if (top.length) { ch.push(dP(D, 'Top des +++', { heading: D.HeadingLevel.HEADING_2 })); for (const s of top) ch.push(dP(D, '+++ ' + s.name + ' (' + fmtDay(s.date, { short: true }) + ')')); }
   if (!t.archived) { const bal = balances(live('expenses'), travelersSorted().map(x => x.id)); const s = settle(bal); ch.push(dP(D, 'Équilibre final', { heading: D.HeadingLevel.HEADING_1 })); if (s.length) for (const x of s) ch.push(dP(D, travelerName(x.from) + ' doit ' + fmtMoney(x.amount, cur) + ' à ' + travelerName(x.to))); else ch.push(dP(D, 'Tout le monde est à l\'équilibre.')); }
   const n = t.notes || {};
-  if (n.refaire || n.eviter) { ch.push(dP(D, 'Notes', { heading: D.HeadingLevel.HEADING_1 })); if (n.refaire) ch.push(dP(D, 'À refaire : ' + n.refaire)); if (n.eviter) ch.push(dP(D, 'À éviter : ' + n.eviter)); }
+  if (n.general || n.refaire || n.eviter) { ch.push(dP(D, 'Notes', { heading: D.HeadingLevel.HEADING_1 })); for (const para of String(n.general || '').split('\n').filter(x => x.trim())) ch.push(dP(D, para)); if (n.refaire) ch.push(dP(D, 'À refaire : ' + n.refaire)); if (n.eviter) ch.push(dP(D, 'À éviter : ' + n.eviter)); }
   const avis = live('bookings').filter(b => b.avis); if (avis.length) { ch.push(dP(D, 'Avis sur les prestataires', { heading: D.HeadingLevel.HEADING_1 })); for (const b of avis) ch.push(dP(D, (b.loueur || b.name || b.nom || b.compagnie || b.type) + ' : ' + b.avis)); }
   return new D.Document({ creator: 'Carnet de voyage', title: 'Récap ' + t.name, styles: docStyles(D), sections: [{ properties: { page: { margin: { top: 1000, bottom: 1000, left: 1000, right: 1000 } } }, children: ch }] });
 }
