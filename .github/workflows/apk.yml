@@ -110,9 +110,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="apk-1.0.${{ github.run_number }}"
+          TAG="apk-1.1.${{ github.run_number }}"
           gh release create "$TAG" carnet-de-voyage.apk \
-            --title "Carnet de voyage 1.0.${{ github.run_number }}" \
+            --title "Carnet de voyage 1.1.${{ github.run_number }}" \
             --notes "APK Android (Trusted Web Activity) qui ouvre https://coemathieu-hub.github.io/. Empreinte SHA-256 de la signature : $FP" \
             --latest
 

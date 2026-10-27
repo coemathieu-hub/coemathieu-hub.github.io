@@ -2689,11 +2689,14 @@ VIEWS.installer = () => {
   return topbar('Installer sur mon téléphone', '', { back: '#/' }) + '<div class="stack" style="max-width:720px">' +
     (standalone ? '<div class="card ok">L\'app est déjà installée sur cet appareil.</div>' : '') +
     (App.installEvt ? '<button class="btn primary block" data-act="pwaInstall">' + ic('download') + 'Installer maintenant</button>' : '') +
-    '<section class="card stack"><h2 style="font-size:17px">Android (Samsung, Pixel…)</h2><ol class="small" style="padding-left:18px;margin:0;line-height:1.7">' +
+    // Téléchargement direct de l'application Android (toujours la dernière version publiée)
+    '<section class="card stack"><h2 style="font-size:17px">Application Android (APK)</h2><a class="btn primary block" href="' + esc(APK_URL) + '" download>' + ic('download') + 'Télécharger l\'application</a>' +
+    '<p class="small muted" style="margin:0">Ouvre le fichier téléchargé, puis autorise l\'installation depuis Chrome si le téléphone le demande (« Installer quand même » si Play Protect avertit). Une version déjà installée est mise à jour, sans perte de données.</p></section>' +
+    '<section class="card stack"><h2 style="font-size:17px">Android sans APK (depuis Chrome)</h2><ol class="small" style="padding-left:18px;margin:0;line-height:1.7">' +
     '<li>Ouvre <b>' + esc(APP_URL) + '</b> dans <b>Chrome</b> (ou le lien d\'invitation reçu).</li>' +
     '<li>Touche le menu <b>⋮</b> en haut à droite, puis <b>Installer l\'application</b> (ou <b>Ajouter à l\'écran d\'accueil</b>).</li>' +
     '<li>Confirme : l\'icône <b>Carnet de voyage</b> apparaît sur l\'écran d\'accueil.</li></ol>' +
-    '<p class="small muted" style="margin:0">Variante APK (fichier d\'installation Android) : <a href="' + esc(APK_URL) + '">télécharger l\'APK</a>, puis autorise l\'installation depuis Chrome si le téléphone le demande.</p></section>' +
+    '<p class="small muted" style="margin:0">Ou l\'application Android ci-dessus (APK).</p></section>' +
     '<section class="card stack"><h2 style="font-size:17px">iPhone</h2><ol class="small" style="padding-left:18px;margin:0;line-height:1.7">' +
     '<li>Ouvre le lien dans <b>Safari</b>.</li><li>Touche <b>Partager</b> (carré avec une flèche vers le haut).</li><li>Choisis <b>Sur l\'écran d\'accueil</b>, puis <b>Ajouter</b>.</li>' +
     '<li>Ouvre l\'app depuis l\'écran d\'accueil, touche <b>Rejoindre</b> et colle le lien d\'invitation.</li></ol></section>' +
