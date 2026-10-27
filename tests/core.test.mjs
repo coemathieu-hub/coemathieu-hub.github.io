@@ -204,3 +204,29 @@ test('prompt : découpage des données longues', () => {
   assert.ok(parts[0].includes('partie 1/3'));
   for (const p of parts) assert.ok(p.length <= 30000);
 });
+
+test('aéroports : base OurAirports, recherche par code, ville, nom français, pays, île', () => {
+  const d = JSON.parse(readFileSync(join(here, '../data/aeroports.json'), 'utf8'));
+  assert.ok(d.rows.length > 3000, 'base complète');
+  assert.ok(d.rows.every(r => /^[A-Z]{3}$/.test(r[0]) && r[4]), 'code IATA et fuseau pour chaque aéroport');
+  const dn = new Intl.DisplayNames(['fr'], { type: 'region' });
+  const idx = C.airportIndex(d.rows, c => dn.of(c));
+  const first = q => (C.airportSearch(idx, q, 5)[0] || {}).iata;
+  const all = q => C.airportSearch(idx, q, 8).map(a => a.iata);
+  assert.equal(first('ACE'), 'ACE');
+  assert.equal(first('ace'), 'ACE');
+  assert.equal(first('lanz'), 'ACE');
+  assert.equal(first('Genève'), 'GVA');
+  assert.equal(first('bâle'), 'BSL');
+  assert.equal(first('Bari'), 'BRI');
+  assert.equal(first('Albanie'), 'TIA');
+  assert.ok(['CDG', 'ORY'].includes(first('paris')));
+  assert.ok(all('londres').includes('LHR'), 'nom français d\'une ville étrangère');
+  assert.ok(all('sardaigne').includes('CAG') && all('sardaigne').includes('OLB'), 'île → ses aéroports');
+  assert.deepEqual(C.airportSearch(idx, '', 5), []);
+  // Fuseau : table intégrée, puis base une fois chargée
+  for (const a of idx) if (!C.AIRPORTS[a.iata]) C.AIRPORT_EXTRA[a.iata] = [a.city, a.tz];
+  assert.equal(C.airportTz('ZNZ'), 'Africa/Dar_es_Salaam');
+  assert.equal(C.airportTz('HER'), 'Europe/Athens');
+  assert.equal(C.airportTz('JFK'), 'America/New_York');
+});

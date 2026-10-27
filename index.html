@@ -116,6 +116,38 @@ button.chip{min-height:32px;cursor:pointer}
 .chip.badc{background:var(--bad-bg);color:var(--bad-fg)}
 .chip.infoc{background:var(--info-bg);color:var(--info-fg)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+/* --- accueil --- */
+.hello{margin:6px 4px 2px}.hello h1{font-size:27px;line-height:1.15;margin:0}.hello p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.hero{display:flex;gap:14px;align-items:center;padding:18px;border-radius:22px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#2457D6 0%,#5B3FD1 55%,#D9577A 100%);box-shadow:0 10px 30px rgba(36,87,214,.35);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero.cur{background:linear-gradient(135deg,#0E8A6A 0%,#1E7FD0 60%,#5B3FD1 100%)}
+.hero-emoji{font-size:44px;line-height:1;flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.hero-k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.85;font-weight:600}
+.hero-t{font-size:21px;font-weight:700;line-height:1.2;margin-top:2px}
+.hero-s{font-size:14px;opacity:.9;margin-top:2px}
+.hero-n{flex:none;text-align:right;z-index:1}.hero-n b{display:block;font-size:26px;font-weight:800;white-space:nowrap}.hero-n span{font-size:12px;opacity:.9}
+.hero-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.3);margin-top:10px;overflow:hidden}.hero-bar i{display:block;height:100%;background:#fff;border-radius:3px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:14px;border-radius:18px;background:var(--card);border:0;color:inherit;text-decoration:none;text-align:left;font:inherit;cursor:pointer;min-height:96px}
+.tile .ti{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.tile b{font-size:15px}.tile span.s{font-size:12.5px;color:var(--muted);line-height:1.3}
+.tile.primary{background:var(--accent);color:var(--on-accent)}.tile.primary span.s{color:rgba(255,255,255,.85)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kpi{background:var(--card);border-radius:14px;padding:10px 6px;text-align:center}.kpi b{display:block;font-size:20px;font-weight:700}.kpi span{font-size:11.5px;color:var(--muted)}
+.year{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin:14px 6px 6px}
+.hist{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--card);color:inherit;text-decoration:none}
+.hist+.hist{margin-top:8px}
+.hist-e{width:44px;height:44px;flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--card2)}
+.hist-a{flex:none;text-align:right;font-weight:600;font-size:14px}.hist-a span{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+@media (min-width:640px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+label.chip{white-space:normal;max-width:100%;height:auto;line-height:1.3;padding-top:6px;padding-bottom:6px}
+.ac{position:relative}
+.ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:40;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.28);max-height:min(340px,50vh);overflow:auto}
+.ac-item{display:flex;gap:10px;align-items:baseline;width:100%;padding:11px 12px;border:0;border-bottom:1px solid var(--line);background:none;color:inherit;text-align:left;font-size:15px;cursor:pointer}
+.ac-item:last-child{border-bottom:0}.ac-item:hover,.ac-item.on{background:var(--card2)}
+.ac-item b{min-width:40px;color:var(--accent);font-variant-numeric:tabular-nums}
+.ac-empty{padding:11px 12px;font-size:14px;color:var(--muted)}
+.ac-hint{margin-top:4px;min-height:1.2em}
 .r{display:inline-block;white-space:nowrap;min-width:34px;text-align:center;border-radius:6px;padding:2px 6px;font-size:13px;font-weight:700;line-height:1.3}
 .r3{background:var(--r3-bg);color:var(--r3-fg)}
 .r2{background:var(--r2-bg);color:var(--r2-fg)}
@@ -254,7 +286,7 @@ pre.code{white-space:pre-wrap;word-break:break-word;background:var(--card2);padd
    d'invitation.
    ===================================================================== */
 const FIREBASE_CONFIG = null;
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const APP_URL = 'https://coemathieu-hub.github.io/';
 const APK_URL = 'https://github.com/coemathieu-hub/coemathieu-hub.github.io/releases/latest/download/carnet-de-voyage.apk';
 
@@ -269,6 +301,7 @@ const LIBS = {
   postalMime: 'https://cdn.jsdelivr.net/npm/postal-mime@4.0.3/+esm',
   msgreader: 'https://cdn.jsdelivr.net/npm/@kenjiuno/msgreader@1.28.0/+esm',
   xlsx: 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js',
+  anthropic: 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm',
 };
 
 /* Services publics sans clé (conditions d'usage : voir README) */
@@ -595,7 +628,56 @@ function zonedToUtc(date, time, tz) {
   return ms;
 }
 function validTz(tz) { try { new Intl.DateTimeFormat('fr-FR', { timeZone: tz }); return !!tz; } catch { return false; } }
-function airportTz(code) { return (AIRPORTS[String(code || '').toUpperCase()] || [])[1] || null; }
+function airportTz(code) { const c = String(code || '').toUpperCase(); return (AIRPORTS[c] || AIRPORT_EXTRA[c] || [])[1] || null; }
+
+/* ---------- Base des aéroports (data/aeroports.json : OurAirports, chargée à la demande) ---------- */
+// Complété au chargement de la base : code → [nom, fuseau]
+const AIRPORT_EXTRA = {};
+// Noms français (villes, îles, régions) → mots présents dans la base (noms anglais ou locaux)
+const AIRPORT_ALIASES = {
+  londres: ['london'], venise: ['venice'], geneve: ['geneva'], bale: ['basel'], lisbonne: ['lisbon'], seville: ['seville', 'sevilla'],
+  milan: ['milan'], florence: ['florence'], munich: ['munich'], vienne: ['vienna'], copenhague: ['copenhagen'], varsovie: ['warsaw'],
+  cracovie: ['krakow'], athenes: ['athens'], 'le caire': ['cairo'], marrakech: ['marrakesh', 'marrakech'], pekin: ['beijing'], moscou: ['moscow'],
+  edimbourg: ['edinburgh'], bruxelles: ['brussels'], anvers: ['antwerp'], barcelone: ['barcelona'], francfort: ['frankfurt'],
+  hambourg: ['hamburg'], cologne: ['cologne'], 'la canee': ['chania'], corfou: ['corfu'], 'le cap': ['cape town'],
+  'la nouvelle orleans': ['new orleans'], dubrovnik: ['dubrovnik'], 'saint petersbourg': ['petersburg'],
+  majorque: ['mallorca', 'palma de mallorca'], minorque: ['menorca'], madere: ['madeira'], malte: ['malta'],
+  canaries: ['lanzarote', 'fuerteventura', 'gran canaria', 'tenerife', 'la palma', 'el hierro', 'la gomera'],
+  baleares: ['mallorca', 'menorca', 'ibiza'], sardaigne: ['cagliari', 'olbia', 'alghero'], sicile: ['catania', 'palermo', 'trapani', 'comiso'],
+  corse: ['ajaccio', 'bastia', 'calvi', 'figari'], crete: ['heraklion', 'chania'], acores: ['ponta delgada', 'lajes', 'horta'],
+  pouilles: ['bari', 'brindisi'], islande: ['keflavik', 'reykjavik'],
+};
+/* Index de recherche. rows : [iata, nom, ville, pays, fuseau, lat, lon, taille, motscles] ; countryName : code → nom français */
+function airportIndex(rows, countryName = c => c) {
+  return rows.map(r => {
+    const [iata, name, city, cc, tz, lat, lon, size, kw] = r;
+    const fr = AIRPORTS[iata] ? AIRPORTS[iata][0] : '';
+    const country = countryName(cc) || cc;
+    return { iata, name, city, cc, country, tz, lat, lon, size, fr, code: iata.toLowerCase(), f: norm(fr), c: norm(city), s: ' ' + norm([fr, city, name, kw, country].join(' ')) + ' ' };
+  });
+}
+/* Recherche : code exact, début de code, ville, mot du nom ou du pays ; grands aéroports d'abord */
+function airportSearch(index, q, n = 8) {
+  const t0 = norm(q); if (!t0) return [];
+  const terms = [t0];
+  for (const [k, v] of Object.entries(AIRPORT_ALIASES)) if (t0.length >= 3 && (k.startsWith(t0) || t0.startsWith(k))) terms.push(...v);
+  const out = [];
+  for (const a of index) {
+    let best = 0;
+    for (const t of terms) {
+      let sc = 0;
+      if (t.length === 3 && a.code === t) sc = 1000;
+      else if (t.length <= 3 && a.code.startsWith(t)) sc = 600;
+      else if (a.f && a.f.startsWith(t)) sc = 450;
+      else if (a.c.startsWith(t)) sc = 400;
+      else if (a.s.includes(' ' + t)) sc = 300;
+      else if (t.length >= 4 && a.s.includes(t)) sc = 100;
+      if (sc > best) best = sc;
+    }
+    if (best) out.push([best + a.size * 30, a]);
+  }
+  return out.sort((x, y) => y[0] - x[0] || x[1].iata.localeCompare(y[1].iata)).slice(0, n).map(x => x[1]);
+}
 function flightDurationMin(f) {
   if (!isISODate(f.depDate) || !f.depTime || !isISODate(f.arrDate) || !f.arrTime) return null;
   const tzA = f.fromTz || airportTz(f.from), tzB = f.toTz || airportTz(f.to);
@@ -1112,6 +1194,7 @@ const PROMPT_RULES = [
 function promptHeader(kind, ctx) {
   const t = ctx.trip || {};
   const trav = (ctx.travelers || []).map(x => {
+    if (t.draftImport) return '- ' + x.name + (x.birth ? ' (né(e) le ' + x.birth + ')' : '');
     const a0 = ageOn(x.birth, t.dateStart), a1 = ageOn(x.birth, t.dateEnd);
     return '- ' + x.name + (a0 != null ? ' : ' + (a0 === a1 ? a0 + ' ans' : a0 + ' à ' + a1 + ' ans') + ' pendant le voyage' : ' : adulte');
   }).join('\n');
@@ -1131,8 +1214,8 @@ function promptHeader(kind, ctx) {
     goals[kind] || goals.programme,
     '',
     '## Contexte du voyage',
-    '- Nom : ' + (t.name || '?') + (t.destination ? ' — ' + t.destination : ''),
-    '- Dates : ' + (t.dateStart || '?') + ' → ' + (t.dateEnd || '?') + ' (devise ' + (t.currency || 'EUR') + ')',
+    t.draftImport ? '- Nom, destination et dates : inconnus, à déduire des documents. Remplis "voyage" (nom, emoji, destination, debut, fin, devise).' : '- Nom : ' + (t.name || '?') + (t.destination ? ' — ' + t.destination : ''),
+    t.draftImport ? '' : '- Dates : ' + (t.dateStart || '?') + ' → ' + (t.dateEnd || '?') + ' (devise ' + (t.currency || 'EUR') + ')',
     trav ? '- Voyageurs (âge recalculé chaque jour) :\n' + trav : '',
     lodg ? '- Logements :\n' + lodg : '',
     gouts ? '- Goûts de la famille : ' + gouts : '',
@@ -1183,7 +1266,7 @@ function meteoLabel(code) {
   if (code <= 77) return 'Neige'; if (code <= 82) return 'Averses'; if (code <= 86) return 'Averses de neige'; return 'Orage';
 }
 
-const Core = { SCHEMA, CATEGORIES, CAT, STEP_TYPES, DEFAULT_SETTINGS, AIRPORTS, TIP_RULES, fmtMoney, fmtMoneyShort, fmtSigned, parseAmount, fmtDay, fmtRange, fmtDur, addDays, dateRange, daysBetween, ageOn, youngestAge, birthdaysInRange, stepCost, splitEqual, splitWeighted, computeShares, sumValues, convert, balances, myShare, totalExpenses, settle, tzOffsetMin, zonedToUtc, flightDurationMin, tzDiffHours, orderBetween, buildTimeline, dayTipContext, ruleHits, computeTips, budgetReel, budgetPrevu, sumBudget, gmapsLinks, extractJson, normalizeImport, promptHeader, splitPrompt, hm2min, min2hm, esc, norm, meteoLabel, expenseKey, isISODate, toDate, toHM };
+const Core = { SCHEMA, CATEGORIES, CAT, STEP_TYPES, DEFAULT_SETTINGS, AIRPORTS, AIRPORT_EXTRA, airportIndex, airportSearch, airportTz, TIP_RULES, fmtMoney, fmtMoneyShort, fmtSigned, parseAmount, fmtDay, fmtRange, fmtDur, addDays, dateRange, daysBetween, ageOn, youngestAge, birthdaysInRange, stepCost, splitEqual, splitWeighted, computeShares, sumValues, convert, balances, myShare, totalExpenses, settle, tzOffsetMin, zonedToUtc, flightDurationMin, tzDiffHours, orderBetween, buildTimeline, dayTipContext, ruleHits, computeTips, budgetReel, budgetPrevu, sumBudget, gmapsLinks, extractJson, normalizeImport, promptHeader, splitPrompt, hm2min, min2hm, esc, norm, meteoLabel, expenseKey, isISODate, toDate, toHM };
 // @@CORE-END
 
 /* =====================================================================
@@ -1598,6 +1681,13 @@ async function backupAll() {
   return out;
 }
 /* Restaure chaque voyage comme une COPIE (nouvel identifiant) : rien n'est écrasé */
+/* Totaux d'un voyage à partir de ses documents (même calcul que computeStats, sans l'ouvrir) */
+function statsFromDocs(trip, docs) {
+  const alive = c => Object.values((docs && docs[c]) || {}).filter(x => x && !x.deletedAt);
+  const per = budgetReel(alive('expenses')); const total = sumBudget(per);
+  const n = (isISODate(trip.dateStart) && isISODate(trip.dateEnd) ? daysBetween(trip.dateStart, trip.dateEnd) + 1 : 0) || 1, p = alive('travelers').length || 1;
+  return { total, perCat: per, days: n, travelers: p, perDay: Math.round(total / n), perPerson: Math.round(total / p) };
+}
 async function restoreBackup(obj, target) {
   if (!obj || obj.format !== 'carnet-sauvegarde' || !Array.isArray(obj.trips)) throw new Error('Ce fichier n\'est pas une sauvegarde du Carnet de voyage.');
   if (Array.isArray(obj.famille) && obj.famille.length && !LS.get('famille', []).length) LS.set('famille', obj.famille);
@@ -1609,6 +1699,7 @@ async function restoreBackup(obj, target) {
     delete trip.ownerUid;
     const docs = {};
     for (const [c, items] of Object.entries(t.colls || {})) docs[c] = Object.fromEntries(Object.entries(items || {}).map(([k, v]) => { const x = { ...v }; delete x.id; return [k, x]; }));
+    if (!trip.stats || trip.stats.total == null) trip.stats = statsFromDocs(trip, docs);
     if (target === 'cloud' && Cloud.ready) {
       await Cloud.createTrip(trip, docs, { meName: LS.get('myName', ''), waitServer: navigator.onLine });
     } else {
@@ -1836,10 +1927,40 @@ function downloadBlob(blob, name) {
 }
 
 /* ---------- 3.8 Extraction locale de texte (mails, PDF, Excel, texte) ---------- */
+/* Lecture d'un fichier dans une archive ZIP (.docx, .odt) avec le décompresseur du navigateur */
+async function zipRead(buf, want) {
+  const dv = new DataView(buf); let eocd = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error('archive illisible');
+  const n = dv.getUint16(eocd + 10, true); let p = dv.getUint32(eocd + 16, true); const dec = new TextDecoder();
+  for (let k = 0; k < n; k++) {
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), loff = dv.getUint32(p + 42, true);
+    if (dec.decode(new Uint8Array(buf, p + 46, nl)) === want) {
+      const data = new Uint8Array(buf, loff + 30 + dv.getUint16(loff + 26, true) + dv.getUint16(loff + 28, true), csize);
+      if (method === 0) return dec.decode(data);
+      if (method === 8) return new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+      throw new Error('compression non gérée');
+    }
+    p += 46 + nl + xl + cl;
+  }
+  return null;
+}
+/* XML Word / OpenDocument → texte (paragraphes, cellules de tableau séparées par « | ») */
+function officeXmlText(xml) {
+  return xml.replace(/<\/w:p>\s*<\/w:tc>/g, '</w:tc>').replace(/<\/text:p>\s*<\/table:table-cell>/g, '</table:table-cell>').replace(/<\/w:tr>|<\/table:table-row>/g, '\n').replace(/<w:tab\/>|<text:tab\/>/g, '\t').replace(/<w:br\/>|<text:line-break\/>/g, '\n').replace(/<\/w:tc>|<\/table:table-cell>/g, ' | ').replace(/<\/w:p>|<\/text:p>|<\/text:h>/g, '\n')
+    .replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&').replace(/ \| \n/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
 async function extractFileText(file) {
   const name = (file.name || '').toLowerCase();
   const type = file.type || '';
   if (type.startsWith('image/')) return { kind: 'image', name: file.name, text: '' };
+  if (/\.(docx|odt)$/.test(name)) {
+    const xml = await zipRead(await file.arrayBuffer(), name.endsWith('.odt') ? 'content.xml' : 'word/document.xml');
+    if (xml == null) throw new Error('document Word illisible');
+    const text = officeXmlText(xml);
+    return { kind: 'document', name: file.name, text, empty: !text };
+  }
+  if (name.endsWith('.doc')) throw new Error('ancien format Word : enregistre-le en .docx ou en PDF');
   if (name.endsWith('.pdf') || type === 'application/pdf') {
     const pdfjs = await import(LIBS.pdfjs);
     try {
@@ -1869,6 +1990,69 @@ async function extractFileText(file) {
     return { kind: 'tableur', name: file.name, text };
   }
   return { kind: 'texte', name: file.name, text: (await file.text()).trim() };
+}
+/* ---------- Analyse directe par Claude (facultatif : clé API Anthropic gardée sur cet appareil) ----------
+   Sans clé, l'app prépare le prompt et le partage vers l'app Claude (copier-coller). Avec une clé, elle envoie
+   le prompt, les photos et les PDF scannés à l'API, puis valide la réponse comme un collage. */
+const CLAUDE_MODEL = 'claude-opus-5-5';
+const hasClaudeKey = () => !!LS.get('anthropicKey', '');
+function blobToBase64(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = () => rej(r.error); r.readAsDataURL(blob); }); }
+/* Photo → JPEG de 2000 px au plus (lisible pour l'écriture manuscrite, léger à envoyer) */
+async function imageForClaude(file) {
+  try {
+    const bmp = await createImageBitmap(file); const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85));
+    return { media_type: 'image/jpeg', data: await blobToBase64(blob) };
+  } catch {
+    if (!/^image\/(jpeg|png|gif|webp)$/.test(file.type)) throw new Error('format de photo non pris en charge (' + (file.type || file.name) + ') : utilise JPEG ou PNG');
+    return { media_type: file.type, data: await blobToBase64(file) };
+  }
+}
+async function claudeAnalyze(promptText, files, onText) {
+  const key = LS.get('anthropicKey', ''); if (!key) throw new Error('aucune clé API dans les Réglages');
+  const SDK = await import(LIBS.anthropic);
+  const client = new SDK.default({ apiKey: key, dangerouslyAllowBrowser: true });
+  const content = [];
+  let pdfBytes = 0;
+  for (const f of files) {
+    if ((f.type || '').startsWith('image/')) { const im = await imageForClaude(f); content.push({ type: 'image', source: { type: 'base64', media_type: im.media_type, data: im.data } }); }
+    else { pdfBytes += f.size; content.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: await blobToBase64(f) } }); }
+  }
+  if (pdfBytes > 20e6) throw new Error('PDF trop lourds pour un envoi (20 Mo au plus) : envoie-les en plusieurs fois');
+  content.push({ type: 'text', text: promptText });
+  try {
+    const stream = client.beta.messages.stream({
+      model: CLAUDE_MODEL, max_tokens: 32000,
+      // Refus éventuel d'un filtre de sécurité : l'API relance la demande sur le modèle de secours recommandé
+      betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
+      output_config: { effort: 'high' },
+      messages: [{ role: 'user', content }],
+    });
+    let n = 0; stream.on('text', t => { n += t.length; if (onText) onText(n); });
+    const msg = await stream.finalMessage();
+    if (msg.stop_reason === 'refusal') throw new Error('Claude a refusé d\'analyser ces documents' + (msg.stop_details && msg.stop_details.explanation ? ' (' + msg.stop_details.explanation + ')' : ''));
+    const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+    if (msg.stop_reason === 'max_tokens') toast('Réponse tronquée (trop longue) : envoie les documents en plusieurs fois', 6000);
+    return text;
+  } catch (e) {
+    if (e instanceof SDK.AuthenticationError) throw new Error('clé API refusée : vérifie-la dans les Réglages');
+    if (e instanceof SDK.PermissionDeniedError) throw new Error('clé API sans accès à ce modèle');
+    if (e instanceof SDK.RateLimitError) throw new Error('trop de demandes ou crédit épuisé : réessaie plus tard');
+    if (e instanceof SDK.BadRequestError) throw new Error('demande refusée par l\'API : ' + (e.message || '').slice(0, 160));
+    if (e instanceof SDK.APIConnectionError) throw new Error('connexion à Claude impossible (hors ligne ?)');
+    if (e instanceof SDK.APIError) throw new Error('erreur de l\'API Claude (' + (e.status || '?') + ')');
+    throw e;
+  }
+}
+function claudeKeyCard() {
+  const k = LS.get('anthropicKey', '');
+  return '<section class="card stack"><div class="lbl">Analyse directe par Claude (facultatif)</div>' +
+    '<p class="small muted" style="margin:0">Sans clé, les imports passent par l\'app Claude (copier-coller), sans frais. Avec une clé API Anthropic, photos et documents sont analysés directement ici, en un appui.</p>' +
+    (k ? '<div class="row"><span class="chip okc">' + ic('check', 's') + 'Clé enregistrée · …' + esc(k.slice(-4)) + '</span><span class="grow"></span><button class="btn sm" data-act="keyTest">Tester</button><button class="btn sm danger" data-act="keyDel">Retirer</button></div>'
+      : '<form data-form="keySave" class="stack">' + inp('key', '', { type: 'password', ph: 'sk-ant-…', req: true, extra: ' autocomplete="off"' }) + '<button class="btn block">Enregistrer la clé</button></form>') +
+    '<p class="tiny muted" style="margin:0">La clé reste sur cet appareil : jamais synchronisée, jamais incluse dans les sauvegardes. Chaque analyse est facturée sur ton compte Anthropic (modèle ' + CLAUDE_MODEL + ' ; ordre de grandeur estimé : quelques dizaines de centimes par analyse, selon le nombre de photos et la longueur de la réponse).</p></section>';
 }
 function dedupSources(list) {
   const seen = new Set(); const out = [];
@@ -2059,10 +2243,89 @@ function inp(name, val, o = {}) { return '<input class="input" ' + (o.id ? 'id="
 function sel(name, options, val, o = {}) { return '<select class="input" name="' + name + '"' + (o.id ? ' id="' + o.id + '"' : '') + (o.extra || '') + '>' + options.map(x => opt(x[0], x[1], val)).join('') + '</select>'; }
 function chk(name, on, label) { return '<label class="row" style="min-height:40px"><input type="checkbox" name="' + name + '"' + (on ? ' checked' : '') + ' style="width:20px;height:20px"> <span>' + label + '</span></label>'; }
 const moneyIn = (name, cents, ph) => inp(name, centsToInput(cents), { mode: 'decimal', ph: ph || '0,00' });
+/* ---------- 4.7 Champ « aéroport » avec suggestions (base OurAirports chargée à la demande) ---------- */
+const AirportDB = {
+  idx: null, byCode: null, p: null,
+  load() {
+    if (this.idx) return Promise.resolve(this.idx);
+    if (!this.p) this.p = fetch('data/aeroports.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(d => {
+      let dn = null; try { dn = new Intl.DisplayNames(['fr'], { type: 'region' }); } catch { }
+      this.idx = airportIndex(d.rows, c => { try { return dn ? dn.of(c) : c; } catch { return c; } });
+      this.byCode = new Map(this.idx.map(a => [a.iata, a]));
+      for (const a of this.idx) if (!AIRPORTS[a.iata]) AIRPORT_EXTRA[a.iata] = [a.city || a.name, a.tz];
+      return this.idx;
+    }).catch(e => { this.p = null; throw e; });
+    return this.p;
+  },
+  get(code) { return (this.byCode && this.byCode.get(String(code || '').toUpperCase())) || null; },
+};
+function airportName(a) { return a.fr || (a.city && !norm(a.name).includes(norm(a.city)) ? a.city + ' · ' + a.name : a.name); }
+function airportHint(code) {
+  const a = AirportDB.get(code);
+  if (a) return airportName(a) + ' · ' + a.country + ' · ' + a.tz;
+  return AIRPORTS[code] ? AIRPORTS[code][0] + ' · ' + AIRPORTS[code][1] : '';
+}
+/* Champ : code à 3 lettres, ou ville / aéroport / pays → suggestions */
+function airportInput(name, val, ph) {
+  const v = String(val || '').toUpperCase();
+  return '<div class="ac">' + inp(name, v, { ph: ph || 'Code, ville ou pays', extra: ' autocomplete="off" spellcheck="false" data-input="acAirport" role="combobox" aria-autocomplete="list" aria-expanded="false"' }) +
+    '<div class="ac-list" role="listbox" hidden></div><div class="ac-hint tiny muted">' + esc(airportHint(v)) + '</div></div>';
+}
+/* Valeur saisie → code IATA (premier résultat si une ville a été tapée sans choisir) */
+async function resolveAirport(v) {
+  const t = String(v || '').trim(); if (!t) return '';
+  if (/^[A-Za-z]{3}$/.test(t)) return t.toUpperCase();
+  try { const r = airportSearch(await AirportDB.load(), t, 1); if (r.length) return r[0].iata; } catch { }
+  return t.toUpperCase().slice(0, 3);
+}
+function acClose(wrap) { const l = wrap && wrap.querySelector('.ac-list'); if (l) { l.hidden = true; const i = wrap.querySelector('input'); if (i) i.setAttribute('aria-expanded', 'false'); } }
+function acPickCode(wrap, code) {
+  const i = wrap.querySelector('input'); i.value = code;
+  wrap.querySelector('.ac-hint').textContent = airportHint(code);
+  acClose(wrap);
+  // Formulaire de vol : le fuseau horaire suit le code choisi
+  const tz = airportTz(code), f = i.form, tzIn = f && f.elements[i.name + 'Tz'];
+  if (tz && tzIn) tzIn.value = tz;
+}
+INP.acAirport = async el => {
+  const wrap = el.closest('.ac'), box = wrap.querySelector('.ac-list'), q = el.value.trim();
+  wrap.querySelector('.ac-hint').textContent = '';
+  if (q.length < 2) { acClose(wrap); return; }
+  try { await AirportDB.load(); } catch { box.innerHTML = '<div class="ac-empty">Base des aéroports indisponible (hors ligne au premier lancement ?) : saisis le code à 3 lettres.</div>'; box.hidden = false; return; }
+  if (el.value.trim() !== q) return;
+  const res = airportSearch(AirportDB.idx, q, 8);
+  box.innerHTML = res.length ? res.map((a, k) => '<button type="button" class="ac-item' + (k ? '' : ' on') + '" role="option" data-act="acPick" data-code="' + a.iata + '"><b>' + a.iata + '</b><span class="grow">' + esc(airportName(a)) + ' <span class="tiny muted">· ' + esc(a.country) + '</span></span></button>').join('') : '<div class="ac-empty">Aucun aéroport trouvé</div>';
+  box.hidden = false; el.setAttribute('aria-expanded', 'true');
+};
+ACT.acPick = el => acPickCode(el.closest('.ac'), el.dataset.code);
+ACT.acSet = el => { const wrap = document.querySelector('.ac input[name="' + el.dataset.name + '"]'); if (wrap) acPickCode(wrap.closest('.ac'), el.dataset.code); };
+// Garder le focus pendant le choix ; Entrée = premier résultat ; fermeture en quittant le champ
+document.addEventListener('pointerdown', e => { if (e.target.closest('.ac-list')) e.preventDefault(); else document.querySelectorAll('.ac-list:not([hidden])').forEach(l => { if (!l.parentElement.contains(e.target)) acClose(l.parentElement); }); });
+document.addEventListener('keydown', e => {
+  const i = e.target.closest && e.target.closest('.ac input'); if (!i) return;
+  const wrap = i.closest('.ac'), box = wrap.querySelector('.ac-list');
+  if (e.key === 'Escape') { acClose(wrap); return; }
+  if (e.key === 'Enter' && !box.hidden) { const b = box.querySelector('.ac-item.on') || box.querySelector('.ac-item'); if (b) { e.preventDefault(); acPickCode(wrap, b.dataset.code); } }
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !box.hidden) {
+    const items = [...box.querySelectorAll('.ac-item')]; if (!items.length) return; e.preventDefault();
+    let k = items.findIndex(x => x.classList.contains('on')); items.forEach(x => x.classList.remove('on'));
+    k = (k + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items[k].classList.add('on'); items[k].scrollIntoView({ block: 'nearest' });
+  }
+});
+document.addEventListener('focusout', e => {
+  const i = e.target.closest && e.target.closest('.ac input'); if (!i) return;
+  setTimeout(() => {
+    const wrap = i.closest('.ac'); if (!wrap || wrap.contains(document.activeElement)) return;
+    const v = i.value.trim();
+    if (/^[A-Za-z]{3}$/.test(v)) { if (v !== v.toUpperCase()) i.value = v.toUpperCase(); wrap.querySelector('.ac-hint').textContent = airportHint(i.value); }
+    acClose(wrap);
+  }, 150);
+});
+
 function pickFile(accept, multiple, capture) {
   return new Promise(res => {
     const i = document.createElement('input'); i.type = 'file'; if (accept) i.accept = accept; if (multiple) i.multiple = true; if (capture) i.setAttribute('capture', 'environment');
-    i.onchange = () => res([...i.files]); i.click();
+    i.onchange = () => res([...i.files]); i.oncancel = () => res([]); i.click();
   });
 }
 
@@ -2144,6 +2407,28 @@ function tripCard(t) {
     (st.total != null ? '<div class="stats"><div class="stat"><b>' + fmtMoneyShort(st.total, t.currency) + '</b><span>total</span></div><div class="stat"><b>' + fmtMoneyShort(st.perDay, t.currency) + '</b><span>par jour</span></div><div class="stat"><b>' + fmtMoneyShort(st.perPerson, t.currency) + '</b><span>par personne</span></div></div>' : '') +
     '</a>';
 }
+/* ---------- Accueil : salutation, prochain voyage, actions, historique ---------- */
+function greeting(d = new Date()) { const h = d.getHours(); return h < 5 ? 'Bonsoir' : h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir'; }
+function tripDaysCount(t) { return isISODate(t.dateStart) && isISODate(t.dateEnd) ? daysBetween(t.dateStart, t.dateEnd) + 1 : 0; }
+function heroCard(t, kind) {
+  const today = localISO(); let big, small, bar = '';
+  if (kind === 'cur') {
+    const n = tripDaysCount(t), k = daysBetween(t.dateStart, today) + 1;
+    big = 'Jour ' + k; small = 'sur ' + n; bar = '<div class="hero-bar"><i style="width:' + Math.min(100, Math.round(100 * k / Math.max(1, n))) + '%"></i></div>';
+  } else {
+    const n = daysBetween(today, t.dateStart);
+    big = n === 0 ? 'Aujourd\'hui' : n === 1 ? 'Demain' : 'J-' + n; small = n > 1 ? 'jours avant le départ' : 'bon voyage !';
+  }
+  return '<a class="hero' + (kind === 'cur' ? ' cur' : '') + '" href="#/v/' + t.where + '/' + t.id + '"><span class="hero-emoji">' + esc((t.emoji && t.emoji.trim()) || '✈️') + '</span>' +
+    '<div class="grow" style="min-width:0;z-index:1"><div class="hero-k">' + (kind === 'cur' ? 'En ce moment' : 'Prochain voyage') + '</div><div class="hero-t">' + esc(t.name || 'Sans nom') + '</div><div class="hero-s">' + esc(fmtRange(t.dateStart, t.dateEnd)) + (t.destination ? ' · ' + esc(t.destination) : '') + '</div>' + bar + '</div>' +
+    '<div class="hero-n"><b>' + big + '</b><span>' + small + '</span></div></a>';
+}
+function histItem(t) {
+  const st = t.stats || {}; const n = tripDaysCount(t);
+  return '<a class="hist" href="#/v/' + t.where + '/' + t.id + '"><span class="hist-e">' + esc((t.emoji && t.emoji.trim()) || '🧳') + '</span>' +
+    '<span class="grow" style="min-width:0"><b style="display:block">' + esc(t.name || 'Sans nom') + '</b><span class="small muted">' + esc(fmtRange(t.dateStart, t.dateEnd)) + (t.destination ? ' · ' + esc(t.destination) : '') + '</span></span>' +
+    '<span class="hist-a">' + (st.total != null ? fmtMoneyShort(st.total, t.currency) : '') + '<span>' + (n ? n + ' jour' + (n > 1 ? 's' : '') : '') + '</span></span></a>';
+}
 VIEWS.home = () => {
   const trips = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id);
   const today = localISO();
@@ -2152,15 +2437,33 @@ VIEWS.home = () => {
   const past = trips.filter(t => t.archived || t.dateEnd < today).sort((a, b) => String(b.dateStart).localeCompare(String(a.dateStart)));
   const other = trips.filter(t => !cur.includes(t) && !fut.includes(t) && !past.includes(t));
   const fam = LS.get('famille', []);
-  const sec = (title, list) => list.length ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">' + title + '</h2>' + list.map(tripCard).join('') + '</section>' : '';
-  return '<header class="topbar"><div class="title" style="padding-left:4px"><b style="font-size:22px">Carnet de voyage</b></div>' + syncBadge() + '<a class="iconbtn" href="#/reglages" aria-label="Réglages">' + ic('gear') + '</a></header>' +
+  const name = LS.get('myName', '') || (fam[0] && fam[0].name) || '';
+  const sub = cur.length ? 'Profitez bien du voyage !' : fut.length ? (daysBetween(today, fut[0].dateStart) <= 30 ? 'Le départ approche, tout est prêt ?' : 'Le prochain voyage se prépare ici.') : past.length ? 'Où partez-vous la prochaine fois ?' : 'Prêt à préparer votre premier voyage ?';
+  // Historique : chiffres cumulés et frise par année
+  const days = past.reduce((s, t) => s + tripDaysCount(t), 0);
+  const dests = new Set(past.map(t => norm(t.destination || t.name)).filter(Boolean)).size;
+  const spent = past.filter(t => (t.currency || 'EUR') === 'EUR' && t.stats && t.stats.total != null).reduce((s, t) => s + t.stats.total, 0);
+  const years = {}; for (const t of past) (years[String(t.dateStart || '').slice(0, 4) || '—'] ||= []).push(t);
+  const tile = (o) => (o.href ? '<a class="tile' + (o.primary ? ' primary' : '') + '" href="' + o.href + '">' : '<button class="tile' + (o.primary ? ' primary' : '') + '" data-act="' + o.act + '">') +
+    '<span class="ti" style="background:' + o.bg + '">' + o.e + '</span><b>' + o.t + '</b><span class="s">' + o.s + '</span>' + (o.href ? '</a>' : '</button>');
+  return '<header class="topbar"><div class="title" style="padding-left:4px"><b style="font-size:17px">Carnet de voyage</b></div>' + syncBadge() + '<a class="iconbtn" href="#/reglages" aria-label="Réglages">' + ic('gear') + '</a></header>' +
     '<div class="stack">' +
+    '<div class="hello"><h1>' + greeting() + (name ? ' ' + esc(name) : '') + ' 👋</h1><p>' + sub + '</p></div>' +
+    cur.map(t => heroCard(t, 'cur')).join('') + (fut[0] ? heroCard(fut[0], 'fut') : '') +
     (!fam.length ? '<div class="card info"><b>Bienvenue !</b><div class="small" style="margin-top:4px">1. Renseigne <a href="#/reglages">ta famille</a> une fois (voyageurs par défaut, dates de naissance pour les âges).<br>2. Crée un voyage, rejoins-en un avec un lien, ou restaure une sauvegarde (par ex. ton fichier de départ).</div></div>' : '') +
-    '<div class="grid2"><a class="btn primary" href="#/nouveau">' + ic('plus') + 'Nouveau voyage</a><button class="btn" data-act="joinLink">' + ic('link') + 'Rejoindre</button></div>' +
-    sec('En cours', cur) + sec('À venir', fut) + sec('Passés et archives', past) + sec('Autres', other) +
-    (!trips.length && App.tripsReady ? '<div class="card muted small">Aucun voyage pour l\'instant.</div>' : '') +
-    '<div class="grid2"><button class="btn" data-act="restoreFile">' + ic('upload') + 'Restaurer</button><a class="btn" href="#/comparer">' + ic('chart') + 'Comparer</a></div>' +
-    '<a class="btn dashed block" href="#/installer">' + ic('phone') + 'Installer sur mon téléphone</a>' +
+    '<div class="tiles">' +
+    tile({ href: '#/nouveau', primary: true, e: '✈️', bg: 'rgba(255,255,255,.18)', t: 'Nouveau voyage', s: 'Dates, vols, voyageurs' }) +
+    tile({ act: 'homeScan', e: '📝', bg: 'var(--warn-bg)', t: 'Programme papier', s: 'Photo d\'un programme, même manuscrit' }) +
+    tile({ act: 'homePast', e: '🗂️', bg: 'var(--ok-bg)', t: 'Voyage passé', s: 'Dépose tes documents, je reconstitue' }) +
+    tile({ act: 'joinLink', e: '🔗', bg: 'var(--info-bg)', t: 'Rejoindre', s: 'Avec un lien d\'invitation' }) +
+    '</div>' +
+    (fut.length > 1 ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">Ensuite</h2>' + fut.slice(1).map(tripCard).join('') + '</section>' : '') +
+    (other.length ? '<section class="stack"><h2 class="lbl" style="margin:8px 4px 0">Autres</h2>' + other.map(tripCard).join('') + '</section>' : '') +
+    (past.length ? '<section><div class="sec-h"><h2 class="lbl">Nos voyages</h2><a class="small" href="#/comparer">Comparer</a></div>' +
+      '<div class="kpis"><div class="kpi"><b>' + past.length + '</b><span>voyage' + (past.length > 1 ? 's' : '') + '</span></div><div class="kpi"><b>' + days + '</b><span>jours</span></div><div class="kpi"><b>' + dests + '</b><span>destination' + (dests > 1 ? 's' : '') + '</span></div><div class="kpi"><b>' + (spent ? fmtMoneyShort(spent, 'EUR') : '—') + '</b><span>dépensés</span></div></div>' +
+      Object.keys(years).sort().reverse().map(y => '<div class="year">' + esc(y) + '</div>' + years[y].map(histItem).join('')).join('') + '</section>' : '') +
+    (!trips.length && App.tripsReady ? '<div class="card muted small">Aucun voyage pour l\'instant : crée le premier, ou ajoute un voyage passé à partir de tes documents.</div>' : '') +
+    '<div class="grid2"><button class="btn" data-act="restoreFile">' + ic('upload') + 'Restaurer</button><a class="btn" href="#/installer">' + ic('phone') + 'Installer</a></div>' +
     '<p class="tiny muted" style="text-align:center">Version ' + APP_VERSION + ' · ' + (Cloud.ready ? 'synchro cloud active' : firebaseConfig() ? 'synchro cloud : connexion…' : 'mode local (synchro non configurée)') + '</p>' +
     '</div>';
 };
@@ -2185,7 +2488,6 @@ async function refreshLocalTrips() { App.localTrips = await Local.listTrips(); A
 /* ---------- Création d'un voyage ---------- */
 VIEWS.nouveau = () => {
   const fam = LS.get('famille', []);
-  const air = HOME_AIRPORTS.map(c => [c, c + ' · ' + AIRPORTS[c][0]]);
   const canCloud = Cloud.ready;
   return topbar('Nouveau voyage', 'Seuls le nom et les dates sont obligatoires', { back: '#/' }) +
     '<form data-form="newTrip" class="stack" style="max-width:720px">' +
@@ -2193,7 +2495,7 @@ VIEWS.nouveau = () => {
     '<div class="grid2" style="grid-template-columns:minmax(0,1fr) 80px">' + field('Nom du voyage', inp('name', '', { req: true, af: true, ph: 'Crète' })) + field('Emoji', inp('emoji', '', { ph: '🏖️' })) + '</div>' +
     field('Destination', inp('destination', '', { ph: 'Héraklion, Crète' })) +
     '<div class="grid2">' + field('Aller', inp('dateStart', '', { type: 'date', req: true })) + field('Retour', inp('dateEnd', '', { type: 'date', req: true })) + '</div>' +
-    '<div class="grid2">' + field('Aéroport de départ', sel('fromAirport', [['', '—'], ...air, ['autre', 'Autre…']], 'GVA')) + field('Aéroport d\'arrivée (code)', inp('toAirport', '', { ph: 'ACE' })) + '</div>' +
+    '<div class="grid2">' + field('Aéroport de départ', airportInput('fromAirport', 'GVA') + '<div class="chips">' + HOME_AIRPORTS.slice(0, 3).map(c => '<button type="button" class="chip" data-act="acSet" data-name="fromAirport" data-code="' + c + '">' + c + '</button>').join('') + '</div>') + field('Aéroport d\'arrivée', airportInput('toAirport', '', 'Code, ville ou pays (ex. Lanzarote)')) + '</div>' +
     field('Devise du voyage', sel('currency', [['EUR', 'Euro (€)'], ['CHF', 'Franc suisse'], ['GBP', 'Livre sterling'], ['USD', 'Dollar US'], ['MAD', 'Dirham'], ['NOK', 'Couronne norvégienne'], ['ISK', 'Couronne islandaise']], 'EUR')) +
     '</div>' +
     '<details class="card"><summary style="cursor:pointer;font-weight:600">Vols (facultatif, modifiables ensuite)</summary><div class="stack" style="margin-top:12px">' +
@@ -2219,12 +2521,20 @@ FORMS.newTrip = async (f, fd) => {
   const fam = LS.get('famille', []); let order = 0;
   fam.forEach((p, i) => { if (fd.get('fam' + i) === 'on') docs.travelers['t' + newId(10)] = { name: p.name, birth: p.birth || '', participe: p.participe !== false, famille: p.famille || '', order: order++ }; });
   for (const line of fv(fd, 'guests').split('\n')) { const [n, b] = line.split(',').map(x => (x || '').trim()); if (n) docs.travelers['t' + newId(10)] = { name: n, birth: isISODate(b) ? b : '', participe: true, famille: 'Invités', order: order++ }; }
-  const from = fv(fd, 'fromAirport') === 'autre' ? '' : fv(fd, 'fromAirport'), to = fv(fd, 'toAirport').toUpperCase();
+  await AirportDB.load().catch(() => { });
+  const from = await resolveAirport(fv(fd, 'fromAirport')), to = await resolveAirport(fv(fd, 'toAirport'));
   const comp = fv(fd, 'compagnie');
   if (fv(fd, 'allerDep') || fv(fd, 'allerNum')) docs.bookings['b' + newId(10)] = { type: 'vol', sens: 'aller', compagnie: comp, numero: fv(fd, 'allerNum'), from, to, fromTz: airportTz(from), toTz: airportTz(to), depDate: d0, depTime: fv(fd, 'allerDep'), arrDate: d0, arrTime: fv(fd, 'allerArr'), aVerifier: [] };
   if (fv(fd, 'retourDep') || fv(fd, 'retourNum')) docs.bookings['b' + newId(10)] = { type: 'vol', sens: 'retour', compagnie: comp, numero: fv(fd, 'retourNum'), from: to, to: from, fromTz: airportTz(to), toTz: airportTz(from), depDate: d1, depTime: fv(fd, 'retourDep'), arrDate: d1, arrTime: fv(fd, 'retourArr'), aVerifier: [] };
   const where = fd.get('where') === 'cloud' && Cloud.ready ? 'cloud' : 'local';
   const meFam = fam.findIndex(p => norm(p.name) === norm(LS.get('myName', '')));
+  await saveNewTrip(id, trip, docs, where);
+  if (meFam >= 0) { const tid = Object.entries(docs.travelers).find(([, v]) => norm(v.name) === norm(fam[meFam].name)); if (tid) { if (where === 'local') LS.set('me.' + id, tid[0]); else App.pendingMe = { trip: id, traveler: tid[0] }; } }
+  toast('Voyage créé');
+  go('#/v/' + where + '/' + id + '/programme');
+};
+
+async function saveNewTrip(id, trip, docs, where) {
   if (where === 'cloud') {
     await Cloud.createTrip({ ...trip, id }, docs, { meName: LS.get('myName', '') });
   } else {
@@ -2233,9 +2543,43 @@ FORMS.newTrip = async (f, fd) => {
     await Local.commit(id, ops, {});
     await refreshLocalTrips();
   }
-  if (meFam >= 0) { const tid = Object.entries(docs.travelers).find(([, v]) => norm(v.name) === norm(fam[meFam].name)); if (tid) { if (where === 'local') LS.set('me.' + id, tid[0]); else App.pendingMe = { trip: id, traveler: tid[0] }; } }
-  toast('Voyage créé');
-  go('#/v/' + where + '/' + id + '/programme');
+}
+function familyTravelers() {
+  const out = {}; LS.get('famille', []).forEach((p, i) => { out['t' + newId(10)] = { name: p.name, birth: p.birth || '', participe: p.participe !== false, famille: p.famille || '', order: i }; }); return out;
+}
+
+/* ---------- Depuis l'accueil : programme papier (photo) et voyage passé (documents) ---------- */
+ACT.homeScan = () => {
+  const today = localISO();
+  const trips = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id && !t.archived && !t.denied && String(t.dateEnd) >= today).sort((a, b) => String(a.dateStart).localeCompare(String(b.dateStart)));
+  openSheet('<div class="stack"><h2 style="font-size:18px">📝 Programme papier</h2><p class="small muted" style="margin:0">Prends en photo un programme, même manuscrit (ou choisis une photo, un PDF) : Claude le transforme en jours et en étapes cotées. Tu valides avant tout enregistrement.</p>' +
+    (trips.length ? '<div class="lbl">À quel voyage l\'ajouter ?</div>' + trips.map(t => '<button class="item" data-act="homeScanTo" data-id="' + esc(t.id) + '" data-where="' + t.where + '"><span style="font-size:22px">' + esc((t.emoji && t.emoji.trim()) || '✈️') + '</span><span class="grow"><span class="t" style="display:block">' + esc(t.name || 'Sans nom') + '</span><span class="s">' + esc(fmtRange(t.dateStart, t.dateEnd)) + '</span></span>' + ic('camera', 's') + '</button>').join('')
+      : '<div class="card info small">Aucun voyage en cours ou à venir : crée d\'abord le voyage (dates), puis ajoute le programme.</div>') +
+    '<button class="btn block" data-act="sheetGo" data-href="#/nouveau">' + ic('plus') + 'Créer un nouveau voyage</button></div>', { label: 'Programme papier' });
+};
+ACT.sheetGo = el => { closeSheet(); setTimeout(() => go(el.dataset.href), 80); };
+ACT.homeScanTo = el => {
+  const filesP = pickFile('image/*,application/pdf', true); // ouvert pendant l'appui : appareil photo ou galerie
+  const id = el.dataset.id, where = el.dataset.where;
+  App.imp = { trip: id, kind: 'programme', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} };
+  closeSheet(); setTimeout(() => go('#/v/' + where + '/' + id + '/imports'), 80);
+  filesP.then(files => { if (files.length) addSources(files); });
+};
+ACT.homePast = () => openSheet('<form data-form="homePast" class="stack"><h2 style="font-size:18px">🗂️ Voyage passé</h2>' +
+  '<p class="small muted" style="margin:0">Dépose les documents d\'un ancien voyage : programme, récap budgétaire (Word, Excel, PDF), mails de réservation, photos de tickets. Claude reconstitue le programme et les dépenses ; le voyage est archivé pour information.</p>' +
+  field('Nom (facultatif, sinon déduit des documents)', inp('name', '', { ph: 'Islande 2019' })) +
+  (Cloud.ready ? '<label class="row"><input type="radio" name="where" value="cloud" checked> <span>Synchronisé (visible par la famille)</span></label><label class="row"><input type="radio" name="where" value="local"> <span>Sur cet appareil seulement</span></label>' : '<input type="hidden" name="where" value="local">') +
+  '<button class="btn primary block">' + ic('upload') + 'Choisir les documents</button></form>', { label: 'Voyage passé' });
+FORMS.homePast = async (f, fd) => {
+  const filesP = pickFile(IMPORT_ACCEPT, true); // ouvert pendant l'appui (exigence du navigateur)
+  const where = fd.get('where') === 'cloud' && Cloud.ready ? 'cloud' : 'local';
+  const id = newId(20); const today = localISO();
+  const trip = { name: fv(fd, 'name') || 'Voyage passé', emoji: '', destination: '', dateStart: today, dateEnd: today, currency: 'EUR', gouts: {}, settings: {}, inviteToken: newId(24), archived: true, draftImport: true, schema: 1, createdAt: Date.now() };
+  closeSheet();
+  try { await saveNewTrip(id, trip, { travelers: familyTravelers() }, where); } catch (e) { toast('Création impossible : ' + e.message, 5000); return; }
+  App.imp = { trip: id, kind: 'archive', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} };
+  setTimeout(() => go('#/v/' + where + '/' + id + '/imports'), 80);
+  const files = await filesP; if (files.length) await addSources(files);
 };
 
 /* ---------- Rejoindre avec un lien ---------- */
@@ -2284,11 +2628,19 @@ VIEWS.reglages = () => {
     (FIREBASE_CONFIG ? '<p class="small muted" style="margin:0">Configuration intégrée à l\'app (projet ' + esc(FIREBASE_CONFIG.projectId) + ').</p>' : '') +
     '<details><summary class="small" style="cursor:pointer">Coller une configuration Firebase</summary><form data-form="setCfg" class="stack" style="margin-top:8px"><textarea class="input" name="cfg" rows="5" placeholder="const firebaseConfig = { apiKey: …, projectId: … }">' + esc(LS.get('firebaseConfig') ? JSON.stringify(LS.get('firebaseConfig'), null, 1) : '') + '</textarea><button class="btn block">Enregistrer et connecter</button>' + (LS.get('firebaseConfig') ? '<button type="button" class="btn danger block" data-act="cfgDel">Oublier cette configuration</button>' : '') + '</form></details>' +
     '<details><summary class="small" style="cursor:pointer">Règles de sécurité Firestore à coller dans la console</summary><pre class="code" id="rulesTxt">' + esc(RULES_TEXT) + '</pre><button class="btn block" data-act="copyRules">' + ic('copy') + 'Copier les règles</button></details></section>' +
+    claudeKeyCard() +
     '<section class="card stack"><div class="lbl">Sauvegarde (filet de sécurité indépendant du cloud)</div><div class="grid2"><button class="btn" data-act="backupAll">' + ic('download') + 'Tout sauvegarder</button><button class="btn" data-act="restoreFile">' + ic('upload') + 'Restaurer</button></div>' +
     '<p class="small muted" style="margin:0">Dernière sauvegarde : ' + (LS.get('lastBackup') ? esc(new Date(LS.get('lastBackup')).toLocaleString('fr-FR')) : 'jamais') + '.</p></section>' +
     '<section class="card stack"><div class="lbl">Application</div><a class="btn block" href="#/installer">' + ic('phone') + 'Installer sur mon téléphone</a><button class="btn block" data-act="checkUpdate">' + ic('refresh') + 'Rechercher une mise à jour</button>' +
     '<p class="tiny muted" style="margin:0">Version ' + APP_VERSION + '. Fond de carte © OpenStreetMap (contributeurs, ODbL) · itinéraires OSRM (serveurs publics FOSSGIS) · géocodage Nominatim · météo Open-Meteo (CC BY 4.0) · taux BCE via Frankfurter. Temps de route : estimations sans trafic.</p></section>' +
     '</div>';
+};
+FORMS.keySave = (f, fd) => { const k = fv(fd, 'key'); if (!/^sk-ant-/.test(k)) { toast('Clé inattendue : elle commence par sk-ant-'); return; } LS.set('anthropicKey', k); toast('Clé enregistrée sur cet appareil'); scheduleRender(); };
+ACT.keyDel = () => confirmSheet('Retirer la clé API de cet appareil ?', 'Retirer', () => { LS.del('anthropicKey'); scheduleRender(); }, true);
+ACT.keyTest = async () => {
+  toast('Test…');
+  try { const t = await claudeAnalyze('Réponds uniquement : OK', []); toast(/ok/i.test(t) ? 'Clé valide : Claude répond' : 'Réponse inattendue : ' + t.slice(0, 40)); }
+  catch (e) { toast('Échec : ' + e.message, 6000); }
 };
 ACT.setTheme = el => { LS.set('theme', el.dataset.v); applyTheme(); scheduleRender(); };
 function applyTheme() { document.documentElement.dataset.theme = LS.get('theme', 'auto'); }
@@ -3261,10 +3613,19 @@ FORMS.saveJJ = (f, fd) => {
   const j = { ...(T.trip.jourJ || {}), vehicule: fv(fd, 'vehicule'), unite: fv(fd, 'unite'), conso: fnum(fd, 'conso'), prixEnergie: fnum(fd, 'prixEnergie'), peage: fmoney(fd, 'peage'), routeManuel: fint(fd, 'routeManuel'), navetteMin: fint(fd, 'navetteMin'), pauseMin: fint(fd, 'pauseMin') };
   write([{ coll: '', id: T.id, patch: { jourJ: j } }]); toast('Enregistré');
 };
-ACT.jjPlace = el => {
-  const k = el.dataset.k; const f0 = flights().find(f => f.sens === 'aller') || flights()[0]; const ap = f0 && AIRPORTS[f0.from];
+ACT.jjPlace = async el => {
+  const k = el.dataset.k; const f0 = flights().find(f => f.sens === 'aller') || flights()[0];
+  if (k !== 'home') await AirportDB.load().catch(() => { });
+  const db = k !== 'home' && f0 ? AirportDB.get(f0.from) : null; const ap = f0 && (AIRPORTS[f0.from] || AIRPORT_EXTRA[f0.from]);
   const def = k === 'home' ? (LS.get('home') ? LS.get('home').label.split(' · ')[0] : '') : (ap ? 'Aéroport de ' + ap[0] : '');
-  openSheet('<form data-form="jjFind" class="stack"><input type="hidden" name="k" value="' + k + '"><h2 style="font-size:18px">' + (k === 'home' ? 'Domicile' : 'Aéroport de départ') + '</h2>' + inp('q', def || '', { af: true, req: true, ph: k === 'home' ? 'Commune' : 'Aéroport de Genève' }) + '<button class="btn primary block">' + ic('search') + 'Rechercher</button></form>', { label: 'Lieu' });
+  // Aéroport du vol aller connu de la base : coordonnées directes, sans recherche
+  const quick = db ? '<button type="button" class="btn primary block" data-act="jjAirportDb" data-code="' + db.iata + '">' + ic('pin') + esc(db.iata + ' · ' + airportName(db)) + '</button><div class="tiny muted" style="text-align:center">coordonnées de la base OurAirports · ou recherche un autre lieu :</div>' : '';
+  openSheet('<form data-form="jjFind" class="stack"><input type="hidden" name="k" value="' + k + '"><h2 style="font-size:18px">' + (k === 'home' ? 'Domicile' : 'Aéroport de départ') + '</h2>' + quick + inp('q', def || '', { af: !db, req: true, ph: k === 'home' ? 'Commune' : 'Aéroport de Genève' }) + '<button class="btn' + (db ? '' : ' primary') + ' block">' + ic('search') + 'Rechercher</button></form>', { label: 'Lieu' });
+};
+ACT.jjAirportDb = el => {
+  const a = AirportDB.get(el.dataset.code); if (!a) return;
+  const j = { ...(T.trip.jourJ || {}) }; j.airport = { label: 'Aéroport ' + airportName(a), lat: a.lat, lon: a.lon }; j.route = null;
+  write([{ coll: '', id: T.id, patch: { jourJ: j } }]); closeSheet(); toast('Aéroport enregistré');
 };
 FORMS.jjFind = async (f, fd) => {
   const k = fv(fd, 'k'), q = fv(fd, 'q');
@@ -3298,7 +3659,7 @@ ACT.editBooking = el => {
   let body = '';
   if (t === 'vol') body = '<div class="grid2">' + field('Sens', sel('sens', [['aller', 'Aller'], ['retour', 'Retour'], ['autre', 'Autre']], b.sens || 'aller')) + field('Compagnie', inp('compagnie', b.compagnie)) + '</div>' +
     '<div class="grid2">' + field('N° de vol', inp('numero', b.numero)) + field('Référence', inp('ref', b.ref)) + '</div>' +
-    '<div class="grid2">' + field('De (code)', inp('from', b.from, { ph: 'GVA' })) + field('Vers (code)', inp('to', b.to, { ph: 'ACE' })) + '</div>' +
+    '<div class="grid2">' + field('De', airportInput('from', b.from, 'GVA ou Genève')) + field('Vers', airportInput('to', b.to, 'ACE ou Lanzarote')) + '</div>' +
     '<div class="grid2">' + field('Départ (date)', inp('depDate', b.depDate || T.trip.dateStart, { type: 'date' })) + field('Départ (heure locale)', inp('depTime', b.depTime, { type: 'time' })) + '</div>' +
     '<div class="grid2">' + field('Arrivée (date)', inp('arrDate', b.arrDate || b.depDate || T.trip.dateStart, { type: 'date' })) + field('Arrivée (heure locale)', inp('arrTime', b.arrTime, { type: 'time' })) + '</div>' +
     '<div class="grid2">' + field('Fuseau départ', inp('fromTz', b.fromTz, { ph: 'déduit du code' })) + field('Fuseau arrivée', inp('toTz', b.toTz, { ph: 'déduit du code' })) + '</div>' +
@@ -3319,10 +3680,10 @@ ACT.editBooking = el => {
     ((b.aVerifier || []).length ? chk('verifOk', false, 'Tout est vérifié (' + esc(b.aVerifier.join(', ')) + ')') : '') +
     '<div class="grid2">' + (el.dataset.id ? '<button type="button" class="btn danger" data-act="delBooking" data-id="' + esc(el.dataset.id) + '">Supprimer</button>' : '<button type="button" class="btn" data-act="closeSheet">Annuler</button>') + '<button class="btn primary">Enregistrer</button></div></form>', { label: 'Réservation' });
 };
-FORMS.saveBooking = (f, fd) => {
+FORMS.saveBooking = async (f, fd) => {
   const id = fv(fd, 'id'); const t = fv(fd, 'type'); const d = { type: t, note: fv(fd, 'note') };
   const S = k => d[k] = fv(fd, k);
-  if (t === 'vol') { ['sens', 'compagnie', 'numero', 'ref', 'depDate', 'depTime', 'arrDate', 'arrTime', 'bagages'].forEach(S); d.from = fv(fd, 'from').toUpperCase(); d.to = fv(fd, 'to').toUpperCase(); d.fromTz = fv(fd, 'fromTz') || airportTz(d.from) || ''; d.toTz = fv(fd, 'toTz') || airportTz(d.to) || ''; d.prix = fmoney(fd, 'prix');
+  if (t === 'vol') { ['sens', 'compagnie', 'numero', 'ref', 'depDate', 'depTime', 'arrDate', 'arrTime', 'bagages'].forEach(S); await AirportDB.load().catch(() => { }); d.from = await resolveAirport(fv(fd, 'from')); d.to = await resolveAirport(fv(fd, 'to')); d.fromTz = fv(fd, 'fromTz') || airportTz(d.from) || ''; d.toTz = fv(fd, 'toTz') || airportTz(d.to) || ''; d.prix = fmoney(fd, 'prix');
     if (d.fromTz && !validTz(d.fromTz)) { toast('Fuseau de départ inconnu (ex. Europe/Paris)'); return; } if (d.toTz && !validTz(d.toTz)) { toast('Fuseau d\'arrivée inconnu (ex. Atlantic/Canary)'); return; }
     const dur = flightDurationMin(d); if (dur != null && dur <= 0) { toast('Arrivée avant le départ : vérifie dates, heures locales et fuseaux'); return; } }
   if (t === 'logement') { ['name', 'checkin', 'checkout', 'ref', 'avis'].forEach(S); d.prix = fmoney(fd, 'prix'); d.taxe = fmoney(fd, 'taxe'); const lat = fnum(fd, 'lat'), lon = fnum(fd, 'lon'); d.address = fv(fd, 'lieuQ'); d.lieu = lat != null ? { query: fv(fd, 'lieuQ'), lat, lon, label: fv(fd, 'lieuLabel') } : (d.address ? { query: d.address } : null); if (d.checkout && d.checkin && d.checkout <= d.checkin) { toast('Départ avant l\'arrivée'); return; } }
@@ -3429,29 +3790,33 @@ TRIP_VIEWS.imports = () => {
   const images = I.sources.filter(s => s.kind === 'image');
   return topbar(K.l, 'Imports via Claude', { back: tripUrl('imports') }).replace('href="' + tripUrl('imports') + '"', 'href="#" data-act="impReset"') + '<div class="stack" style="max-width:820px">' +
     // 1. Source
-    (I.kind !== 'generer' ? '<section class="card stack"><h2 class="lbl">1 · Source</h2><div class="drop" id="drop" tabindex="0">' + ic('upload') + '<div>Dépose des fichiers ici ou <button class="btn sm" data-act="impPick">choisis-les</button></div><div class="tiny">Mails .eml/.msg, PDF, texte, Excel, photos et captures</div></div>' +
-      (I.sources.length ? '<div class="list">' + I.sources.map((s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' + esc(s.kind) + (s.kind === 'image' ? ' · à joindre dans Claude' : ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + (s.empty ? ' · <span class="verif">aucun texte (PDF scanné ?) : joins-le dans Claude</span>' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>').join('') + '</div>' : '') +
+    (I.kind !== 'generer' ? '<section class="card stack"><h2 class="lbl">1 · Source</h2><div class="grid2"><button class="btn" data-act="impCamera">' + ic('camera') + 'Prendre en photo</button><button class="btn" data-act="impPick">' + ic('upload') + 'Choisir des fichiers</button></div><div class="drop" id="drop" tabindex="0"><div>… ou dépose-les ici</div><div class="tiny">Photos (même manuscrites), PDF, Word, mails .eml/.msg, Excel, texte</div></div>' +
+      (I.sources.length ? '<div class="list">' + I.sources.map((s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' + esc(s.kind) + (s.kind === 'image' ? ' · photo envoyée à Claude' : ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + (s.empty ? ' · <span class="verif">aucun texte lisible (scan ?) : le fichier est envoyé à Claude</span>' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>').join('') + '</div>' : '') +
       field('Ou colle un texte', '<textarea class="input" id="impText" data-input="impText" rows="4" placeholder="Programme, notes, texte d\'un mail…">' + esc(I.text) + '</textarea>') + '</section>' : '<section class="card small">Le prompt contient les dates, les logements, les âges des enfants jour par jour, vos goûts et la saison. Les étapes déjà prévues sont indiquées pour éviter les doublons.</section>') +
     // 2. Prompt
-    '<section class="card stack"><h2 class="lbl">2 · Prompt pour Claude</h2><button class="btn primary block" data-act="impBuild">' + ic('sparkle') + 'Préparer le prompt</button>' +
+    (hasClaudeKey() ? '<section class="card stack"><h2 class="lbl">2 · Analyse par Claude</h2><button class="btn primary block" data-act="impAnalyze"' + (I.busy ? ' disabled' : '') + '>' + ic('sparkle') + (I.busy ? 'Analyse en cours…' : 'Analyser avec Claude') + '</button><div id="impProg" class="small muted" style="text-align:center">' + (I.busy ? 'Envoi des documents…' : 'Photos, PDF scannés et texte sont envoyés ensemble ; rien n\'est enregistré sans ta validation.') + '</div></section>' : '') +
+    '<section class="card stack"><h2 class="lbl">' + (hasClaudeKey() ? 'Ou via l\'app Claude (copier-coller)' : '2 · Prompt pour Claude') + '</h2><button class="btn' + (hasClaudeKey() ? '' : ' primary') + ' block" data-act="impBuild">' + ic('sparkle') + 'Préparer le prompt</button>' + (hasClaudeKey() ? '' : '<p class="tiny muted" style="margin:0">Astuce : avec une clé API Claude (Réglages), l\'analyse se fait directement ici en un appui.</p>') +
     (I.prompts ? I.prompts.map((p, i) => '<div class="card tight" style="background:var(--card2)"><div class="row"><b class="grow">' + (I.prompts.length > 1 ? 'Partie ' + (i + 1) + '/' + I.prompts.length : 'Prompt') + '</b><span class="tiny muted">' + p.length + ' caractères</span></div><div class="grid2" style="margin-top:8px"><button class="btn" data-act="impCopy" data-i="' + i + '">' + ic('copy') + 'Copier</button><button class="btn" data-act="impShare" data-i="' + i + '">' + ic('share') + 'Partager vers Claude</button></div></div>').join('') +
-      (images.length || I.kind === 'programme' ? '<div class="banner small">' + ic('camera') + '<span>Dans Claude, <b>joins aussi</b> ' + (images.length ? images.map(s => esc(s.name)).join(', ') : 'la photo du programme manuscrit') + ' avant d\'envoyer.</span></div>' : '') +
+      (images.length || I.kind === 'programme' ? '<div class="banner small">' + ic('camera') + '<span>« Partager vers Claude » envoie le prompt <b>et</b> ' + (images.length ? 'les photos' : 'les fichiers') + '. Si Claude ne reçoit que le texte, joins-y ' + (images.length ? images.map(s => esc(s.name)).join(', ') : 'la photo du programme') + ' (le prompt est aussi copié).</span></div>' : '') +
       (I.prompts.length > 1 ? '<p class="small muted" style="margin:0">Données trop longues : envoie chaque partie dans une conversation, puis recolle chaque réponse ci-dessous (une à la fois).</p>' : '') : '') + '</section>' +
     // 3. Réponse
     '<section class="card stack"><h2 class="lbl">3 · Réponse de Claude</h2><textarea class="input" id="impAns" data-input="impAns" rows="5" placeholder="Colle ici toute la réponse (le bloc JSON est repéré automatiquement)">' + esc(I.answer) + '</textarea><button class="btn primary block" data-act="impParse">Analyser la réponse</button></section>' +
-    (I.result ? previewHTML(I) : '') + '</div>';
+    (I.result ? '<div id="impRes">' + previewHTML(I) + '</div>' : '') + '</div>';
 };
 ACT.impKind = el => { App.imp.kind = el.dataset.k; App.imp.prompts = null; App.imp.result = null; scheduleRender(); };
 ACT.impReset = () => { App.imp = null; scheduleRender(); };
 INP.impText = el => { App.imp.text = el.value; };
 INP.impAns = el => { App.imp.answer = el.value; };
-ACT.impPick = async () => { const files = await pickFile('.eml,.msg,.pdf,.txt,.csv,.xlsx,.xls,.json,image/*,message/rfc822,text/plain', true); await addSources(files); };
+const IMPORT_ACCEPT = '.eml,.msg,.pdf,.docx,.odt,.doc,.txt,.csv,.xlsx,.xls,.ods,.json,image/*,message/rfc822,text/plain';
+ACT.impPick = async () => { const files = await pickFile(IMPORT_ACCEPT, true); await addSources(files); };
+ACT.impCamera = async () => { const files = await pickFile('image/*', true, true); await addSources(files); };
 ACT.impDelSrc = el => { App.imp.sources.splice(+el.dataset.i, 1); App.imp.prompts = null; scheduleRender(); };
 async function addSources(files) {
   if (!files || !files.length) return;
   toast('Lecture de ' + files.length + ' fichier(s)…');
   for (const f of files) {
-    try { App.imp.sources.push(await extractFileText(f)); }
+    // Le fichier d'origine est gardé (en mémoire) pour l'envoyer à Claude : photos et PDF scannés
+    try { const src = await extractFileText(f); src.file = f; App.imp.sources.push(src); }
     catch (e) { console.error(e); App.imp.sources.push({ kind: 'erreur', name: f.name, text: '', empty: true }); toast('Lecture impossible : ' + f.name + ' (' + e.message + ')', 4000); }
   }
   const kept = dedupSources(App.imp.sources.filter(s => !s.dup));
@@ -3465,7 +3830,8 @@ function bindDrop() {
   z.ondrop = e => { e.preventDefault(); z.classList.remove('over'); addSources([...e.dataTransfer.files]); };
 }
 function promptCtx() { return { trip: T.trip, travelers: travelersSorted(), lodgings: lodgings() }; }
-ACT.impBuild = () => {
+ACT.impBuild = () => { if (buildImportPrompt()) scheduleRender(); };
+function buildImportPrompt() {
   const I = App.imp; const t = T.trip;
   const head = promptHeader(I.kind, promptCtx()) + '\n\n## Type attendu\n"type": "' + (I.kind === 'generer' ? 'programme' : I.kind) + '"';
   const chunks = [];
@@ -3485,19 +3851,42 @@ ACT.impBuild = () => {
     if (I.text.trim()) chunks.push('### Texte collé\n' + I.text.trim());
     if (!chunks.some(c => c.startsWith('### Source') || c.startsWith('### Texte'))) {
       if (I.kind === 'programme' || I.kind === 'depenses' || I.kind === 'archive') chunks.push('### Source\n[photo(s) ou capture(s) jointe(s) dans la conversation]');
-      else { toast('Ajoute au moins une source'); return; }
+      else { toast('Ajoute au moins une source'); return false; }
     }
   }
   I.prompts = splitPrompt(head, chunks, 30000);
-  scheduleRender();
-};
+  I.full = [head, ...chunks].join('\n\n');
+  return true;
+}
+/* Fichiers à transmettre tels quels : photos et PDF sans texte lisible (scans) */
+const importFiles = I => I.sources.filter(s => !s.dup && s.file && (s.kind === 'image' || (s.kind === 'pdf' && s.empty))).map(s => s.file);
 ACT.impCopy = async el => toast((await copyText(App.imp.prompts[+el.dataset.i])) ? 'Prompt copié : colle-le dans Claude' : 'Copie impossible');
-ACT.impShare = el => shareText(App.imp.prompts[+el.dataset.i], 'Prompt Carnet de voyage');
+ACT.impShare = async el => {
+  const text = App.imp.prompts[+el.dataset.i]; const files = +el.dataset.i === 0 ? importFiles(App.imp) : [];
+  if (files.length && navigator.canShare && navigator.canShare({ files })) {
+    await copyText(text);
+    try { await navigator.share({ title: 'Prompt Carnet de voyage', text, files }); } catch (e) { if (e.name !== 'AbortError') toast('Partage impossible : prompt copié, joins les photos dans Claude', 5000); }
+    return;
+  }
+  shareText(text, 'Prompt Carnet de voyage');
+};
+ACT.impAnalyze = async () => {
+  const I = App.imp; if (I.busy) return;
+  if (!buildImportPrompt()) return;
+  I.busy = true; scheduleRender();
+  try {
+    const ans = await claudeAnalyze(I.full, importFiles(I), n => { const el = $('#impProg'); if (el) el.textContent = 'Claude rédige… ' + n + ' caractères reçus'; });
+    I.answer = ans; I.busy = false; ACT.impParse(); toast('Analyse reçue : vérifie l\'aperçu');
+    setTimeout(() => { const r = $('#impRes'); if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120);
+  } catch (e) { I.busy = false; scheduleRender(); toast('Analyse impossible : ' + e.message, 7000); }
+};
 ACT.impParse = () => {
   const I = App.imp; const ans = ($('#impAns') || {}).value || I.answer; I.answer = ans;
   const r = extractJson(ans);
   if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
-  const n = normalizeImport(r.obj, { trip: T.trip, travelers: travelersSorted(), steps: live('steps'), expenses: live('expenses'), bookings: live('bookings') });
+  let tctx = T.trip;
+  if (T.trip.draftImport && r.obj.voyage) { const a = toDate(unwrap(r.obj.voyage.debut).v), b = toDate(unwrap(r.obj.voyage.fin).v); if (a && b && b >= a) tctx = { ...T.trip, dateStart: a, dateEnd: b, currency: String(unwrap(r.obj.voyage.devise).v || T.trip.currency || 'EUR').toUpperCase() }; }
+  const n = normalizeImport(r.obj, { trip: tctx, travelers: travelersSorted(), steps: live('steps'), expenses: live('expenses'), bookings: live('bookings') });
   n.fixes = r.fixes || [];
   I.result = n; I.sel = {};
   n.items.forEach((it, k) => { I.sel[k] = it.ok && !it.dup; });
@@ -3526,8 +3915,17 @@ function applyImport() {
   const I = App.imp; const R = I.result; const ops = [];
   // Nouveaux voyageurs (archive)
   for (const v of R.voyageurs || []) if (!travelersSorted().some(t => norm(t.name) === norm(v.name))) { const id = 't' + newId(10); ops.push({ coll: 'travelers', id, set: { name: v.name, birth: v.birth, participe: v.participe, famille: '', order: travelersSorted().length + ops.length } }); T.travelers[id] = { id, name: v.name, birth: v.birth }; }
-  // Infos du voyage si vides
-  if (R.voyage) { const p = {}; for (const k of ['destination', 'emoji']) if (!T.trip[k] && R.voyage[k]) p[k] = R.voyage[k]; if (Object.keys(p).length) ops.push({ coll: '', id: T.id, patch: p }); }
+  // Voyage créé depuis l'accueil pour être reconstitué : nom, dates, destination tirés des documents
+  if (T.trip.draftImport) {
+    const v = R.voyage || {}; const p = { draftImport: false };
+    const dates = R.items.filter((it, k) => I.sel[k] && it.ok && it.data && isISODate(it.data.date)).map(it => it.data.date).sort();
+    const d0 = v.dateStart || dates[0], d1 = v.dateEnd || dates[dates.length - 1];
+    if (isISODate(d0) && isISODate(d1) && d1 >= d0) { p.dateStart = d0; p.dateEnd = d1; }
+    if (v.name && (T.trip.name === 'Voyage passé' || !T.trip.name)) p.name = v.name;
+    for (const k of ['destination', 'emoji']) if (v[k] && !T.trip[k]) p[k] = v[k];
+    if (v.currency && v.currency !== T.trip.currency) p.currency = v.currency;
+    ops.push({ coll: '', id: T.id, patch: p });
+  } else if (R.voyage) { const p = {}; for (const k of ['destination', 'emoji']) if (!T.trip[k] && R.voyage[k]) p[k] = R.voyage[k]; if (Object.keys(p).length) ops.push({ coll: '', id: T.id, patch: p }); }
   const lastOrder = {}; const ids = travelersSorted().map(t => t.id);
   let n = 0;
   R.items.forEach((it, k) => {

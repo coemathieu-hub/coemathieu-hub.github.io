@@ -7,6 +7,9 @@ Application familiale pour préparer, vivre et clôturer un voyage :
 - Jour J (trajet domicile ↔ aéroport) et voiture de location ;
 - dépenses partagées (comme Tricount) ;
 - budget prévu et réel, récap de fin de voyage ;
+- historique des voyages, voyages passés reconstitués à partir de documents (Word, PDF, mails, photos) ;
+- programme papier (même manuscrit) pris en photo puis analysé par Claude ;
+- aéroports proposés pendant la saisie (code, ville, pays) ;
 - exports Word et impression.
 
 Elle est en ligne sur <https://coemathieu-hub.github.io/>. Elle s'installe sur l'écran d'accueil (PWA) ou en APK : voir **[TUTO_APK.md](TUTO_APK.md)** ([version page web](tuto-apk.html)).
@@ -19,6 +22,7 @@ Elle est en ligne sur <https://coemathieu-hub.github.io/>. Elle s'installe sur l
 | `manifest.webmanifest` | Description de l'app pour l'installation. |
 | `sw.js` | Service worker : garde l'app et ses bibliothèques pour le hors ligne. |
 | `icons/` | Icônes (192, 512, 512 adaptative, 180 pour iPhone). |
+| `data/aeroports.json` | Base des aéroports (3 220 aéroports avec vols commerciaux) : code IATA, nom, ville, pays, fuseau horaire, coordonnées. |
 | `firestore.rules` | Règles de sécurité Firestore, à coller dans la console Firebase. |
 | `android/` | Projet de l'APK (Trusted Web Activity). La clé `keystore.p12` y est ajoutée, chiffrée, par le workflow. |
 | `.github/workflows/apk.yml` | Fabrication, signature et publication de l'APK sur GitHub. |
@@ -35,7 +39,8 @@ Elle est en ligne sur <https://coemathieu-hub.github.io/>. Elle s'installe sur l
   - Connexion anonyme Firebase, puis invitation par lien ou QR code contenant un code secret.
   - Les règles Firestore n'ouvrent un voyage qu'à ses membres.
 - **Configuration cloud** : bloc `FIREBASE_CONFIG` (section 0 de `index.html`), ou collée dans **Réglages**, ou transmise par un lien d'invitation.
-- **IA sans clé.** L'app prépare un prompt pour Claude. La réponse, au format `carnet/1` (documenté dans la section 1.11), est validée puis affichée en aperçu avant intégration.
+- **IA sans clé par défaut.** L'app prépare un prompt pour Claude et le partage, photos comprises, vers l'app Claude. La réponse, au format `carnet/1` (documenté dans la section 1.11), est validée puis affichée en aperçu avant intégration.
+- **Analyse directe (facultative).** Avec une clé API Anthropic saisie dans Réglages, photos, PDF scannés et texte partent directement à l'API (modèle `claude-opus-5-5`, SDK officiel en mode navigateur), avec la même validation. La clé reste sur l'appareil : elle n'est ni synchronisée ni sauvegardée. Chaque analyse est facturée sur le compte Anthropic de la personne.
 - **Rien d'inventé.** Horaires, prix, règles locales, taux et infos pratiques sont saisis, importés ou marqués « à vérifier ». Les temps de route sont des **estimations OSRM sans trafic** (plus une marge famille), jamais présentés comme des temps Google.
 
 ## Données personnelles
@@ -54,10 +59,18 @@ Le fichier de départ (famille et voyages archivés) est fourni à part. Il s'im
 | Open-Meteo | Météo du jour | Usage non commercial, attribution CC BY 4.0 |
 | Frankfurter | Taux de change BCE | Proposé, toujours modifiable |
 | Google Maps | Navigation | Simples liens (3 étapes intermédiaires au plus par lien), sans API |
+| API Claude (Anthropic) | Analyse directe des imports | Facultative, clé personnelle saisie sur l'appareil |
+
+## Données intégrées
+
+| Données | Source | Licence |
+| --- | --- | --- |
+| Aéroports (`data/aeroports.json`) | [OurAirports](https://ourairports.com/data/), instantané 2023, aéroports avec code IATA et vols commerciaux | Domaine public |
+| Fuseaux horaires des aéroports | Calculés depuis les coordonnées avec [tz-lookup](https://github.com/photostructure/tz-lookup) | CC0 |
 
 ## Bibliothèques (versions figées)
 
-Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289 · docx 9.8.1 · postal-mime 4.0.3 · msgreader 1.28.0 · SheetJS 0.18.5 (via jsDelivr et gstatic).
+Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289 · docx 9.8.1 · postal-mime 4.0.3 · msgreader 1.28.0 · SheetJS 0.18.5 · SDK Anthropic 0.133.0 (via jsDelivr et gstatic). Les documents Word (.docx) et OpenDocument (.odt) sont lus sans bibliothèque, avec le décompresseur du navigateur.
 
 ## Développement
 
@@ -67,5 +80,6 @@ Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289
   - lancer `firebase emulators:start --only firestore,auth --project demo-carnet` (Firestore sur le port 8180, Auth sur 9199) ;
   - puis `DEVLIBS=<node_modules avec les bibliothèques ci-dessus> node tests/e2e-sync.mjs` ;
   - il vérifie : invitation, synchro en temps réel, hors ligne puis renvoi, historique, refus des intrus.
+- Test des nouveautés (accueil, aéroports, voyage passé depuis des documents, analyse directe avec une API simulée, programme papier) : `DEVLIBS=… node tests/e2e-nouveautes.mjs`. Il attend aussi `bundles/anthropic-sdk.mjs` à côté de `DEVLIBS` (SDK Anthropic groupé avec esbuild).
 - Chromium et Playwright sont nécessaires pour les tests de bout en bout. Les services externes y sont coupés, ce qui vérifie aussi les replis hors ligne.
 - Le test de recette sur les vrais voyages utilise le fichier de départ privé. Il reste hors du dépôt (`.gitignore`).
