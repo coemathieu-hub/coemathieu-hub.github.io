@@ -39,11 +39,11 @@ Elle est en ligne sur <https://coemathieu-hub.github.io/>. Elle s'installe sur l
   - Connexion anonyme Firebase, puis invitation par lien ou QR code contenant un code secret.
   - Les règles Firestore n'ouvrent un voyage qu'à ses membres.
 - **Configuration cloud** : bloc `FIREBASE_CONFIG` (section 0 de `index.html`), ou collée dans **Réglages**, ou transmise par un lien d'invitation.
-- **Import de documents, sans prompt.** Un seul bouton « Analyser » :
-  - sans clé API, l'analyse se fait sur le téléphone, gratuitement et hors ligne (section 1.11 bis) : dates et nom du voyage, lignes de budget (« Libellé : 120 euros », compléments, total indiqué contrôlé), programme daté (jours, cotations, horaires, prix), rappels en conseils, le reste en notes ;
-  - les photos, scans et écritures manuscrites ne sont lisibles que par Claude : avec une clé API Anthropic (Réglages), tout est envoyé à l'API (modèle `claude-opus-5-5`, SDK officiel en mode navigateur) ; sans clé, l'app envoie la demande et les photos à l'app Claude, puis on recolle sa réponse ;
+- **Import de documents, automatique.** Chaque document ajouté (photo, fichier, dépôt) est analysé aussitôt, sans bouton à presser ; « Analyser à nouveau » sert pour un texte collé :
+  - sans clé Gemini, l'analyse se fait sur le téléphone, gratuitement et hors ligne (section 1.11 bis) : dates et nom du voyage, lignes de budget (« Libellé : 120 euros », compléments, total indiqué contrôlé), programme daté (jours, cotations, horaires, prix), rappels en conseils, le reste en notes ;
+  - avec une clé Gemini (gratuite, Réglages), tous les documents sont lus par l'API Gemini, y compris photos, scans et écriture manuscrite : appel REST direct `generateContent` (alias `gemini-flash-latest`, repli `gemini-flash-lite-latest` puis modèle « flash » listé pour la clé), réponse JSON exigée. Si Gemini échoue (quota, réseau), l'analyse du téléphone prend le relais et l'erreur est affichée avec « Réessayer » ;
   - dans tous les cas, le résultat (format `carnet/1`) est validé puis montré en aperçu avant intégration. Pour un voyage à venir, un budget devient le budget prévu ; pour un voyage passé, des dépenses pour information.
-- **Clé API (facultative).** Elle reste sur l'appareil : ni synchronisée ni sauvegardée. Chaque analyse par Claude est facturée sur le compte Anthropic de la personne.
+- **Clé Gemini (facultative).** Elle reste sur l'appareil : ni synchronisée ni sauvegardée, envoyée uniquement dans l'en-tête `x-goog-api-key`. Les documents analysés partent chez Google : conditions de l'offre gratuite (quotas, usage des données, règles propres à l'Union européenne) à vérifier sur ai.google.dev/gemini-api/terms.
 - **Rien d'inventé.** Horaires, prix, règles locales, taux et infos pratiques sont saisis, importés ou marqués « à vérifier ». Les temps de route sont des **estimations OSRM sans trafic** (plus une marge famille), jamais présentés comme des temps Google.
 
 ## Données personnelles
@@ -62,7 +62,7 @@ Le fichier de départ (famille et voyages archivés) est fourni à part. Il s'im
 | Open-Meteo | Météo du jour | Usage non commercial, attribution CC BY 4.0 |
 | Frankfurter | Taux de change BCE | Proposé, toujours modifiable |
 | Google Maps | Navigation | Simples liens (3 étapes intermédiaires au plus par lien), sans API |
-| API Claude (Anthropic) | Analyse directe des imports | Facultative, clé personnelle saisie sur l'appareil |
+| API Gemini (Google) | Lecture des documents importés (photos, scans, manuscrits) | Facultative, clé personnelle saisie sur l'appareil |
 
 ## Données intégrées
 
@@ -73,7 +73,7 @@ Le fichier de départ (famille et voyages archivés) est fourni à part. Il s'im
 
 ## Bibliothèques (versions figées)
 
-Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289 · docx 9.8.1 · postal-mime 4.0.3 · msgreader 1.28.0 · SheetJS 0.18.5 · SDK Anthropic 0.133.0 (via jsDelivr et gstatic). Les documents Word (.docx) et OpenDocument (.odt) sont lus sans bibliothèque, avec le décompresseur du navigateur.
+Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289 · docx 9.8.1 · postal-mime 4.0.3 · msgreader 1.28.0 · SheetJS 0.18.5 (via jsDelivr et gstatic). L'API Gemini est appelée en REST, sans SDK. Les documents Word (.docx) et OpenDocument (.odt) sont lus sans bibliothèque, avec le décompresseur du navigateur.
 
 ## Développement
 
@@ -83,6 +83,6 @@ Firebase JS 12.19.0 · Leaflet 1.9.4 · qrcode-generator 2.0.4 · pdf.js 6.3.289
   - lancer `firebase emulators:start --only firestore,auth --project demo-carnet` (Firestore sur le port 8180, Auth sur 9199) ;
   - puis `DEVLIBS=<node_modules avec les bibliothèques ci-dessus> node tests/e2e-sync.mjs` ;
   - il vérifie : invitation, synchro en temps réel, hors ligne puis renvoi, historique, refus des intrus.
-- Test des nouveautés (accueil, aéroports, voyage passé depuis des documents, analyse directe avec une API simulée, programme papier) : `DEVLIBS=… node tests/e2e-nouveautes.mjs`. Il attend aussi `bundles/anthropic-sdk.mjs` à côté de `DEVLIBS` (SDK Anthropic groupé avec esbuild).
+- Test des nouveautés (accueil, aéroports, voyage passé depuis des documents, analyse automatique, Gemini simulé et repli en cas de quota atteint, programme papier) : `DEVLIBS=… node tests/e2e-nouveautes.mjs`.
 - Chromium et Playwright sont nécessaires pour les tests de bout en bout. Les services externes y sont coupés, ce qui vérifie aussi les replis hors ligne.
 - Le test de recette sur les vrais voyages utilise le fichier de départ privé. Il reste hors du dépôt (`.gitignore`).

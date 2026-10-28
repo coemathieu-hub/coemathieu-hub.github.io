@@ -251,6 +251,8 @@ textarea.input{min-height:96px;resize:vertical}
 pre.code{white-space:pre-wrap;word-break:break-word;background:var(--card2);padding:12px;border-radius:12px;font-size:12px;max-height:260px;overflow:auto}
 .drop{border:2px dashed var(--line2);border-radius:14px;padding:18px;text-align:center;color:var(--muted)}
 .drop.over{border-color:var(--accent);color:var(--accent-text)}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--line2);border-top-color:var(--accent);animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
 /* --- grands écrans (Z Fold déplié, tablette, ordinateur) --- */
 @media (min-width:640px){
   .two{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:14px;align-items:start}
@@ -297,7 +299,7 @@ pre.code{white-space:pre-wrap;word-break:break-word;background:var(--card2);padd
    d'invitation.
    ===================================================================== */
 const FIREBASE_CONFIG = null;
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 const APP_URL = 'https://coemathieu-hub.github.io/';
 const APK_URL = 'https://github.com/coemathieu-hub/coemathieu-hub.github.io/releases/latest/download/carnet-de-voyage.apk';
 
@@ -312,7 +314,6 @@ const LIBS = {
   postalMime: 'https://cdn.jsdelivr.net/npm/postal-mime@4.0.3/+esm',
   msgreader: 'https://cdn.jsdelivr.net/npm/@kenjiuno/msgreader@1.28.0/+esm',
   xlsx: 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js',
-  anthropic: 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.133.0/+esm',
 };
 
 /* Services publics sans clé (conditions d'usage : voir README) */
@@ -852,7 +853,7 @@ function ruleHits(c) {
 /*
   Calcule les conseils de tous les jours d'un voyage.
   dayCtxs : [{ date, ctx, fullDay(bool) }]
-  stored : conseils enregistrés (états des règles et conseils Claude / moi)
+  stored : conseils enregistrés (états des règles et conseils IA / moi)
   Renvoie { byDay: {date: {tips:[], routine:[]}}, routineRules: [{ruleId, text, label}] }
 */
 function computeTips(dayCtxs, stored = [], settings = DEFAULT_SETTINGS) {
@@ -937,7 +938,7 @@ function gmapsLinks(points, maxWay = 3) {
 }
 function gmapsSearch(q) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
 
-/* ---------- 1.11 Import Claude : schéma carnet/1, lecture tolérante, validation ---------- */
+/* ---------- 1.11 Import IA : schéma carnet/1, lecture tolérante, validation ---------- */
 /*
   SCHÉMA carnet/1 (clés en français, valeurs simples). Tout champ incertain peut être
   remplacé par { "a_verifier": true, "valeur": …, "note": "…" }.
@@ -963,7 +964,7 @@ function gmapsSearch(q) { return 'https://www.google.com/maps/search/?api=1&quer
                       "tenue", "paiement": "cb|especes", "meteo_requise", "plan_b",
                       "alternatives": [ { "nom", "type", "cotation", "note" } ], "lien", "notes",
                       "statut": "prevu|fait|pas-le-temps|abandonne" } ] } ],
-    "conseils":   [ { "date": "AAAA-MM-JJ ou null", "texte", "origine": "claude|moi", "a_verifier": true } ],
+    "conseils":   [ { "date": "AAAA-MM-JJ ou null", "texte", "origine": "ia|moi", "a_verifier": true } ],
     "depenses":   [ { "type": "depense|revenu|transfert", "titre", "montant", "devise", "categorie", "date",
                       "paye_par", "vers", "partage": "egal|aucun", "participants": ["Prénom"], "note" } ],
     "budget":     [ { "categorie", "montant", "note" } ],
@@ -1109,7 +1110,7 @@ function normalizeImport(obj, ctx = {}) {
     const date = c.date ? toDate(unwrap(c.date).v) : '';
     if (!text) { it.ok = false; it.errors.push('texte vide'); }
     if (date === null) it.warnings.push('date illisible : conseil global');
-    const orig = norm(unwrap(c.origine).v) === 'moi' ? 'moi' : 'claude';
+    const orig = norm(unwrap(c.origine).v) === 'moi' ? 'moi' : 'claude'; // 'claude' : valeur stockée historique pour « proposé par l'IA »
     it.data = { kind: 'custom', date: date || '', text, origine: orig, aVerifier: orig === 'claude' ? (c.a_verifier !== false) : !!c.a_verifier, checked: false };
     items.push(it);
   }
@@ -1207,7 +1208,7 @@ const unreadableRatio = t => { if (!t) return 0; let bad = 0; for (const ch of t
    Reconnaît : dates du voyage (« du 12 au 19 août 2026 »), nom (titre du document), lignes de budget
    (« Libellé : 120 euros », plusieurs montants par ligne, total indiqué contrôlé), programme daté
    (« Lundi 17 août… », « 17/08… », « Jour 3 », cotations +/++/+++, horaires, prix par adulte).
-   Tout le reste est gardé en notes. Résultat : un objet carnet/1, validé comme une réponse de Claude. */
+   Tout le reste est gardé en notes. Résultat : un objet carnet/1, validé comme une réponse de l'IA. */
 const MOIS_IDX = { janv: 1, janvier: 1, fev: 2, fevr: 2, fevrier: 2, mars: 3, avr: 4, avril: 4, mai: 5, juin: 6, juil: 7, juillet: 7, aout: 8, sept: 9, septembre: 9, oct: 10, octobre: 10, nov: 11, novembre: 11, dec: 12, decembre: 12 };
 const MOIS_RX = 'janv(?:ier)?|f[ée]vr?(?:ier)?|mars|avr(?:il)?|mai|juin|juil(?:let)?|ao[uû]t|sept(?:embre)?|oct(?:obre)?|nov(?:embre)?|d[ée]c(?:embre)?';
 const moisNum = w => MOIS_IDX[norm(w)] || null;
@@ -1350,7 +1351,7 @@ function routeBudget(obj, planned, date) {
   return obj;
 }
 
-/* ---------- 1.12 Prompts pour Claude ---------- */
+/* ---------- 1.12 Prompts pour l'IA (Gemini) ---------- */
 const PROMPT_RULES = [
   'Réponds UNIQUEMENT par un bloc ```json``` au format carnet/1 décrit ci-dessous, sans texte autour.',
   'N\'invente RIEN : horaires, prix, âges de gratuité, règles locales, infos pratiques. Si une info manque ou est incertaine, mets {"a_verifier": true, "valeur": <ta meilleure lecture ou null>, "note": "…"} et ajoute une phrase dans "incertitudes".',
@@ -1409,7 +1410,7 @@ const PROMPT_SCHEMA = '```json\n' + JSON.stringify({
   voitures: [{ loueur: '', agence: '', prise_date: '', prise_heure: '', retour_date: '', retour_heure: '', ref: '', prix: 0, franchise: '', assurance: '', carburant: '', options: ['siège auto'], options_prix: 0, avis: '' }],
   parkings: [{ nom: '', ref: '', prix: 0, terminal: '', navette: '' }],
   jours: [{ date: 'AAAA-MM-JJ', notes: '', etapes: [{ nom: '', type: 'visite|rando|balade|plage|panorama|resto|musee|piscine|village|trajet', cotation: 3, duree_min: 60, route_min: 25, route_note: 'LZ-30', heure_fixe: '', recherche: 'nom + commune', prix_adulte: 9, prix_enfant: null, age_enfant_max: null, gratuit_sous_age: null, reservation: 'oui|non', poussette: 'ok|porte-bebe|non', restauration: 'oui|limitee|non', baignade: false, effort: { duree_min: 60, distance_km: null, denivele_m: null, terrain: '' }, exposition: ['soleil', 'vent'], frequentation: 'forte|', tenue: '', paiement: 'cb|especes', meteo_requise: 'temps dégagé', plan_b: '', alternatives: [{ nom: '', type: 'resto', cotation: 2, note: '' }], lien: '', notes: '', statut: 'prevu|fait|pas-le-temps|abandonne' }] }],
-  conseils: [{ date: 'AAAA-MM-JJ', texte: '', origine: 'claude|moi', a_verifier: true }],
+  conseils: [{ date: 'AAAA-MM-JJ', texte: '', origine: 'ia|moi', a_verifier: true }],
   depenses: [{ type: 'depense|revenu|transfert', titre: '', montant: 0, devise: 'EUR', categorie: CATEGORIES.map(c => c.k).join('|'), date: '', paye_par: 'Prénom', vers: '', partage: 'egal|aucun', participants: ['Prénom'], note: '' }],
   budget: [{ categorie: 'vol', montant: 0, note: '' }],
   notes: 'remarques générales utiles (à refaire, à éviter, infos pratiques notées dans les documents)',
@@ -2169,7 +2170,7 @@ async function extractFileText(file) {
     let text = '';
     for (let i = 1; i <= Math.min(doc.numPages, 40); i++) { const p = await doc.getPage(i); const c = await p.getTextContent(); text += c.items.map(x => x.str).join(' ') + '\n'; }
     text = text.trim();
-    // Scan ou écriture manuscrite : pas (ou presque pas) de texte → lecture par Claude
+    // Scan ou écriture manuscrite : pas (ou presque pas) de texte → lecture par Gemini
     return { kind: 'pdf', name: file.name, text, empty: letterCount(text) < 40 };
   }
   const text = (await file.text()).trim();
@@ -2188,68 +2189,95 @@ async function sheetText(file, buf) {
   const text = wb.SheetNames.map(n => '### Feuille ' + n + '\n' + window.XLSX.utils.sheet_to_csv(wb.Sheets[n], { FS: ';' })).join('\n\n');
   return { kind: 'tableur', name: file.name, text };
 }
-/* ---------- Analyse directe par Claude (facultatif : clé API Anthropic gardée sur cet appareil) ----------
-   Sans clé, l'app prépare le prompt et le partage vers l'app Claude (copier-coller). Avec une clé, elle envoie
-   le prompt, les photos et les PDF scannés à l'API, puis valide la réponse comme un collage. */
-const CLAUDE_MODEL = 'claude-opus-5-5';
-const hasClaudeKey = () => !!LS.get('anthropicKey', '');
+/* ---------- Lecture par Gemini (clé API Google gardée sur cet appareil) ----------
+   Avec une clé, l'app envoie le prompt, les textes extraits, les photos et les PDF scannés à l'API Gemini
+   (appel REST direct, sans SDK) et valide la réponse comme un import carnet/1. Sans clé : analyse locale. */
+const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/';
+const GEMINI_MODELS = ['gemini-flash-latest', 'gemini-flash-lite-latest']; // alias tenus à jour par Google
+const hasGeminiKey = () => !!LS.get('geminiKey', '');
 function blobToBase64(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = () => rej(r.error); r.readAsDataURL(blob); }); }
 /* Photo → JPEG de 2000 px au plus (lisible pour l'écriture manuscrite, léger à envoyer) */
-async function imageForClaude(file) {
+async function imageForAI(file) {
   try {
     const bmp = await createImageBitmap(file); const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
     const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
     c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
     const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85));
-    return { media_type: 'image/jpeg', data: await blobToBase64(blob) };
+    return { mimeType: 'image/jpeg', data: await blobToBase64(blob) };
   } catch {
-    if (!/^image\/(jpeg|png|gif|webp)$/.test(file.type)) throw new Error('format de photo non pris en charge (' + (file.type || file.name) + ') : utilise JPEG ou PNG');
-    return { media_type: file.type, data: await blobToBase64(file) };
+    // Photo que le navigateur ne sait pas décoder (HEIC sur certains Android) : Gemini la lit telle quelle
+    const h = String.fromCharCode(...new Uint8Array(await file.slice(0, 12).arrayBuffer()));
+    const mime = /^image\/(jpeg|png|webp|heic|heif)$/.test(file.type) ? file.type : h.slice(4, 8) === 'ftyp' && /^(heic|heix|hevc|mif1|msf1)/.test(h.slice(8, 12)) ? 'image/heic' : '';
+    if (!mime) throw new Error('format de photo non pris en charge (' + (file.type || file.name) + ') : utilise JPEG ou PNG');
+    return { mimeType: mime, data: await blobToBase64(file) };
   }
 }
-async function claudeAnalyze(promptText, files, onText) {
-  const key = LS.get('anthropicKey', ''); if (!key) throw new Error('aucune clé API dans les Réglages');
-  const SDK = await import(LIBS.anthropic);
-  const client = new SDK.default({ apiKey: key, dangerouslyAllowBrowser: true });
-  const content = [];
-  let pdfBytes = 0;
+async function geminiFetch(path, body, key, signal) {
+  let r;
+  try { r = await fetch(GEMINI_API + path, { method: body ? 'POST' : 'GET', headers: { 'x-goog-api-key': key, ...(body ? { 'content-type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined, signal }); }
+  catch (e) { if (e.name === 'AbortError') throw new Error('Gemini ne répond pas (délai dépassé) : réessaie'); throw new Error('connexion à Gemini impossible (hors ligne ?)'); }
+  const j = await r.json().catch(() => ({}));
+  if (r.ok) return j;
+  const m = (j.error && j.error.message) || '', st = (j.error && j.error.status) || '';
+  const err = new Error(
+    r.status === 429 ? 'quota gratuit Gemini atteint : réessaie dans une minute (ou demain si la limite du jour est atteinte)'
+      : /api key not valid|api_key_invalid/i.test(m) || st === 'UNAUTHENTICATED' || r.status === 401 ? 'clé Gemini refusée : vérifie-la dans les Réglages'
+      : r.status === 403 ? 'clé Gemini sans accès à l\'API (' + m.slice(0, 120) + ')'
+      : r.status === 400 && /location is not supported|user location/i.test(m) ? 'Gemini n\'est pas disponible depuis ce pays avec cette clé'
+      : r.status === 400 ? 'demande refusée par Gemini : ' + m.slice(0, 160)
+      : 'erreur Gemini (' + r.status + ')');
+  err.status = r.status; throw err;
+}
+/* Modèle de repli si les alias ne répondent pas : le plus récent « flash » proposé à cette clé */
+async function geminiListModels(key) {
+  const j = await geminiFetch('models?pageSize=200', null, key);
+  return (j.models || []).filter(x => (x.supportedGenerationMethods || []).includes('generateContent') && /flash/.test(x.name) && !/tts|image|live|audio|embed|robotics|preview|exp/.test(x.name))
+    .map(x => x.name.replace(/^models\//, '')).sort().reverse();
+}
+async function geminiAnalyze(promptText, files, onTick) {
+  const key = LS.get('geminiKey', ''); if (!key) throw new Error('aucune clé Gemini dans les Réglages');
+  const parts = [];
+  let bytes = promptText.length;
   for (const f of files) {
-    if ((f.type || '').startsWith('image/')) { const im = await imageForClaude(f); content.push({ type: 'image', source: { type: 'base64', media_type: im.media_type, data: im.data } }); }
-    else { pdfBytes += f.size; content.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: await blobToBase64(f) } }); }
+    const im = f.kind === 'image' ? await imageForAI(f.file) : { mimeType: 'application/pdf', data: await blobToBase64(f.file) }; // type d'après le contenu, pas d'après le nom
+    bytes += im.data.length; parts.push({ inlineData: im });
   }
-  if (pdfBytes > 20e6) throw new Error('PDF trop lourds pour un envoi (20 Mo au plus) : envoie-les en plusieurs fois');
-  content.push({ type: 'text', text: promptText });
+  if (bytes > 19e6) throw new Error('documents trop lourds pour un envoi (20 Mo au plus) : envoie-les en plusieurs fois');
+  parts.push({ text: promptText });
+  const body = { contents: [{ role: 'user', parts }], generationConfig: { responseMimeType: 'application/json' } };
+  const t0 = Date.now(); const tick = setInterval(() => onTick && onTick(Math.round((Date.now() - t0) / 1000)), 1000);
+  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 240000);
   try {
-    const stream = client.beta.messages.stream({
-      model: CLAUDE_MODEL, max_tokens: 32000,
-      // Refus éventuel d'un filtre de sécurité : l'API relance la demande sur le modèle de secours recommandé
-      betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
-      output_config: { effort: 'high' },
-      messages: [{ role: 'user', content }],
-    });
-    let n = 0; stream.on('text', t => { n += t.length; if (onText) onText(n); });
-    const msg = await stream.finalMessage();
-    if (msg.stop_reason === 'refusal') throw new Error('Claude a refusé d\'analyser ces documents' + (msg.stop_details && msg.stop_details.explanation ? ' (' + msg.stop_details.explanation + ')' : ''));
-    const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
-    if (msg.stop_reason === 'max_tokens') toast('Réponse tronquée (trop longue) : envoie les documents en plusieurs fois', 6000);
-    return text;
-  } catch (e) {
-    if (e instanceof SDK.AuthenticationError) throw new Error('clé API refusée : vérifie-la dans les Réglages');
-    if (e instanceof SDK.PermissionDeniedError) throw new Error('clé API sans accès à ce modèle');
-    if (e instanceof SDK.RateLimitError) throw new Error('trop de demandes ou crédit épuisé : réessaie plus tard');
-    if (e instanceof SDK.BadRequestError) throw new Error('demande refusée par l\'API : ' + (e.message || '').slice(0, 160));
-    if (e instanceof SDK.APIConnectionError) throw new Error('connexion à Claude impossible (hors ligne ?)');
-    if (e instanceof SDK.APIError) throw new Error('erreur de l\'API Claude (' + (e.status || '?') + ')');
-    throw e;
-  }
+    let models = [...GEMINI_MODELS], listed = false, retried = false, last;
+    while (models.length) {
+      const model = models[0];
+      try {
+        const j = await geminiFetch('models/' + model + ':generateContent', body, key, ctl.signal);
+        if (j.promptFeedback && j.promptFeedback.blockReason) throw new Error('Gemini a refusé ces documents (' + j.promptFeedback.blockReason + ')');
+        const c = (j.candidates || [])[0];
+        if (!c) throw new Error('réponse vide de Gemini');
+        const text = ((c.content && c.content.parts) || []).filter(x => x.text && !x.thought).map(x => x.text).join('');
+        if (c.finishReason === 'MAX_TOKENS') toast('Réponse tronquée (trop longue) : envoie les documents en plusieurs fois', 6000);
+        else if (c.finishReason && c.finishReason !== 'STOP') throw new Error('Gemini a interrompu sa réponse (' + c.finishReason + ')');
+        return text;
+      } catch (e) {
+        last = e;
+        if (e.status === 503 || e.status === 500) { if (!retried) { retried = true; await new Promise(r => setTimeout(r, 2500)); continue; } models.shift(); retried = false; continue; }
+        if (e.status === 404) { models.shift(); if (!models.length && !listed) { listed = true; models = (await geminiListModels(key)).slice(0, 2); } continue; }
+        throw e;
+      }
+    }
+    throw last || new Error('aucun modèle Gemini disponible pour cette clé');
+  } finally { clearInterval(tick); clearTimeout(timer); }
 }
-function claudeKeyCard() {
-  const k = LS.get('anthropicKey', '');
-  return '<section class="card stack"><div class="lbl">Analyse directe par Claude (facultatif)</div>' +
-    '<p class="small muted" style="margin:0">Sans clé, les imports passent par l\'app Claude (copier-coller), sans frais. Avec une clé API Anthropic, photos et documents sont analysés directement ici, en un appui.</p>' +
+function geminiKeyCard() {
+  const k = LS.get('geminiKey', '');
+  return '<section class="card stack"><div class="lbl">Lecture des photos et de l\'écriture manuscrite (Gemini)</div>' +
+    '<p class="small muted" style="margin:0">Avec une clé Gemini (gratuite), chaque document ajouté à un import est lu automatiquement : photos, scans, programmes manuscrits, mails, réservations. Sans clé : analyse sur le téléphone, limitée aux textes tapés (budgets, programmes, notes).</p>' +
     (k ? '<div class="row"><span class="chip okc">' + ic('check', 's') + 'Clé enregistrée · …' + esc(k.slice(-4)) + '</span><span class="grow"></span><button class="btn sm" data-act="keyTest">Tester</button><button class="btn sm danger" data-act="keyDel">Retirer</button></div>'
-      : '<form data-form="keySave" class="stack">' + inp('key', '', { type: 'password', ph: 'sk-ant-…', req: true, extra: ' autocomplete="off"' }) + '<button class="btn block">Enregistrer la clé</button></form>') +
-    '<p class="tiny muted" style="margin:0">La clé reste sur cet appareil : jamais synchronisée, jamais incluse dans les sauvegardes. Chaque analyse est facturée sur ton compte Anthropic (modèle ' + CLAUDE_MODEL + ' ; ordre de grandeur estimé : quelques dizaines de centimes par analyse, selon le nombre de photos et la longueur de la réponse).</p></section>';
+      : '<a class="btn block" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">' + ic('key', 's') + '1. Obtenir une clé gratuite (compte Google)</a>' +
+      '<form data-form="keySave" class="stack">' + inp('key', '', { type: 'password', ph: '2. Colle la clé ici (AIza…)', req: true, extra: ' autocomplete="off"' }) + '<button class="btn primary block">Enregistrer la clé</button></form>') +
+    '<p class="tiny muted" style="margin:0">La clé reste sur cet appareil : jamais synchronisée, jamais incluse dans les sauvegardes. Les documents analysés sont envoyés à Google. Quota gratuit limité par minute et par jour. Conditions Google à vérifier sur ai.google.dev/gemini-api/terms (règles particulières pour l\'Union européenne). Évite d\'y envoyer pièces d\'identité et données bancaires.</p></section>';
 }
 function dedupSources(list) {
   const seen = new Set(); const out = [];
@@ -2697,7 +2725,7 @@ VIEWS.home = () => {
     (!fam.length ? '<div class="card info"><b>Bienvenue !</b><div class="small" style="margin-top:4px">1. Renseigne <a href="#/reglages">ta famille</a> une fois (voyageurs par défaut, dates de naissance pour les âges).<br>2. Crée un voyage, rejoins-en un avec un lien, ou restaure une sauvegarde (par ex. ton fichier de départ).</div></div>' : '') +
     '<div class="tiles">' +
     tile({ href: '#/nouveau', primary: true, e: '✈️', bg: 'rgba(255,255,255,.18)', t: 'Nouveau voyage', s: 'Dates, vols, voyageurs' }) +
-    tile({ act: 'homeScan', e: '📝', bg: 'var(--warn-bg)', t: 'Programme papier', s: 'Photo d\'un programme, même manuscrit (lu par Claude)' }) +
+    tile({ act: 'homeScan', e: '📝', bg: 'var(--warn-bg)', t: 'Programme papier', s: 'Photo d\'un programme, même manuscrit' }) +
     tile({ act: 'homePast', e: '📂', bg: 'var(--ok-bg)', t: 'Importer', s: 'Budget, programme, notes d\'un voyage passé ou à venir' }) +
     tile({ act: 'joinLink', e: '🔗', bg: 'var(--info-bg)', t: 'Rejoindre', s: 'Avec un lien d\'invitation' }) +
     '</div>' +
@@ -2797,7 +2825,7 @@ function familyTravelers() {
 ACT.homeScan = () => {
   const today = localISO();
   const trips = [...App.localTrips, ...App.cloudTrips].filter(t => t && t.id && !t.archived && !t.denied && String(t.dateEnd) >= today).sort((a, b) => String(a.dateStart).localeCompare(String(b.dateStart)));
-  openSheet('<div class="stack"><h2 style="font-size:18px">📝 Programme papier</h2><p class="small muted" style="margin:0">Prends en photo un programme, même manuscrit (ou choisis une photo, un PDF) : Claude le transforme en jours et en étapes cotées. Tu valides avant tout enregistrement.</p>' +
+  openSheet('<div class="stack"><h2 style="font-size:18px">📝 Programme papier</h2><p class="small muted" style="margin:0">Prends en photo un programme, même manuscrit (ou choisis une photo, un PDF) : il est lu automatiquement et transformé en jours et en étapes cotées. Tu valides avant tout enregistrement.</p>' +
     (trips.length ? '<div class="lbl">À quel voyage l\'ajouter ?</div>' + trips.map(t => '<button class="item" data-act="homeScanTo" data-id="' + esc(t.id) + '" data-where="' + t.where + '"><span style="font-size:22px">' + esc((t.emoji && t.emoji.trim()) || '✈️') + '</span><span class="grow"><span class="t" style="display:block">' + esc(t.name || 'Sans nom') + '</span><span class="s">' + esc(fmtRange(t.dateStart, t.dateEnd)) + '</span></span>' + ic('camera', 's') + '</button>').join('')
       : '<div class="card info small">Aucun voyage en cours ou à venir : crée d\'abord le voyage (dates), puis ajoute le programme.</div>') +
     '<button class="btn block" data-act="sheetGo" data-href="#/nouveau">' + ic('plus') + 'Créer un nouveau voyage</button></div>', { label: 'Programme papier' });
@@ -2884,18 +2912,18 @@ VIEWS.reglages = () => {
     (FIREBASE_CONFIG ? '<p class="small muted" style="margin:0">Configuration intégrée à l\'app (projet ' + esc(FIREBASE_CONFIG.projectId) + ').</p>' : '') +
     '<details><summary class="small" style="cursor:pointer">Coller une configuration Firebase</summary><form data-form="setCfg" class="stack" style="margin-top:8px"><textarea class="input" name="cfg" rows="5" placeholder="const firebaseConfig = { apiKey: …, projectId: … }">' + esc(LS.get('firebaseConfig') ? JSON.stringify(LS.get('firebaseConfig'), null, 1) : '') + '</textarea><button class="btn block">Enregistrer et connecter</button>' + (LS.get('firebaseConfig') ? '<button type="button" class="btn danger block" data-act="cfgDel">Oublier cette configuration</button>' : '') + '</form></details>' +
     '<details><summary class="small" style="cursor:pointer">Règles de sécurité Firestore à coller dans la console</summary><pre class="code" id="rulesTxt">' + esc(RULES_TEXT) + '</pre><button class="btn block" data-act="copyRules">' + ic('copy') + 'Copier les règles</button></details></section>' +
-    claudeKeyCard() +
+    geminiKeyCard() +
     '<section class="card stack"><div class="lbl">Sauvegarde (filet de sécurité indépendant du cloud)</div><div class="grid2"><button class="btn" data-act="backupAll">' + ic('download') + 'Tout sauvegarder</button><button class="btn" data-act="restoreFile">' + ic('upload') + 'Restaurer</button></div>' +
     '<p class="small muted" style="margin:0">Dernière sauvegarde : ' + (LS.get('lastBackup') ? esc(new Date(LS.get('lastBackup')).toLocaleString('fr-FR')) : 'jamais') + '.</p></section>' +
     '<section class="card stack"><div class="lbl">Application</div><a class="btn block" href="#/installer">' + ic('phone') + 'Installer sur mon téléphone</a><button class="btn block" data-act="checkUpdate">' + ic('refresh') + 'Rechercher une mise à jour</button>' +
     '<p class="tiny muted" style="margin:0">Version ' + APP_VERSION + '. Fond de carte © OpenStreetMap (contributeurs, ODbL) · itinéraires OSRM (serveurs publics FOSSGIS) · géocodage Nominatim · météo Open-Meteo (CC BY 4.0) · taux BCE via Frankfurter. Temps de route : estimations sans trafic.</p></section>' +
     '</div>';
 };
-FORMS.keySave = (f, fd) => { const k = fv(fd, 'key'); if (!/^sk-ant-/.test(k)) { toast('Clé inattendue : elle commence par sk-ant-'); return; } LS.set('anthropicKey', k); toast('Clé enregistrée sur cet appareil'); scheduleRender(); };
-ACT.keyDel = () => confirmSheet('Retirer la clé API de cet appareil ?', 'Retirer', () => { LS.del('anthropicKey'); scheduleRender(); }, true);
+FORMS.keySave = (f, fd) => { const k = fv(fd, 'key').replace(/\s+/g, ''); if (k.length < 30) { toast('Clé trop courte : copie toute la clé depuis Google AI Studio'); return; } LS.set('geminiKey', k); toast('Clé enregistrée sur cet appareil'); scheduleRender(); };
+ACT.keyDel = () => confirmSheet('Retirer la clé Gemini de cet appareil ?', 'Retirer', () => { LS.del('geminiKey'); scheduleRender(); }, true);
 ACT.keyTest = async () => {
   toast('Test…');
-  try { const t = await claudeAnalyze('Réponds uniquement : OK', []); toast(/ok/i.test(t) ? 'Clé valide : Claude répond' : 'Réponse inattendue : ' + t.slice(0, 40)); }
+  try { const m = await geminiListModels(LS.get('geminiKey', '')); toast(m.length ? 'Clé valide : Gemini est prêt' : 'Clé valide, mais aucun modèle Gemini disponible', 5000); }
   catch (e) { toast('Échec : ' + e.message, 6000); }
 };
 ACT.setTheme = el => { LS.set('theme', el.dataset.v); applyTheme(); scheduleRender(); };
@@ -3073,7 +3101,7 @@ function timelineCard(d, i, s) {
     }
   }
   html += '</div>' + i.tl.alerts.map(a => '<div class="banner">' + ic('warn') + '<span>' + esc(a.msg) + '</span></div>').join('');
-  if (!i.steps.length) html += '<p class="small muted" style="margin:0">Aucune étape. Ajoute-en une, ou génère le programme avec Claude.</p>';
+  if (!i.steps.length) html += '<p class="small muted" style="margin:0">Aucune étape. Ajoute-en une, ou propose un programme (Plus → Importer).</p>';
   html += '<div class="grid2 noprint">' + (links.length ? '<button class="btn primary" data-act="gmapsDay" data-d="' + d + '">' + ic('pin') + 'Journée dans Maps' + (links.length > 1 ? ' · ' + links.length + ' liens' : '') + '</button>' : '') +
     '<button class="btn" data-act="routesDay" data-d="' + d + '">' + ic('refresh') + 'Temps de route</button></div>' +
     (missing ? '<p class="tiny muted" style="margin:0">' + missing + ' étape(s) sans position : touche une étape puis « Trouver sur la carte » pour calculer les trajets.</p>' : '') +
@@ -3333,7 +3361,7 @@ function tipsCard(d, tips) {
   const showAll = App.ui.open['tips-' + d];
   const list = showAll ? [...tips.tips, ...tips.overflow] : tips.tips;
   const ready = list.filter(t => t.checked).length;
-  const orig = t => t.origine === 'regle' ? 'Règle' + (t.detail ? ' · ' + esc(t.detail) : '') : t.origine === 'claude' ? 'Claude' + (t.aVerifier ? ' · <span class="verif">à vérifier</span>' : ' · vérifié') : 'Moi';
+  const orig = t => t.origine === 'regle' ? 'Règle' + (t.detail ? ' · ' + esc(t.detail) : '') : t.origine === 'claude' ? 'IA' + (t.aVerifier ? ' · <span class="verif">à vérifier</span>' : ' · vérifié') : 'Moi';
   return '<section class="card" id="sec-c-' + d + '" aria-label="Conseils du jour"><div class="sec-h" style="margin:0 0 4px"><h2 class="lbl">Conseils du jour</h2><span class="small muted">' + ready + ' / ' + list.length + ' prêts</span></div>' +
     (list.length ? list.map(t => '<div class="check"><button class="box' + (t.checked ? ' on' : '') + '" data-act="toggleTip" data-id="' + esc(t.id) + '" data-d="' + d + '" aria-label="' + (t.checked ? 'Décocher' : 'Cocher') + '" aria-pressed="' + t.checked + '">' + (t.checked ? ic('check', 's') : '') + '</button><div class="grow"><div class="' + (t.checked ? 'done' : '') + '">' + esc(t.text) + '</div><div class="org">' + orig(t) + '</div></div><button class="iconbtn noprint" style="width:36px;height:36px;flex-basis:36px" data-act="tipMenu" data-id="' + esc(t.id) + '" data-d="' + d + '" aria-label="Modifier le conseil">' + ic('more', 's') + '</button></div>').join('') : '<p class="small muted" style="margin:6px 0">Aucun conseil particulier pour ce jour.</p>') +
     (tips.overflow.length ? '<button class="btn ghost sm noprint" data-act="toggle" data-key="tips-' + d + '">' + (showAll ? 'Masquer' : '+ ' + tips.overflow.length + ' conseil(s) de moindre priorité') + '</button>' : '') +
@@ -4047,9 +4075,9 @@ ACT.purgeItem = el => confirmSheet('Supprimer définitivement cet élément ?', 
 ACT.purgeAll = () => confirmSheet('Vider la corbeille ? Les éléments seront supprimés définitivement pour tous.', 'Vider', () => { const colls = ['steps', 'expenses', 'tips', 'bookings', 'photos', 'travelers', 'checklist']; write(colls.flatMap(c => Object.values(T[c]).filter(x => x.deletedAt).map(x => ({ coll: c, id: x.id, del: true })))); }, true);
 
 /* =====================================================================
-   12. IMPORTS ET GÉNÉRATION VIA CLAUDE (sans clé API)
-   Source → extraction locale → prompt (Copier / Partager vers Claude)
-   → réponse recollée → validation carnet/1 → aperçu → acceptation.
+   12. IMPORTS ET GÉNÉRATION
+   Documents → extraction locale → analyse automatique dès l'ajout (Gemini si une clé est
+   enregistrée, sinon analyse sur le téléphone) → validation carnet/1 → aperçu → intégration.
    ===================================================================== */
 const IMPORT_KINDS = [
   { k: 'programme', l: 'Programme', d: 'Programme manuscrit (photo), notes ou texte libre → jours et étapes', ic: 'note' },
@@ -4058,51 +4086,56 @@ const IMPORT_KINDS = [
   { k: 'generer', l: 'Générer un programme', d: 'Programme sur mesure selon dates, logements, âges, goûts et saison', ic: 'sparkle' },
   { k: 'archive', l: 'Voyage passé', d: 'Programme et récap budgétaire d\'un ancien voyage, pour information', ic: 'history' },
 ];
-const newImp = (trip, kind) => ({ trip, kind: kind || 'auto', sources: [], text: '', prompts: null, answer: '', result: null, sel: {} });
+const newImp = (trip, kind) => ({ trip, kind: kind || 'auto', sources: [], text: '', answer: '', result: null, sel: {} });
+/* Empreinte des documents analysés : une nouvelle analyse part seule quand elle change (ajout, retrait, clé ajoutée) */
+const importSig = I => (hasGeminiKey() ? 'g|' : 'l|') + I.sources.filter(s => !s.dup && s.kind !== 'erreur').map(s => s.name + ':' + ((s.file && s.file.size) || (s.text || '').length)).join('|');
 TRIP_VIEWS.imports = () => {
   const I = App.imp && App.imp.trip === T.id ? App.imp : (App.imp = newImp(T.id));
   if (!I.kind || !['auto', 'generer'].includes(I.kind)) I.kind = 'auto';
   App.after.push(bindDrop);
-  const key = hasClaudeKey(), gen = I.kind === 'generer';
+  const key = hasGeminiKey(), gen = I.kind === 'generer';
   const srcs = I.sources.filter(s => !s.dup), unread = srcs.filter(s => s.kind === 'image' || (s.empty && s.kind !== 'erreur'));
+  if (I.pending && !I.busy) { const r = I.pending; I.pending = null; App.after.push(() => setPreview(r.obj, r.fixes)); }
+  else if (!gen && !I.busy && srcs.some(s => s.kind !== 'erreur') && importSig(I) !== I.sig) App.after.push(() => runImport(false));
   const srcItem = (s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' +
-    (s.kind === 'erreur' ? '<span class="verif">non lu : ' + esc(s.err || 'format non reconnu') + '</span>' : s.kind === 'image' ? 'photo · lue par Claude' : s.empty ? '<span class="verif">pas de texte lisible (scan ou manuscrit) : lu par Claude</span>' : esc(s.kind) + ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>';
-  const sources = '<section class="card stack"><h2 class="lbl">Documents</h2><p class="small muted" style="margin:0">Budget, programme (même manuscrit), réservations, notes… d\'un voyage passé ou à venir.</p>' +
+    (s.kind === 'erreur' ? '<span class="verif">non lu : ' + esc(s.err || 'format non reconnu') + '</span>' : s.kind === 'image' ? (key ? 'photo · lue par Gemini' : '<span class="verif">photo : lecture avec une clé Gemini</span>') : s.empty ? '<span class="verif">pas de texte lisible (scan ou manuscrit)' + (key ? ' : lu par Gemini' : '') + '</span>' : esc(s.kind) + ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>';
+  const sources = '<section class="card stack"><h2 class="lbl">Documents</h2><p class="small muted" style="margin:0">Budget, programme (même manuscrit), réservations, notes… d\'un voyage passé ou à venir. ' + (key ? 'Chaque document ajouté est lu automatiquement par Gemini.' : 'Chaque document ajouté est analysé automatiquement sur le téléphone.') + '</p>' +
     '<div class="grid2"><button class="btn" data-act="impCamera">' + ic('camera') + 'Photo</button><button class="btn" data-act="impPick">' + ic('upload') + 'Fichiers</button></div>' +
     '<div class="drop" id="drop" tabindex="0"><div class="tiny">… ou dépose-les ici : Word, PDF, Excel, mails, photos, texte</div></div>' +
     (I.sources.length ? '<div class="list">' + I.sources.map(srcItem).join('') + '</div>' : '') +
     '<details' + (I.text ? ' open' : '') + '><summary class="small" style="cursor:pointer">Coller un texte</summary><textarea class="input" id="impText" data-input="impText" rows="4" style="margin-top:8px" placeholder="Programme, notes, texte d\'un mail…">' + esc(I.text) + '</textarea></details></section>';
-  const go = '<section class="card stack"><button class="btn primary block" data-act="' + (gen ? 'impGen' : 'impGo') + '"' + (I.busy ? ' disabled' : '') + '>' + ic('sparkle') + (I.busy ? 'Analyse en cours…' : gen ? 'Proposer un programme' : 'Analyser') + '</button>' +
-    '<div id="impProg" class="small muted" style="text-align:center">' + (I.busy ? 'Envoi des documents à Claude…' : gen ? (key ? 'Claude propose un programme selon les dates, les âges, vos goûts et la saison.' : 'Sans clé API, la demande part vers l\'app Claude.') : key ? 'Claude lit tous les documents, y compris photos et écriture manuscrite.' : 'Analyse sur le téléphone, gratuite et hors ligne : budgets, programmes tapés, notes.') + '</div></section>';
-  const needClaude = !key && !gen && unread.length ? '<section class="card warn stack"><div class="small"><b>' + unread.length + ' document' + (unread.length > 1 ? 's' : '') + ' à lire par Claude</b> (photo, scan, écriture manuscrite) : ' + esc(unread.map(s => s.name).join(', ')) + '.</div>' +
-    '<div class="grid2"><button class="btn sm" data-act="impShare">' + ic('share', 's') + 'Envoyer à l\'app Claude</button><a class="btn sm" href="#/reglages">Lecture en un appui</a></div><p class="tiny muted" style="margin:0">« Envoyer à l\'app Claude » : gratuit ; Claude lit la photo, tu copies sa réponse et tu la colles ici en un appui. « Lecture en un appui » : clé API dans les Réglages (payant, quelques centimes).</p></section>' : '';
-  const shared = I.shared && !key ? '<section class="card stack"><h2 class="lbl">Réponse de l\'app Claude</h2><p class="small muted" style="margin:0">Dans Claude, copie sa réponse (bouton copier), puis reviens ici.</p><button class="btn primary block" data-act="impClip">' + ic('copy') + 'Coller la réponse de Claude</button><details><summary class="small" style="cursor:pointer">Coller à la main</summary><textarea class="input" id="impAns" data-input="impAns" rows="4" style="margin-top:8px" placeholder="Colle ici toute la réponse de Claude">' + esc(I.answer) + '</textarea><button class="btn block" style="margin-top:8px" data-act="impParse">Valider la réponse</button></details></section>' : '';
+  const busy = '<section class="card stack"><div class="row" style="justify-content:center;gap:10px"><span class="spin" aria-hidden="true"></span><b id="impProg" class="small">' + esc(I.busyMsg || 'Analyse en cours…') + '</b></div></section>';
+  const go = I.busy ? busy : gen
+    ? '<section class="card stack">' + (key ? '<button class="btn primary block" data-act="impGen">' + ic('sparkle') + 'Proposer un programme</button><div class="small muted" style="text-align:center">Gemini propose un programme selon les dates, les âges, vos goûts et la saison.</div>'
+      : '<a class="btn primary block" href="#/reglages">' + ic('key') + 'Ajouter une clé Gemini (gratuite)</a><div class="small muted" style="text-align:center">La proposition de programme se fait avec Gemini : clé à enregistrer une fois dans les Réglages.</div>') + '</section>'
+    : '<button class="btn block" data-act="impGo">' + ic('refresh', 's') + (I.result || I.sig ? 'Analyser à nouveau' : 'Analyser') + '</button>'; // utile pour un texte collé
+  const needKey = !key && !gen && !I.busy && unread.length ? '<section class="card warn stack"><div class="small"><b>' + unread.length + ' document' + (unread.length > 1 ? 's' : '') + ' sans texte lisible</b> (photo, scan, écriture manuscrite) : ' + esc(unread.map(s => s.name).join(', ')) + '. Pour les lire automatiquement, ajoute une fois une clé Gemini gratuite.</div><a class="btn sm" href="#/reglages">' + ic('key', 's') + 'Ajouter la clé Gemini</a></section>' : '';
+  const aiErr = I.aiError && !I.busy ? '<section class="card bad stack"><div class="small"><b>Lecture par Gemini impossible</b> : ' + esc(I.aiError) + (I.result && !I.result.error ? '. Aperçu ci-dessous : analyse sur le téléphone (textes seulement).' : '.') + '</div><button class="btn sm" data-act="impGo">' + ic('refresh', 's') + 'Réessayer</button></section>' : '';
   const done = I.done ? '<section class="card ok stack"><b>' + ic('check', 's') + ' ' + esc(I.done) + '</b><div class="grid3"><a class="btn sm" href="' + tripUrl('recap') + '">Récap</a><a class="btn sm" href="' + tripUrl('programme') + '">Programme</a><a class="btn sm" href="' + tripUrl('budget') + '">Budget</a></div></section>' : '';
   return topbar(gen ? 'Proposer un programme' : 'Importer des documents', T.trip.name, { back: tripUrl('plus') }) + '<div class="stack" style="max-width:820px">' + done +
     (gen ? '<section class="card small">Le programme proposé tient compte des dates, des logements, des âges des enfants jour par jour, de vos goûts et de la saison, sans dupliquer les étapes déjà prévues.</section>' : sources) +
-    go + needClaude + shared + (I.result ? '<div id="impRes">' + previewHTML(I) + '</div>' : '') +
-    '<button class="btn ghost block" data-act="impMode">' + (gen ? ic('upload', 's') + 'Importer des documents' : ic('sparkle', 's') + 'Proposer un programme avec Claude') + '</button></div>';
+    go + aiErr + needKey + (I.result && !I.busy ? '<div id="impRes">' + previewHTML(I) + '</div>' : '') +
+    '<button class="btn ghost block" data-act="impMode">' + (gen ? ic('upload', 's') + 'Importer des documents' : ic('sparkle', 's') + 'Proposer un programme') + '</button></div>';
 };
-ACT.impMode = () => { const I = App.imp; App.imp = { ...newImp(T.id, I.kind === 'generer' ? 'auto' : 'generer'), sources: I.sources, text: I.text }; scheduleRender(); };
-ACT.impKind = el => { App.imp.kind = el.dataset.k; App.imp.prompts = null; App.imp.result = null; scheduleRender(); };
+ACT.impMode = () => { const I = App.imp; App.imp = { ...newImp(T.id, I.kind === 'generer' ? 'auto' : 'generer'), sources: I.sources, text: I.text, sig: I.sig }; scheduleRender(); };
 ACT.impReset = () => { App.imp = null; scheduleRender(); };
 INP.impText = el => { App.imp.text = el.value; };
-INP.impAns = el => { App.imp.answer = el.value; };
 const IMPORT_ACCEPT = '.eml,.msg,.pdf,.docx,.odt,.doc,.txt,.csv,.xlsx,.xls,.ods,.json,image/*,message/rfc822,text/plain';
 ACT.impPick = async () => { const files = await pickFile(IMPORT_ACCEPT, true); await addSources(files); };
 ACT.impCamera = async () => { const files = await pickFile('image/*', true, true); await addSources(files); };
-ACT.impDelSrc = el => { App.imp.sources.splice(+el.dataset.i, 1); App.imp.prompts = null; scheduleRender(); };
+ACT.impDelSrc = el => { App.imp.sources.splice(+el.dataset.i, 1); if (!App.imp.sources.some(s => s.kind !== 'erreur')) { App.imp.result = null; App.imp.aiError = ''; App.imp.sig = ''; } scheduleRender(); };
 async function addSources(files) {
   if (!files || !files.length) return;
+  const I = App.imp;
   toast('Lecture de ' + files.length + ' fichier(s)…');
   for (const f of files) {
-    // Le fichier d'origine est gardé (en mémoire) pour l'envoyer à Claude : photos et PDF scannés
-    try { const src = await extractFileText(f); src.file = f; App.imp.sources.push(src); }
-    catch (e) { console.warn(e); App.imp.sources.push({ kind: 'erreur', name: f.name, text: '', err: e.message }); toast('Lecture impossible : ' + f.name + ' (' + e.message + ')', 4000); }
+    // Le fichier d'origine est gardé (en mémoire) pour l'envoyer à Gemini : photos et PDF scannés
+    try { const src = await extractFileText(f); src.file = f; I.sources.push(src); }
+    catch (e) { console.warn(e); I.sources.push({ kind: 'erreur', name: f.name, text: '', err: e.message }); toast('Lecture impossible : ' + f.name + ' (' + e.message + ')', 4000); }
   }
-  const kept = dedupSources(App.imp.sources.filter(s => !s.dup));
-  App.imp.sources = App.imp.sources.map(s => kept.includes(s) ? s : { ...s, dup: true });
-  App.imp.prompts = null; scheduleRender();
+  const kept = dedupSources(I.sources.filter(s => !s.dup));
+  I.sources = I.sources.map(s => kept.includes(s) ? s : { ...s, dup: true });
+  scheduleRender(); // la vue relance l'analyse : les documents ont changé
 }
 function bindDrop() {
   const z = $('#drop'); if (!z) return;
@@ -4111,7 +4144,6 @@ function bindDrop() {
   z.ondrop = e => { e.preventDefault(); z.classList.remove('over'); addSources([...e.dataTransfer.files]); };
 }
 function promptCtx() { return { trip: T.trip, travelers: travelersSorted(), lodgings: lodgings() }; }
-ACT.impBuild = () => { if (buildImportPrompt()) scheduleRender(); };
 function buildImportPrompt() {
   const I = App.imp; const t = T.trip;
   const head = promptHeader(I.kind, promptCtx()) + '\n\n## Type attendu\n"type": "' + (I.kind === 'generer' ? 'programme' : I.kind) + '"';
@@ -4128,71 +4160,59 @@ function buildImportPrompt() {
   } else {
     if (existing.length && ['programme', 'archive', 'auto'].includes(I.kind)) chunks.push('### Étapes déjà dans l\'app (pour repérer les doublons)\n' + existing.join('\n'));
     if (['depenses', 'reservations', 'auto'].includes(I.kind)) { const ex = live('expenses').slice(0, 300).map(e => e.date + ' | ' + e.title + ' | ' + (e.amount / 100).toFixed(2) + ' ' + e.currency).join('\n'); if (ex) chunks.push('### Dépenses déjà saisies (ne pas les reprendre)\n' + ex); }
-    I.sources.filter(s => !s.dup).forEach((s, n) => chunks.push('### Source ' + (n + 1) + ' : ' + s.name + ' (' + s.kind + ')' + (s.subject ? '\nObjet : ' + s.subject : '') + (s.date ? '\nDate : ' + s.date : '') + (s.from ? '\nDe : ' + s.from : '') + '\n' + (s.kind === 'image' ? '[image jointe dans la conversation]' : s.text)));
+    I.sources.filter(s => !s.dup).forEach((s, n) => chunks.push('### Source ' + (n + 1) + ' : ' + s.name + ' (' + s.kind + ')' + (s.subject ? '\nObjet : ' + s.subject : '') + (s.date ? '\nDate : ' + s.date : '') + (s.from ? '\nDe : ' + s.from : '') + '\n' + (s.kind === 'image' ? '[photo jointe : à lire]' : s.empty ? '[PDF scanné joint : à lire]' : s.text)));
     if (I.text.trim()) chunks.push('### Texte collé\n' + I.text.trim());
     if (!chunks.some(c => c.startsWith('### Source') || c.startsWith('### Texte'))) {
       if (['programme', 'depenses', 'archive', 'auto'].includes(I.kind)) chunks.push('### Source\n[photo(s) ou document(s) joint(s)]');
       else { toast('Ajoute au moins une source'); return false; }
     }
   }
-  I.prompts = splitPrompt(head, chunks, 30000);
   I.full = [head, ...chunks].join('\n\n');
   return true;
 }
 /* Fichiers à transmettre tels quels : photos et PDF sans texte lisible (scans) */
-const importFiles = I => I.sources.filter(s => !s.dup && s.file && (s.kind === 'image' || (s.kind === 'pdf' && s.empty))).map(s => s.file);
-ACT.impCopy = async el => toast((await copyText(App.imp.prompts[+el.dataset.i])) ? 'Prompt copié : colle-le dans Claude' : 'Copie impossible');
-/* Envoi vers l'app Claude (sans clé) : demande complète + photos, puis réponse recollée ici */
-ACT.impShare = async () => {
-  const I = App.imp; if (!buildImportPrompt()) return;
-  const text = I.full; const files = importFiles(I);
-  await copyText(text);
-  I.shared = true; scheduleRender();
-  if (files.length && navigator.canShare && navigator.canShare({ files })) {
-    try { await navigator.share({ title: 'Carnet de voyage', text, files }); } catch (e) { if (e.name !== 'AbortError') toast('Partage impossible : la demande est copiée, colle-la dans Claude avec les photos', 6000); }
-    return;
+const importFiles = I => I.sources.filter(s => !s.dup && s.file && (s.kind === 'image' || (s.kind === 'pdf' && s.empty)));
+/* Analyse des documents : Gemini s'il y a une clé (repli sur le téléphone en cas d'échec), sinon sur le téléphone */
+async function runImport(manual) {
+  const I = App.imp; if (!I || I.busy || I.trip !== T.id) return;
+  I.sig = importSig(I);
+  const srcs = I.sources.filter(s => !s.dup && s.kind !== 'erreur');
+  if (!srcs.length && !I.text.trim()) { if (manual) toast('Ajoute au moins un document lisible'); return; }
+  if (hasGeminiKey()) {
+    try { await aiImport(I); return; }
+    catch (e) { console.warn(e); I.busy = false; I.aiError = e.message; if (App.imp !== I || T.id !== I.trip) return; }
   }
-  shareText(text, 'Carnet de voyage');
-};
-/* Bouton « Analyser » : Claude si une clé est enregistrée, sinon analyse sur le téléphone */
-ACT.impGo = () => {
-  const I = App.imp; const srcs = I.sources.filter(s => !s.dup && s.kind !== 'erreur');
-  if (!srcs.length && !I.text.trim()) { toast('Ajoute au moins un document lisible'); return; }
-  if (hasClaudeKey()) return ACT.impAnalyze();
+  localImport(I, manual || !!I.aiError);
+}
+function localImport(I, verbose) {
+  const srcs = I.sources.filter(s => !s.dup && s.kind !== 'erreur');
   const texts = srcs.filter(s => s.text && s.text.trim()).map(s => ({ name: s.name, text: s.text }));
   if (I.text.trim()) texts.push({ name: 'Texte collé', text: I.text });
   const { obj, found } = localAnalyze(texts, { trip: T.trip });
-  const unread = srcs.filter(s => s.kind === 'image' || s.empty).length; // erreurs déjà exclues
-  if (!found.budget && !found.steps && !(obj.notes || '').trim()) { I.result = null; scheduleRender(); toast(unread ? 'Ces documents doivent être lus par Claude (photo, scan ou écriture manuscrite)' : 'Rien de reconnu dans ces documents', 6000); return; }
+  const unread = srcs.filter(s => s.kind === 'image' || s.empty).length;
+  if (!found.budget && !found.steps && !(obj.notes || '').trim()) { I.result = null; scheduleRender(); if (verbose || !unread) toast(unread ? 'Ces documents se lisent avec une clé Gemini (photo, scan ou écriture manuscrite)' : 'Rien de reconnu dans ces documents', 6000); return; }
   setPreview(obj, []);
-  toast(found.budget + ' ligne(s) de budget, ' + found.steps + ' étape(s) et conseil(s) reconnus' + (unread ? ' · ' + unread + ' document(s) à lire par Claude' : ''), 5000);
-};
-ACT.impGen = () => hasClaudeKey() ? ACT.impAnalyze() : ACT.impShare();
-ACT.impClip = async () => {
-  let t = '';
-  try { t = await navigator.clipboard.readText(); } catch { toast('Accès au presse-papiers refusé : utilise « Coller à la main »', 5000); return; }
-  if (!t.trim()) { toast('Presse-papiers vide : copie d\'abord la réponse dans Claude'); return; }
-  App.imp.answer = t; const r = extractJson(t);
-  if (r.error) { toast('Pas de réponse de Claude reconnue dans le presse-papiers', 5000); scheduleRender(); return; }
-  setPreview(r.obj, r.fixes); toast('Réponse de Claude reçue : vérifie l\'aperçu');
-};
-ACT.impAnalyze = async () => {
-  const I = App.imp; if (I.busy) return;
+  toast(found.budget + ' ligne(s) de budget, ' + found.steps + ' étape(s) et conseil(s) reconnus' + (unread ? ' · ' + unread + ' document(s) non lu(s)' : ''), 5000);
+}
+async function aiImport(I) {
   if (!buildImportPrompt()) return;
-  I.busy = true; scheduleRender();
-  try {
-    const ans = await claudeAnalyze(I.full, importFiles(I), n => { const el = $('#impProg'); if (el) el.textContent = 'Claude rédige… ' + n + ' caractères reçus'; });
-    I.answer = ans; I.busy = false;
-    const r = extractJson(ans);
-    if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
-    setPreview(r.obj, r.fixes); toast('Analyse reçue : vérifie l\'aperçu');
-  } catch (e) { I.busy = false; scheduleRender(); toast('Analyse impossible : ' + e.message, 7000); }
-};
-ACT.impParse = () => {
-  const I = App.imp; const ans = ($('#impAns') || {}).value || I.answer; I.answer = ans;
+  const n = I.kind === 'generer' ? 0 : I.sources.filter(s => !s.dup && s.kind !== 'erreur').length + (I.text.trim() ? 1 : 0);
+  const label = n ? 'Gemini lit ' + n + ' document' + (n > 1 ? 's' : '') + '…' : 'Gemini prépare le programme…';
+  I.busy = true; I.busyMsg = label; I.aiError = ''; scheduleRender();
+  let ans;
+  try { ans = await geminiAnalyze(I.full, importFiles(I), sec => { I.busyMsg = label + ' ' + sec + ' s'; const el = $('#impProg'); if (el) el.textContent = I.busyMsg; }); }
+  finally { I.busy = false; }
+  I.answer = ans;
   const r = extractJson(ans);
-  if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
-  setPreview(r.obj, r.fixes);
+  if (r.error) throw new Error('réponse illisible (' + r.error + ')');
+  if (App.imp !== I) return; // import abandonné entre-temps
+  if (T.id !== I.trip) { I.pending = r; return; } // autre voyage ouvert : aperçu affiché au retour
+  setPreview(r.obj, r.fixes); toast('Documents lus : vérifie l\'aperçu');
+}
+ACT.impGo = () => runImport(true);
+ACT.impGen = async () => {
+  const I = App.imp; if (I.busy) return;
+  try { await aiImport(I); } catch (e) { I.aiError = e.message; scheduleRender(); toast('Proposition impossible : ' + e.message, 7000); }
 };
 /* Nom d'un voyage créé d'après des documents : celui du document, sinon destination + année, sinon mois + année */
 const airportPlace = code => { const a = AirportDB.get(code); return a ? (a.fr || a.city) : ((AIRPORTS[code] || AIRPORT_EXTRA[code] || [])[0] || ''); };
@@ -4231,7 +4251,7 @@ function setPreview(obj, fixes) {
 }
 function previewHTML(I) {
   const R = I.result;
-  if (R.error) return '<section class="card bad">' + esc(R.error) + '<div class="small">Vérifie que toute la réponse de Claude a été collée, ou relance l\'analyse.</div></section>';
+  if (R.error) return '<section class="card bad">' + esc(R.error) + '<div class="small">Relance l\'analyse (« Analyser à nouveau »).</div></section>';
   const groups = [['step', 'Programme'], ['daynote', 'Notes des jours'], ['tip', 'Conseils'], ['booking', 'Organisation (réservations)'], ['plan', 'Budget prévu'], ['expense', 'Dépenses'], ['note', 'Notes']];
   const nSel = Object.values(I.sel).filter(Boolean).length;
   const newTrav = (R.voyageurs || []).filter(v => !travelersSorted().some(t => norm(t.name) === norm(v.name)));
@@ -4476,6 +4496,7 @@ async function onRoute() {
 }
 (async function boot() {
   applyTheme();
+  LS.del('anthropicKey'); // ancienne clé (version 1.3) : plus utilisée
   window.addEventListener('hashchange', onRoute);
   window.addEventListener('online', () => scheduleRender());
   window.addEventListener('offline', () => scheduleRender());

@@ -1,6 +1,7 @@
 // Test de bout en bout des nouveautés 1.1 (famille et voyages fictifs) :
 // accueil, aéroports proposés à la saisie, voyage passé à partir de documents (Word + photo),
-// analyse directe par Claude (API simulée), programme papier depuis l'accueil.
+// analyse automatique dès l'ajout (téléphone, puis Gemini avec API simulée, repli si quota atteint),
+// programme papier depuis l'accueil.
 // Usage : DEVLIBS=<node_modules avec les bibliothèques et bundles/> node tests/e2e-nouveautes.mjs
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -19,7 +20,6 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': MIME[extname(f)] || 'application/octet-stream' }); res.end(readFileSync(f));
 }).listen(8126);
 const MAP = [
-  [/@anthropic-ai\/sdk@0\.133\.0\/\+esm$/, () => join(LIB, '../bundles/anthropic-sdk.mjs')],
   [/pdfjs-dist@6\.3\.289\/build\/(pdf(\.worker)?\.min\.mjs)$/, m => join(LIB, 'pdfjs-dist/build', m[1])],
   [/leaflet@1\.9\.4\/dist\/(leaflet\.(js|css))$/, m => join(LIB, 'leaflet/dist', m[1])],
   [/qrcode-generator@2\.0\.4\/dist\/qrcode\.mjs$/, () => join(LIB, 'qrcode-generator/dist/qrcode.mjs')],
@@ -41,35 +41,29 @@ const scanPdf = () => { const objs = ['<< /Type /Catalog /Pages 2 0 R >>', '<< /
 const SCAN = { name: 'programme', mimeType: 'application/octet-stream', buffer: scanPdf() };
 const BINAIRE = { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from(Array.from({ length: 4000 }, (_, i) => (i * 37 + 11) % 256)) };
 
-// Réponse simulée de Claude (format carnet/1) pour la photo d'un programme
-const ANSWER = 'Voici le JSON :\n```json\n' + JSON.stringify({
+// Réponse simulée de Gemini (format carnet/1, JSON brut) pour la photo d'un programme
+const ANSWER = JSON.stringify({
   schema: 'carnet/1', type: 'auto',
   jours: [{ date: '2019-07-11', etapes: [{ nom: 'Cascade de Seljalandsfoss', type: 'panorama', cotation: 3, duree_min: 60 }] }],
   vols: [{ sens: 'aller', compagnie: 'easyJet', numero: 'U2 1234', de: 'GVA', vers: 'KEF', depart_date: '2019-07-10', depart_heure: '10:00', arrivee_date: '2019-07-10', arrivee_heure: '12:30' }],
   notes: 'Prévoir des vêtements de pluie.',
-}) + '\n```';
-let apiReq = null;
-function sse(text) {
-  const ev = (type, data) => 'event: ' + type + '\ndata: ' + JSON.stringify({ type, ...data }) + '\n\n';
-  return ev('message_start', { message: { id: 'msg_test', type: 'message', role: 'assistant', model: 'claude-opus-5-5', content: [], stop_reason: null, stop_sequence: null, usage: { input_tokens: 1200, output_tokens: 1 } } }) +
-    ev('content_block_start', { index: 0, content_block: { type: 'text', text: '' } }) +
-    ev('content_block_delta', { index: 0, delta: { type: 'text_delta', text: text.slice(0, 40) } }) +
-    ev('content_block_delta', { index: 0, delta: { type: 'text_delta', text: text.slice(40) } }) +
-    ev('content_block_stop', { index: 0 }) +
-    ev('message_delta', { delta: { stop_reason: 'end_turn', stop_sequence: null }, usage: { output_tokens: 300 } }) +
-    ev('message_stop', {});
-}
+});
+let gemReq = null, gemCalls = 0, gemMode = 'ok';
+const GEM = 'https://generativelanguage.googleapis.com/v1beta/';
 
 const browser = await chromium.launch();
 const errors = [];
 const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, locale: 'fr-FR', timezoneId: 'Europe/Paris', serviceWorkers: 'block' });
 await ctx.route(/^https?:\/\/(?!127\.0\.0\.1|localhost)/, async route => {
   const u = route.request().url();
-  if (u.startsWith('https://api.anthropic.com/v1/messages')) {
-    const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
+  if (u.startsWith(GEM)) {
+    const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS' };
     if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
-    apiReq = { headers: route.request().headers(), body: JSON.parse(route.request().postData() || '{}') };
-    return route.fulfill({ status: 200, headers: { ...cors, 'Content-Type': 'text/event-stream' }, body: sse(ANSWER) });
+    const json = (status, o) => route.fulfill({ status, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify(o) });
+    if (u.startsWith(GEM + 'models?')) return json(200, { models: [{ name: 'models/gemini-flash-latest', supportedGenerationMethods: ['generateContent'] }] });
+    gemCalls++; gemReq = { url: u, headers: route.request().headers(), body: JSON.parse(route.request().postData() || '{}') };
+    if (gemMode === '429') return json(429, { error: { code: 429, message: 'Resource has been exhausted (e.g. check quota).', status: 'RESOURCE_EXHAUSTED' } });
+    return json(200, { candidates: [{ content: { role: 'model', parts: [{ text: ANSWER }] }, finishReason: 'STOP' }], usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: 300 } });
   }
   for (const [re, fn] of MAP) { const m = u.match(re); if (m) { const f = fn(m); return route.fulfill({ status: 200, contentType: MIME[extname(f)] || 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: readFileSync(f) }); } }
   return route.abort('internetdisconnected');
@@ -138,18 +132,18 @@ await p.waitForSelector('.item:has-text("budget-islande.docx")', { timeout: 1000
 fc = p.waitForEvent('filechooser'); await p.click('button:has-text("Fichiers")'); await (await fc).setFiles([SCAN, BINAIRE]);
 await p.waitForSelector('.item:has-text("programme")', { timeout: 10000 });
 const srcScan = sp(await p.innerText('.item:has-text("programme")'));
-ok('PDF scanné reçu sans extension : reconnu comme PDF, « lu par Claude »', /pas de texte lisible \(scan ou manuscrit\) : lu par Claude/.test(srcScan), srcScan.replace(/\n/g, ' '));
+ok('PDF scanné reçu sans extension : reconnu comme PDF sans texte lisible', /pas de texte lisible \(scan ou manuscrit\)/.test(srcScan), srcScan.replace(/\n/g, ' '));
 await p.waitForSelector('.item:has-text("notes.txt")');
 ok('Fichier binaire : refusé, jamais lu comme du texte', /non lu : format non reconnu/.test(sp(await p.innerText('.item:has-text("notes.txt")'))));
 ok('Bouton Accueil dans la barre du haut', await p.isVisible('.topbar a[aria-label="Accueil"]'));
+await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 8000 });
 const src = sp(await p.innerText('#app'));
 const nChars = +((src.match(/document · (\d+) caractères/) || [])[1] || 0);
 ok('Import : Word lu (texte extrait)', nChars > 80, nChars + ' caractères');
-ok('Import : un seul bouton « Analyser », aucun prompt', await p.isVisible('button.btn.primary:has-text("Analyser")') && !/prompt/i.test(src));
-ok('Import : photo et scan signalés « à lire par Claude »', /2 documents à lire par Claude/.test(sp(await p.innerText('#app'))));
+ok('Import : analyse lancée seule à l\'ajout, sans bouton à presser', await p.isVisible('#impRes') && !(await p.isVisible('button.btn.primary:has-text("Analyser")')));
+ok('Import : ni prompt, ni copier-coller, ni app Claude', !/prompt|copier|coller la réponse|claude/i.test(src));
+ok('Import : photo et scan signalés, clé Gemini proposée', /2 documents sans texte lisible/.test(src) && await p.isVisible('a.btn:has-text("Ajouter la clé Gemini")'));
 await shot('n3-import-documents');
-await p.click('button.btn.primary:has-text("Analyser")');
-await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 8000 });
 const prev = sp(await p.innerText('#impRes'));
 ok('Analyse sur le téléphone : 4 lignes de budget (voyage passé → dépenses) + notes', /dépenses \(4\)/i.test(prev) && /notes \(1\)/i.test(prev), (prev.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
 ok('Analyse : total indiqué ≠ somme des lignes, signalé', /total indiqué 2 800 €, somme des lignes 2 752 €/.test(prev));
@@ -165,39 +159,42 @@ ok('Notes du document gardées dans le voyage', /Jumelles pour les macareux/.tes
 await p.waitForSelector('a.btn:has-text("Récap")', { timeout: 5000 }).catch(() => {});
 ok('Après intégration : accès direct au récap, au programme et au budget', await p.isVisible('a.btn:has-text("Récap")') && await p.isVisible('a.btn:has-text("Budget")'));
 
-// --- Même voyage : photo d'un programme lue par Claude (clé enregistrée, API simulée)
-await p.evaluate(() => localStorage.setItem('carnet.anthropicKey', JSON.stringify('sk-ant-test-0000')));
+// --- Même voyage : photo d'un programme lue automatiquement par Gemini (clé enregistrée, API simulée)
+await p.evaluate(() => localStorage.setItem('carnet.geminiKey', JSON.stringify('AIzaTest-cle-fictive-0000000000000000')));
 await p.goto(p.url().replace('/imports', '/plus')); await p.click('a.item:has-text("Importer des documents")');
 await p.waitForSelector('button:has-text("Fichiers")');
+ok('Avec une clé : documents lus automatiquement par Gemini', /lu automatiquement par Gemini/.test(await p.innerText('#app')));
 fc = p.waitForEvent('filechooser'); await p.click('button:has-text("Fichiers")'); await (await fc).setFiles([PHOTO]);
 await p.waitForSelector('.item:has-text("icon-512.png")');
-ok('Avec une clé : « Analyser » confie tout à Claude', /Claude lit tous les documents/.test(await p.innerText('#app')));
-await p.click('button.btn.primary:has-text("Analyser")');
 await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 15000 });
-const h = apiReq ? apiReq.headers : {}; const b = apiReq ? apiReq.body : {};
-ok('API : modèle et repli en cas de refus', b.model === 'claude-opus-5-5' && b.fallbacks === 'default' && /server-side-fallback-2026-07-01/.test(h['anthropic-beta'] || ''), b.model);
-ok('API : clé en en-tête, accès navigateur autorisé', h['x-api-key'] === 'sk-ant-test-0000' && h['anthropic-dangerous-direct-browser-access'] === 'true');
-const blocks = (b.messages && b.messages[0].content) || [];
-ok('API : photo jointe (JPEG réduit) + demande', blocks.some(x => x.type === 'image' && x.source.media_type === 'image/jpeg') && blocks.some(x => x.type === 'text' && /Extrais TOUT/.test(x.text)));
+const h = gemReq ? gemReq.headers : {}; const b = gemReq ? gemReq.body : {};
+ok('Gemini appelé seul, une fois, sans appui sur « Analyser »', gemCalls === 1, gemCalls + ' appel(s)');
+ok('API Gemini : modèle gemini-flash-latest, clé en en-tête (pas dans l\'adresse)', /models\/gemini-flash-latest:generateContent$/.test(gemReq.url) && h['x-goog-api-key'] === 'AIzaTest-cle-fictive-0000000000000000' && !/key=/.test(gemReq.url), gemReq.url);
+const parts = (b.contents && b.contents[0].parts) || [];
+ok('API Gemini : photo jointe (JPEG réduit) + demande, réponse JSON exigée', parts.some(x => x.inlineData && x.inlineData.mimeType === 'image/jpeg' && x.inlineData.data.length > 100) && parts.some(x => /Extrais TOUT/.test(x.text || '')) && b.generationConfig.responseMimeType === 'application/json');
 await p.click('#impRes button:has-text("Intégrer la sélection")');
 await p.waitForSelector('a.btn:has-text("Récap")');
 await p.click('a.btn:has-text("Récap")'); await p.waitForSelector('text=Organisation');
 const rec = sp(await p.innerText('#app'));
 ok('Récap complet : organisation (vol), programme, budget, notes', /Aller GVA → KEF/.test(rec) && /Seljalandsfoss/.test(rec) && /budget par catégorie/i.test(rec) && /2 752 €/.test(rec) && /vêtements de pluie/.test(await p.inputValue('textarea[name=general]')), [/Aller GVA → KEF/.test(rec), /Seljalandsfoss/.test(rec), /budget par catégorie/i.test(rec), /2 752 €/.test(rec)].join(','));
 await shot('n5-recap-complet');
-await p.evaluate(() => localStorage.removeItem('carnet.anthropicKey'));
 
-// --- Voyage à venir : un budget importé devient le budget prévu
+// --- Voyage à venir, quota Gemini atteint : repli automatique sur l'analyse du téléphone ; le budget devient le budget prévu
+gemMode = '429'; gemCalls = 0;
 await p.goto('http://localhost:8126/#/'); await p.click('button.tile:has-text("Importer")');
 await p.waitForSelector('#sheet button.item:has-text("Crète ' + year + '")');
 fc = p.waitForEvent('filechooser'); await p.click('#sheet button.item:has-text("Crète ' + year + '")'); await (await fc).setFiles([DOCX2]);
 await p.waitForSelector('.item:has-text("budget-crete.docx")', { timeout: 10000 });
-await p.click('button.btn.primary:has-text("Analyser")'); await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")');
+await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 15000 });
+ok('Quota atteint : message clair + bouton Réessayer, analyse du téléphone à la place', gemCalls === 1 && /quota gratuit Gemini atteint/.test(await p.innerText('#app')) && await p.isVisible('button:has-text("Réessayer")'), gemCalls + ' appel(s)');
+await shot('n4b-repli-quota');
 const prev2 = sp(await p.innerText('#impRes'));
 ok('Voyage à venir : lignes reconnues comme budget prévu', /budget prévu \(3\)/i.test(prev2), (prev2.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
 await p.click('#impRes button:has-text("Intégrer la sélection")'); await p.waitForSelector('a.btn:has-text("Budget")');
 const man = await p.evaluate(() => window.__carnet.T.trip.budgetManuel || {});
 ok('Budget prévu enregistré par catégorie', man.vol === 80000 && man.logement === 100000 && man.voiture === 30000, JSON.stringify(man));
+gemMode = 'ok';
+await p.evaluate(() => localStorage.removeItem('carnet.geminiKey'));
 
 // --- Programme papier depuis l'accueil
 await p.goto('http://localhost:8126/#/'); await p.waitForSelector('button.tile:has-text("Programme papier")');
@@ -207,12 +204,19 @@ await p.click('#sheet button.item:has-text("Crète ' + year + '")');
 await (await fc).setFiles([PHOTO]);
 await p.waitForSelector('.item:has-text("icon-512.png")', { timeout: 10000 });
 ok('Programme papier : voyage choisi, photo ajoutée à l\'import', /Importer des documents/.test(await p.innerText('.topbar')) && /Crète/.test(await p.evaluate(() => window.__carnet.T.trip.name)));
+ok('Programme papier sans clé : la clé Gemini est proposée', await p.isVisible('a.btn:has-text("Ajouter la clé Gemini")'));
 await shot('n5-programme-papier');
 
-// --- Réglages : carte de la clé
-await p.evaluate(() => localStorage.setItem('carnet.anthropicKey', JSON.stringify('sk-ant-test-0000')));
-await p.goto('http://localhost:8126/#/reglages'); await p.waitForSelector('text=Analyse directe par Claude');
-ok('Réglages : clé enregistrée, masquée', /Clé enregistrée · …0000/.test(sp(await p.innerText('#app'))) && !/sk-ant-test-0000/.test(await p.innerText('#app')));
+// --- Réglages : carte de la clé Gemini
+await p.evaluate(() => localStorage.setItem('carnet.anthropicKey', JSON.stringify('sk-ant-ancienne')));
+await p.goto('http://localhost:8126/#/reglages'); await p.reload(); await p.waitForSelector('text=Lecture des photos');
+ok('Réglages sans clé : lien pour obtenir une clé gratuite', await p.isVisible('a[href="https://aistudio.google.com/apikey"]'));
+await p.fill('input[name=key]', ' AIzaTest-cle-fictive-1111111111111111 '); await p.click('button:has-text("Enregistrer la clé")');
+await p.waitForSelector('text=Clé enregistrée');
+ok('Réglages : clé enregistrée (espaces retirés), masquée', /Clé enregistrée · …1111/.test(sp(await p.innerText('#app'))) && !/AIzaTest/.test(await p.innerText('#app')) && await p.evaluate(() => JSON.parse(localStorage.getItem('carnet.geminiKey'))) === 'AIzaTest-cle-fictive-1111111111111111');
+await p.click('button:has-text("Tester")'); await p.waitForSelector('text=Clé valide', { timeout: 8000 }).catch(() => {});
+ok('Réglages : « Tester » vérifie la clé', /Clé valide/.test(await p.innerText('body')));
+ok('Ancienne clé Claude effacée de l\'appareil', await p.evaluate(() => localStorage.getItem('carnet.anthropicKey') === null));
 
 // --- Z Fold déplié
 await p.setViewportSize({ width: 884, height: 1104 }); await p.goto('http://localhost:8126/#/'); await p.waitForSelector('.tiles');
