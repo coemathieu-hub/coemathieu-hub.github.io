@@ -2,7 +2,7 @@
    pour fonctionner sans réseau. Les données, elles, sont gardées par
    Firestore (cache permanent) ou IndexedDB. Aucune tuile de carte n'est
    mise en cache à l'avance (politique d'usage OpenStreetMap). */
-const VERSION = 'carnet-1.2.0';
+const VERSION = 'carnet-1.3.0';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon-180.png', './data/aeroports.json'];
 const LIBS = [
   'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js',

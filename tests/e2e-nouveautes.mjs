@@ -20,6 +20,7 @@ const server = http.createServer((req, res) => {
 }).listen(8126);
 const MAP = [
   [/@anthropic-ai\/sdk@0\.133\.0\/\+esm$/, () => join(LIB, '../bundles/anthropic-sdk.mjs')],
+  [/pdfjs-dist@6\.3\.289\/build\/(pdf(\.worker)?\.min\.mjs)$/, m => join(LIB, 'pdfjs-dist/build', m[1])],
   [/leaflet@1\.9\.4\/dist\/(leaflet\.(js|css))$/, m => join(LIB, 'leaflet/dist', m[1])],
   [/qrcode-generator@2\.0\.4\/dist\/qrcode\.mjs$/, () => join(LIB, 'qrcode-generator/dist/qrcode.mjs')],
 ];
@@ -32,6 +33,13 @@ const mkDocx = async (name, lines) => { const f = join(OUT, name); writeFileSync
 const DOCX = await mkDocx('budget-islande.docx', ['BUDGET ISLANDE 2019 du 10 au 17 juillet', 'VOL GENEVE – REYKJAVIK : 1200 euros', 'LOCATION 4X4 : 640 euros', 'Logement Vik : 900 euros + taxe séjour 12 euros', 'Jumelles pour les macareux', 'TOTAL : 2800 euros']);
 const DOCX2 = await mkDocx('budget-crete.docx', ['Budget prévisionnel', 'Vol : 800 euros', 'Logement : 1000 euros', 'Location voiture : 300 euros']);
 const PHOTO = join(ROOT, 'icons/icon-512.png');
+// PDF sans texte (comme un scan manuscrit), reçu SANS extension (cas du sélecteur de fichiers Android)
+const scanPdf = () => { const objs = ['<< /Type /Catalog /Pages 2 0 R >>', '<< /Type /Pages /Kids [3 0 R] /Count 1 >>', '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] >>'];
+  let out = '%PDF-1.6\n%\xe2\xe3\xcf\xd3\n'; const off = []; objs.forEach((o, i) => { off.push(out.length); out += (i + 1) + ' 0 obj\n' + o + '\nendobj\n'; });
+  const x = out.length; out += 'xref\n0 4\n0000000000 65535 f \n' + off.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('') + 'trailer\n<< /Size 4 /Root 1 0 R >>\nstartxref\n' + x + '\n%%EOF\n';
+  return Buffer.from(out, 'latin1'); };
+const SCAN = { name: 'programme', mimeType: 'application/octet-stream', buffer: scanPdf() };
+const BINAIRE = { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from(Array.from({ length: 4000 }, (_, i) => (i * 37 + 11) % 256)) };
 
 // Réponse simulée de Claude (format carnet/1) pour la photo d'un programme
 const ANSWER = 'Voici le JSON :\n```json\n' + JSON.stringify({
@@ -96,6 +104,7 @@ ok('Accueil : actions Programme papier et Voyage passé', await p.isVisible('but
 ok('Accueil : historique avec total calculé', /1 000 €/.test(sp(await p.innerText('a.hist:has-text("Sicile 2025")'))));
 ok('Accueil : chiffres cumulés (1 voyage, 8 jours)', /1\s*voyage/.test(home) && /8\s*jours/.test(home));
 ok('Accueil : pas de défilement horizontal (360 px)', await noHScroll());
+ok('Accueil : illustrations de vacances (bandeau, prochain voyage, historique)', await p.isVisible('.hello.scene svg') && await p.isVisible('a.hero.scene svg') && await p.isVisible('a.hist .hist-e svg'));
 await shot('n1-accueil-360');
 
 // --- Aéroports proposés pendant la saisie
@@ -126,22 +135,32 @@ let fc = p.waitForEvent('filechooser');
 await p.click('#sheet button:has-text("Nouveau voyage d\'après les documents")');
 await (await fc).setFiles([DOCX, PHOTO]);
 await p.waitForSelector('.item:has-text("budget-islande.docx")', { timeout: 10000 }); await p.waitForSelector('.item:has-text("icon-512.png")');
+fc = p.waitForEvent('filechooser'); await p.click('button:has-text("Fichiers")'); await (await fc).setFiles([SCAN, BINAIRE]);
+await p.waitForSelector('.item:has-text("programme")', { timeout: 10000 });
+const srcScan = sp(await p.innerText('.item:has-text("programme")'));
+ok('PDF scanné reçu sans extension : reconnu comme PDF, « lu par Claude »', /pas de texte lisible \(scan ou manuscrit\) : lu par Claude/.test(srcScan), srcScan.replace(/\n/g, ' '));
+await p.waitForSelector('.item:has-text("notes.txt")');
+ok('Fichier binaire : refusé, jamais lu comme du texte', /non lu : format non reconnu/.test(sp(await p.innerText('.item:has-text("notes.txt")'))));
+ok('Bouton Accueil dans la barre du haut', await p.isVisible('.topbar a[aria-label="Accueil"]'));
 const src = sp(await p.innerText('#app'));
 const nChars = +((src.match(/document · (\d+) caractères/) || [])[1] || 0);
 ok('Import : Word lu (texte extrait)', nChars > 80, nChars + ' caractères');
 ok('Import : un seul bouton « Analyser », aucun prompt', await p.isVisible('button.btn.primary:has-text("Analyser")') && !/prompt/i.test(src));
-ok('Import : la photo est signalée « à lire par Claude »', /1 document à lire par Claude/.test(src));
+ok('Import : photo et scan signalés « à lire par Claude »', /2 documents à lire par Claude/.test(sp(await p.innerText('#app'))));
 await shot('n3-import-documents');
 await p.click('button.btn.primary:has-text("Analyser")');
 await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 8000 });
 const prev = sp(await p.innerText('#impRes'));
 ok('Analyse sur le téléphone : 4 lignes de budget (voyage passé → dépenses) + notes', /dépenses \(4\)/i.test(prev) && /notes \(1\)/i.test(prev), (prev.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
 ok('Analyse : total indiqué ≠ somme des lignes, signalé', /total indiqué 2 800 €, somme des lignes 2 752 €/.test(prev));
+ok('Analyse : aucune étape tirée du scan ou du binaire', !/programme \(/i.test(prev), (prev.match(/[A-Za-zéè ]+ \(\d+\)/g) || []).join(', '));
+ok('Nom du voyage repris du document et modifiable', (await p.inputValue('#impName')) === 'Islande 2019');
+await p.fill('#impName', 'Islande en famille 2019');
 await shot('n4-apercu-local');
 await p.click('#impRes button:has-text("Intégrer la sélection")');
 await p.waitForFunction(() => window.__carnet.T.trip && window.__carnet.T.trip.draftImport === false, null, { timeout: 8000 });
 let tr = await p.evaluate(() => ({ ...window.__carnet.T.trip, total: Object.values(window.__carnet.T.expenses).reduce((s, e) => s + e.amountTrip, 0) }));
-ok('Voyage créé d\'après le Word : nom, dates, archivé, total 2 752 €', tr.name === 'Islande 2019' && tr.dateStart === '2019-07-10' && tr.dateEnd === '2019-07-17' && tr.archived && tr.total === 275200, tr.name + ' ' + tr.dateStart + '→' + tr.dateEnd + ' ' + tr.total);
+ok('Voyage créé d\'après le Word : nom choisi, dates, archivé, total 2 752 €', tr.name === 'Islande en famille 2019' && tr.dateStart === '2019-07-10' && tr.dateEnd === '2019-07-17' && tr.archived && tr.total === 275200, tr.name + ' ' + tr.dateStart + '→' + tr.dateEnd + ' ' + tr.total);
 ok('Notes du document gardées dans le voyage', /Jumelles pour les macareux/.test((tr.notes || {}).general || ''));
 await p.waitForSelector('a.btn:has-text("Récap")', { timeout: 5000 }).catch(() => {});
 ok('Après intégration : accès direct au récap, au programme et au budget', await p.isVisible('a.btn:has-text("Récap")') && await p.isVisible('a.btn:has-text("Budget")'));

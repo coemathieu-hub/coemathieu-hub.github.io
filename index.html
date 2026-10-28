@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Carnet de voyage</title>
 <meta name="description" content="Organisation de voyage en famille : programme, conseils, itinéraire, dépenses partagées et budget.">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#071A2C" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF8EE" media="(prefers-color-scheme: light)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
@@ -18,47 +18,50 @@
    CHARTE — thème sombre (inspiré Tricount) et thème clair
    ===================================================================== */
 :root{
-  --bg:#000;--card:#1C1C1E;--card2:#2C2C2E;--line:#2C2C2E;--line2:#3A3A3C;
-  --text:#FFF;--muted:#A1A1A6;--faint:#6E6E73;
-  --accent:#3366E0;--accent-text:#7FA6FF;--on-accent:#FFF;
+  --bg:#071A2C;--card:#0F2A44;--card2:#163755;--line:#1C3F60;--line2:#2A5679;
+  --text:#F4FAFF;--muted:#A3BBD0;--faint:#7590A8;
+  --accent:#0A8396;--accent-text:#5FD8E6;--on-accent:#FFF;
+  --grad:linear-gradient(135deg,#0A8396 0%,#1667B8 100%);--sun:#FFB547;--coral:#FF8A6B;
   --green:#4CC38A;--red:#FF6B5E;
-  --r3-bg:#F5B942;--r3-fg:#1A1200;--r2-bg:#3A3A3C;--r2-fg:#F5B942;
-  --seg-bg:#E0E0E0;--seg-fg:#111;--seg-line:#E5E5EA;
-  --info-bg:#1F2638;--info-fg:#C9D6FF;--info-line:#2F4A8A;
-  --warn-bg:#33280F;--warn-fg:#F5D58A;
-  --ok-bg:#12301F;--ok-fg:#7DDCA4;
-  --bad-bg:#3A1A17;--bad-fg:#FF8A80;
-  --nav-bg:#0A0A0A;--shadow:0 8px 24px rgba(0,0,0,.5);
-  --radius:14px;--gap:12px;
+  --r3-bg:#FFB547;--r3-fg:#2A1600;--r2-bg:#163755;--r2-fg:#FFC36B;
+  --seg-bg:#5FD8E6;--seg-fg:#04202C;--seg-line:#2A5679;
+  --info-bg:#0F3250;--info-fg:#C4E9F6;--info-line:#21608E;
+  --warn-bg:#3A2A0E;--warn-fg:#FFD68A;
+  --ok-bg:#0E3328;--ok-fg:#86E3B9;
+  --bad-bg:#3D1A1C;--bad-fg:#FF9C8F;
+  --nav-bg:#081E33;--shadow:0 10px 28px rgba(0,0,0,.45);
+  --radius:18px;--gap:12px;
   color-scheme:dark;
 }
 :root[data-theme="light"]{
-  --bg:#F2F2F7;--card:#FFF;--card2:#F2F2F7;--line:#E5E5EA;--line2:#D1D1D6;
-  --text:#111114;--muted:#5C5C63;--faint:#8E8E93;
-  --accent:#2457D6;--accent-text:#2457D6;--on-accent:#FFF;
+  --bg:#FFF8EE;--card:#FFF;--card2:#FCEFDB;--line:#F1E3CC;--line2:#E2CFAE;
+  --text:#10283D;--muted:#5D6F80;--faint:#8C9AA8;
+  --accent:#0A8396;--accent-text:#08788A;--on-accent:#FFF;
+  --grad:linear-gradient(135deg,#0A8396 0%,#1667B8 100%);--sun:#F29A1F;--coral:#E0603F;
   --green:#1E8E4E;--red:#C7362C;
-  --r3-bg:#F5B942;--r3-fg:#1A1200;--r2-bg:#FCE8B2;--r2-fg:#6B4300;
-  --seg-bg:#2457D6;--seg-fg:#FFF;--seg-line:#2457D6;
-  --info-bg:#E6EDFC;--info-fg:#1A3E9C;--info-line:#B9CBF5;
-  --warn-bg:#FFF4D6;--warn-fg:#6B4300;
+  --r3-bg:#FFB547;--r3-fg:#2A1600;--r2-bg:#FFE6BF;--r2-fg:#7A4A00;
+  --seg-bg:#0A8396;--seg-fg:#FFF;--seg-line:#0A8396;
+  --info-bg:#E2F5F8;--info-fg:#0B5E6B;--info-line:#B6E3EA;
+  --warn-bg:#FFF1D6;--warn-fg:#6B4300;
   --ok-bg:#DDF3E6;--ok-fg:#14663A;
   --bad-bg:#FDE7E5;--bad-fg:#9E2A21;
-  --nav-bg:#FFF;--shadow:0 8px 24px rgba(0,0,0,.15);
+  --nav-bg:#FFF;--shadow:0 10px 28px rgba(16,40,61,.14);
   color-scheme:light;
 }
 @media (prefers-color-scheme: light){
   :root[data-theme="auto"]{
-    --bg:#F2F2F7;--card:#FFF;--card2:#F2F2F7;--line:#E5E5EA;--line2:#D1D1D6;
-    --text:#111114;--muted:#5C5C63;--faint:#8E8E93;
-    --accent:#2457D6;--accent-text:#2457D6;--on-accent:#FFF;
+    --bg:#FFF8EE;--card:#FFF;--card2:#FCEFDB;--line:#F1E3CC;--line2:#E2CFAE;
+    --text:#10283D;--muted:#5D6F80;--faint:#8C9AA8;
+    --accent:#0A8396;--accent-text:#08788A;--on-accent:#FFF;
+    --grad:linear-gradient(135deg,#0A8396 0%,#1667B8 100%);--sun:#F29A1F;--coral:#E0603F;
     --green:#1E8E4E;--red:#C7362C;
-    --r3-bg:#F5B942;--r3-fg:#1A1200;--r2-bg:#FCE8B2;--r2-fg:#6B4300;
-    --seg-bg:#2457D6;--seg-fg:#FFF;--seg-line:#2457D6;
-    --info-bg:#E6EDFC;--info-fg:#1A3E9C;--info-line:#B9CBF5;
-    --warn-bg:#FFF4D6;--warn-fg:#6B4300;
+    --r3-bg:#FFB547;--r3-fg:#2A1600;--r2-bg:#FFE6BF;--r2-fg:#7A4A00;
+    --seg-bg:#0A8396;--seg-fg:#FFF;--seg-line:#0A8396;
+    --info-bg:#E2F5F8;--info-fg:#0B5E6B;--info-line:#B6E3EA;
+    --warn-bg:#FFF1D6;--warn-fg:#6B4300;
     --ok-bg:#DDF3E6;--ok-fg:#14663A;
     --bad-bg:#FDE7E5;--bad-fg:#9E2A21;
-    --nav-bg:#FFF;--shadow:0 8px 24px rgba(0,0,0,.15);
+    --nav-bg:#FFF;--shadow:0 10px 28px rgba(16,40,61,.14);
     color-scheme:light;
   }
 }
@@ -100,7 +103,7 @@ h1.big{font-size:24px;font-weight:700;margin:6px 4px 12px}
 .sec-h h2{white-space:nowrap}
 .sec-h .chips{flex-wrap:nowrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:none;color:var(--text);font-weight:500;cursor:pointer;text-decoration:none;text-align:center}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary{background:var(--grad);border-color:transparent;color:var(--on-accent);font-weight:600;box-shadow:0 4px 14px rgba(10,131,150,.28)}
 .btn.ghost{border-color:transparent;color:var(--accent-text)}
 .btn.dashed{border-style:dashed;color:var(--accent-text)}
 .btn.danger{border-color:var(--red);color:var(--red)}
@@ -116,11 +119,18 @@ button.chip{min-height:32px;cursor:pointer}
 .chip.badc{background:var(--bad-bg);color:var(--bad-fg)}
 .chip.infoc{background:var(--info-bg);color:var(--info-fg)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+/* --- scènes de vacances (SVG) --- */
+.scene{position:relative;overflow:hidden;border-radius:22px;color:#fff;text-decoration:none;display:block;isolation:isolate}
+.scene>svg{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.scene::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(4,20,36,0) 30%,rgba(4,20,36,.55) 100%)}
+.scene .sc-in{position:relative;padding:16px 18px;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.tripban{min-height:118px;display:flex;align-items:flex-end;margin-bottom:12px}
+.tripban .sc-in{width:100%}
+.tripban b{display:block;font-size:22px;font-weight:800;line-height:1.15}
+.tripban span{font-size:13.5px;opacity:.95}
 /* --- accueil --- */
-.hello{margin:6px 4px 2px}.hello h1{font-size:27px;line-height:1.15;margin:0}.hello p{margin:4px 0 0;color:var(--muted);font-size:15px}
-.hero{display:flex;gap:14px;align-items:center;padding:18px;border-radius:22px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#2457D6 0%,#5B3FD1 55%,#D9577A 100%);box-shadow:0 10px 30px rgba(36,87,214,.35);position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.12)}
-.hero.cur{background:linear-gradient(135deg,#0E8A6A 0%,#1E7FD0 60%,#5B3FD1 100%)}
+.hello{min-height:150px;display:flex;align-items:flex-end;margin-top:4px}.hello h1{font-size:27px;line-height:1.15;margin:0;font-weight:800}.hello p{margin:4px 0 0;font-size:15px;opacity:.95}
+.hero{display:flex;gap:14px;align-items:flex-end;min-height:150px;padding:18px;box-shadow:var(--shadow);text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .hero-emoji{font-size:44px;line-height:1;flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
 .hero-k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.85;font-weight:600}
 .hero-t{font-size:21px;font-weight:700;line-height:1.2;margin-top:2px}
@@ -131,13 +141,14 @@ button.chip{min-height:32px;cursor:pointer}
 .tile{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:14px;border-radius:18px;background:var(--card);border:0;color:inherit;text-decoration:none;text-align:left;font:inherit;cursor:pointer;min-height:96px}
 .tile .ti{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
 .tile b{font-size:15px}.tile span.s{font-size:12.5px;color:var(--muted);line-height:1.3}
-.tile.primary{background:var(--accent);color:var(--on-accent)}.tile.primary span.s{color:rgba(255,255,255,.85)}
+.tile.primary{background:var(--grad);color:var(--on-accent)}.tile.primary span.s{color:rgba(255,255,255,.85)}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.kpi{background:var(--card);border-radius:14px;padding:10px 6px;text-align:center}.kpi b{display:block;font-size:20px;font-weight:700}.kpi span{font-size:11.5px;color:var(--muted)}
+.kpi{background:var(--card);border-radius:14px;padding:10px 4px;text-align:center;min-width:0}.kpi b{display:block;font-size:clamp(14px,4.6vw,20px);font-weight:700;white-space:nowrap}.kpi span{font-size:11.5px;color:var(--muted)}
 .year{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin:14px 6px 6px}
 .hist{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--card);color:inherit;text-decoration:none}
 .hist+.hist{margin-top:8px}
-.hist-e{width:44px;height:44px;flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--card2)}
+.hist-e{width:52px;height:52px;flex:none;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--card2);position:relative;overflow:hidden;isolation:isolate}
+.hist-e>svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
 .hist-a{flex:none;text-align:right;font-weight:600;font-size:14px}.hist-a span{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
 @media (min-width:640px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 label.chip{white-space:normal;max-width:100%;height:auto;line-height:1.3;padding-top:6px;padding-bottom:6px}
@@ -211,7 +222,7 @@ textarea.input{min-height:96px;resize:vertical}
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;background:var(--nav-bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
 .nav-in{display:flex;width:100%;max-width:640px}
 .nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 9px;color:var(--muted);text-decoration:none;font-size:11.5px;min-width:0}
-.nav a[aria-current="page"]{color:var(--accent-text)}
+.nav a[aria-current="page"]{color:var(--coral);font-weight:600}
 .fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom));z-index:25;display:flex;align-items:center;gap:8px;height:52px;padding:0 22px;border-radius:26px;background:var(--accent);color:var(--on-accent);font-weight:600;border:0;box-shadow:0 0 0 6px var(--bg);cursor:pointer;text-decoration:none;white-space:nowrap}
 /* --- feuilles (modales) --- */
 #sheet-wrap{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55)}
@@ -286,7 +297,7 @@ pre.code{white-space:pre-wrap;word-break:break-word;background:var(--card2);padd
    d'invitation.
    ===================================================================== */
 const FIREBASE_CONFIG = null;
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 const APP_URL = 'https://coemathieu-hub.github.io/';
 const APK_URL = 'https://github.com/coemathieu-hub/coemathieu-hub.github.io/releases/latest/download/carnet-de-voyage.apk';
 
@@ -1190,6 +1201,8 @@ function normalizeImport(obj, ctx = {}) {
   return { type: obj.type || '', items, incertitudes, voyage, voyageurs };
 }
 
+/* Part de caractères illisibles : au-delà de 2 %, ce n'est pas un texte (fichier binaire) */
+const unreadableRatio = t => { if (!t) return 0; let bad = 0; for (const ch of t.slice(0, 20000)) { const c = ch.charCodeAt(0); if (ch === '�' || (c < 32 && c !== 9 && c !== 10 && c !== 13)) bad++; } return bad / Math.min(t.length, 20000); };
 /* ---------- 1.11 bis Analyse sur le téléphone des documents texte (sans IA, hors ligne) ----------
    Reconnaît : dates du voyage (« du 12 au 19 août 2026 »), nom (titre du document), lignes de budget
    (« Libellé : 120 euros », plusieurs montants par ligne, total indiqué contrôlé), programme daté
@@ -1237,9 +1250,21 @@ function findDateRange(text, year0) {
 function tripNameFrom(line) {
   if (/\d\s*(€|euros?\b)/i.test(line)) return null;
   let t = line.replace(/\b(budget|r[ée]cap(itulatif)?|programme|d[ée]penses|voyage)\b/gi, ' ').replace(/\(?\s*du\s+\d{1,2}[\s\S]*$/i, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (!t || t.length > 40 || !/\p{L}{3}/u.test(t)) return null;
+  if (!t || t.length > 40 || !/\p{L}{3}/u.test(t) || !cleanLine(t) || (t.match(/\p{L}/gu) || []).length < t.replace(/\s/g, '').length * 0.4) return null;
   if (t === t.toUpperCase()) t = t.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (x, a, b) => a + b.toUpperCase());
   return { nom: t, destination: t.replace(/\b(19|20)\d{2}\b/g, '').replace(/\s+/g, ' ').trim() };
+}
+/* Ligne lisible : pas de caractère de remplacement, moins de 20 % de symboles inhabituels (sinon : bruit d'un fichier binaire) */
+function cleanLine(l) {
+  if (/[\uFFFD\u0000-\u0008\u000E-\u001F]/.test(l)) return false;
+  const chars = l.replace(/\s/g, ''); if (!chars) return false;
+  const odd = (chars.match(/[^\p{L}\p{N}€$%:;,.!?'"’()\/\-+&@#*•→–—…«»°=<>_|]/gu) || []).length;
+  return odd / chars.length < 0.2;
+}
+/* Nom de fichier → nom de voyage (« 0cf27d3f-BUDGET_LANZAROTE_2026.docx » → « Lanzarote 2026 ») */
+function nameFromFile(fn) {
+  const base = String(fn || '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/^[0-9a-f]{6,}[-_]/i, '').replace(/[_\-.]+/g, ' ');
+  return tripNameFrom(base);
 }
 /* En-tête de jour : « Mercredi 12/08 », « 17 août 2026 », « Jour 3 » → { date, rest } */
 function dayHeader(line, year0, start) {
@@ -1268,13 +1293,15 @@ function localAnalyze(sources, ctx = {}) {
   for (const src of sources) {
     const text = String(src.text || ''); if (!text.trim()) continue;
     found.docs++;
-    const lines = text.split(/\r?\n/).map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    if (unreadableRatio(text) > 0.02) continue; // fichier binaire lu par erreur : ignoré
+    const lines = text.split(/\r?\n/).map(l => l.replace(/\s+/g, ' ').trim()).filter(l => l && cleanLine(l));
     const year0 = (text.match(/\b(20\d{2})\b/) || [])[1] || String(trip.dateStart || '').slice(0, 4) || String(new Date().getFullYear());
     const range = findDateRange(text, year0);
     if (range && !out.voyage.debut) { out.voyage.debut = range.debut; out.voyage.fin = range.fin; }
     const start = out.voyage.debut || (trip.draftImport ? '' : trip.dateStart);
     const title = dayHeader(lines[0] || '', year0, start) ? null : tripNameFrom(lines[0] || ''); // une première ligne « mardi 8/12 » est un jour, pas un titre
-    if (title && !out.voyage.nom) { out.voyage.nom = title.nom; out.voyage.destination = title.destination; }
+    const named = title || (trip.draftImport && !/^texte coll/i.test(src.name || '') ? nameFromFile(src.name) : null); // nom de fichier : seulement pour un nouveau voyage
+    if (named && !out.voyage.nom) { out.voyage.nom = named.nom; out.voyage.destination = named.destination; }
     const colonAmounts = lines.filter(l => /[:|]\s*\d[\d .]*(,\d{1,2})?\s*(€|euros?)/i.test(l)).length;
     const isBudget = colonAmounts >= 3 || /budget|depense|recap|cout|frais/.test(norm((src.name || '') + ' ' + (lines[0] || '')));
     let cur = null, stated = null, sum = 0; const notes = [];
@@ -2097,18 +2124,42 @@ function officeXmlText(xml) {
   return xml.replace(/<\/w:p>\s*<\/w:tc>/g, '</w:tc>').replace(/<\/text:p>\s*<\/table:table-cell>/g, '</table:table-cell>').replace(/<\/w:tr>|<\/table:table-row>/g, '\n').replace(/<w:tab\/>|<text:tab\/>/g, '\t').replace(/<w:br\/>|<text:line-break\/>/g, '\n').replace(/<\/w:tc>|<\/table:table-cell>/g, ' | ').replace(/<\/w:p>|<\/text:p>|<\/text:h>/g, '\n')
     .replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&').replace(/ \| \n/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
 }
+/* Type réel d'un fichier d'après ses premiers octets : sur Android, le nom arrive parfois sans extension */
+async function sniffFile(file) {
+  const h = new Uint8Array(await file.slice(0, 16).arrayBuffer()); const s = String.fromCharCode(...h);
+  if (s.startsWith('%PDF')) return 'pdf';
+  if (h[0] === 0xFF && h[1] === 0xD8 && h[2] === 0xFF) return 'image';
+  if (s.startsWith('\x89PNG') || s.startsWith('GIF8') || (s.startsWith('RIFF') && s.slice(8, 12) === 'WEBP')) return 'image';
+  if (s.slice(4, 8) === 'ftyp' && /^(heic|heix|hevc|mif1|msf1|avif)/.test(s.slice(8, 12))) return 'image';
+  if (s.startsWith('PK\x03\x04')) return 'zip';
+  if (h[0] === 0xD0 && h[1] === 0xCF && h[2] === 0x11 && h[3] === 0xE0) return 'ole';
+  return '';
+}
+const letterCount = t => (String(t || '').match(/\p{L}/gu) || []).length;
 async function extractFileText(file) {
   const name = (file.name || '').toLowerCase();
   const type = file.type || '';
-  if (type.startsWith('image/')) return { kind: 'image', name: file.name, text: '' };
-  if (/\.(docx|odt)$/.test(name)) {
-    const xml = await zipRead(await file.arrayBuffer(), name.endsWith('.odt') ? 'content.xml' : 'word/document.xml');
-    if (xml == null) throw new Error('document Word illisible');
-    const text = officeXmlText(xml);
-    return { kind: 'document', name: file.name, text, empty: !text };
+  const sig = await sniffFile(file);
+  if (sig === 'image' || (!sig && type.startsWith('image/'))) return { kind: 'image', name: file.name, text: '' };
+  if (sig === 'zip') {
+    const buf = await file.arrayBuffer();
+    const word = await zipRead(buf, 'word/document.xml');
+    if (word != null) { const text = officeXmlText(word); return { kind: 'document', name: file.name, text, empty: !letterCount(text) }; }
+    if (await zipRead(buf, 'xl/workbook.xml') != null || /\.(xlsx|ods)$/.test(name)) return sheetText(file, buf);
+    const odt = await zipRead(buf, 'content.xml');
+    if (odt != null) { const mime = (await zipRead(buf, 'mimetype')) || ''; if (/spreadsheet/.test(mime)) return sheetText(file, buf); const text = officeXmlText(odt); return { kind: 'document', name: file.name, text, empty: !letterCount(text) }; }
+    throw new Error('archive non reconnue : utilise PDF, Word, Excel, photo ou texte');
   }
-  if (name.endsWith('.doc')) throw new Error('ancien format Word : enregistre-le en .docx ou en PDF');
-  if (name.endsWith('.pdf') || type === 'application/pdf') {
+  if (sig === 'ole') {
+    if (name.endsWith('.msg')) {
+      const mod = await import(LIBS.msgreader); const MsgReader = mod.default || mod.MsgReader;
+      const r = new MsgReader(await file.arrayBuffer()); const d = r.getFileData();
+      return { kind: 'mail', name: file.name, id: d.messageId || '', subject: d.subject || '', date: d.messageDeliveryTime || '', from: d.senderEmail || d.senderName || '', text: (d.body || '').trim() };
+    }
+    if (name.endsWith('.xls')) return sheetText(file, await file.arrayBuffer());
+    throw new Error('ancien format Office (.doc, .xls) : enregistre-le en .docx, .xlsx ou PDF');
+  }
+  if (sig === 'pdf' || (!sig && (name.endsWith('.pdf') || type === 'application/pdf'))) {
     const pdfjs = await import(LIBS.pdfjs);
     try {
       const blob = new Blob(['import "' + LIBS.pdfjsWorker + '";'], { type: 'text/javascript' });
@@ -2117,26 +2168,25 @@ async function extractFileText(file) {
     const doc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
     let text = '';
     for (let i = 1; i <= Math.min(doc.numPages, 40); i++) { const p = await doc.getPage(i); const c = await p.getTextContent(); text += c.items.map(x => x.str).join(' ') + '\n'; }
-    return { kind: 'pdf', name: file.name, text: text.trim(), empty: !text.trim() };
+    text = text.trim();
+    // Scan ou écriture manuscrite : pas (ou presque pas) de texte → lecture par Claude
+    return { kind: 'pdf', name: file.name, text, empty: letterCount(text) < 40 };
   }
-  if (name.endsWith('.eml') || type === 'message/rfc822') {
+  const text = (await file.text()).trim();
+  if (unreadableRatio(text) > 0.02) throw new Error('format non reconnu : utilise PDF, Word, Excel, photo, mail ou texte');
+  if (name.endsWith('.eml') || type === 'message/rfc822' || /^(received|return-path|delivered-to|mime-version|from|date|message-id):/im.test(text.slice(0, 2000))) {
     const mod = await import(LIBS.postalMime); const PostalMime = mod.default || mod.PostalMime;
     const em = await PostalMime.parse(await file.arrayBuffer());
     const body = em.text || (em.html ? em.html.replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ') : '');
     return { kind: 'mail', name: file.name, id: em.messageId || '', subject: em.subject || '', date: em.date || '', from: (em.from && (em.from.address || em.from.name)) || '', text: body.trim() };
   }
-  if (name.endsWith('.msg')) {
-    const mod = await import(LIBS.msgreader); const MsgReader = mod.default || mod.MsgReader;
-    const r = new MsgReader(await file.arrayBuffer()); const d = r.getFileData();
-    return { kind: 'mail', name: file.name, id: d.messageId || '', subject: d.subject || '', date: d.messageDeliveryTime || '', from: d.senderEmail || d.senderName || '', text: (d.body || '').trim() };
-  }
-  if (/\.(xlsx|xls|ods)$/.test(name)) {
-    await loadScript(LIBS.xlsx);
-    const wb = window.XLSX.read(new Uint8Array(await file.arrayBuffer()), { type: 'array' });
-    const text = wb.SheetNames.map(n => '### Feuille ' + n + '\n' + window.XLSX.utils.sheet_to_csv(wb.Sheets[n], { FS: ';' })).join('\n\n');
-    return { kind: 'tableur', name: file.name, text };
-  }
-  return { kind: 'texte', name: file.name, text: (await file.text()).trim() };
+  return { kind: 'texte', name: file.name, text };
+}
+async function sheetText(file, buf) {
+  await loadScript(LIBS.xlsx);
+  const wb = window.XLSX.read(new Uint8Array(buf), { type: 'array' });
+  const text = wb.SheetNames.map(n => '### Feuille ' + n + '\n' + window.XLSX.utils.sheet_to_csv(wb.Sheets[n], { FS: ';' })).join('\n\n');
+  return { kind: 'tableur', name: file.name, text };
 }
 /* ---------- Analyse directe par Claude (facultatif : clé API Anthropic gardée sur cet appareil) ----------
    Sans clé, l'app prépare le prompt et le partage vers l'app Claude (copier-coller). Avec une clé, elle envoie
@@ -2204,7 +2254,8 @@ function claudeKeyCard() {
 function dedupSources(list) {
   const seen = new Set(); const out = [];
   for (const s of list) {
-    const k = s.id ? 'id:' + s.id : 'h:' + norm((s.subject || '') + (s.text || '').slice(0, 2000));
+    // Sans texte (photo, scan) : le même fichier deux fois, pas deux fichiers vides différents
+    const k = s.id ? 'id:' + s.id : (s.text || '').trim() ? 'h:' + norm((s.subject || '') + s.text.slice(0, 2000)) : 'f:' + s.name + ':' + ((s.file && s.file.size) || 0);
     if (seen.has(k)) { s.dup = true; continue; }
     seen.add(k); out.push(s);
   }
@@ -2319,7 +2370,8 @@ function renderNav() {
 }
 function topbar(title, sub, opts = {}) {
   const back = opts.back === false ? '' : '<a class="iconbtn" href="' + (opts.back || (App.route.name === 'trip' ? tripUrl('plus') : '#/')) + '" aria-label="Retour">' + ic('back') + '</a>';
-  return '<header class="topbar">' + back + '<div class="title"><b>' + esc(title) + '</b>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</div>' + (opts.right || '') + syncBadge() + '</header>';
+  const home = '<a class="iconbtn" href="#/" aria-label="Accueil" title="Accueil">' + ic('home') + '</a>';
+  return '<header class="topbar">' + back + '<div class="title"><b>' + esc(title) + '</b>' + (sub ? '<span>' + esc(sub) + '</span>' : '') + '</div>' + (opts.right || '') + syncBadge() + home + '</header>';
 }
 function syncBadge() {
   if (App.route.name === 'trip' && T.where === 'local') return '<a class="syncb chip" href="' + tripUrl('membres') + '" title="Voyage sur cet appareil seulement">' + ic('phone', 's') + 'Local</a>';
@@ -2554,6 +2606,50 @@ function tripCard(t) {
     (st.total != null ? '<div class="stats"><div class="stat"><b>' + fmtMoneyShort(st.total, t.currency) + '</b><span>total</span></div><div class="stat"><b>' + fmtMoneyShort(st.perDay, t.currency) + '</b><span>par jour</span></div><div class="stat"><b>' + fmtMoneyShort(st.perPerson, t.currency) + '</b><span>par personne</span></div></div>' : '') +
     '</a>';
 }
+/* ---------- Scènes de vacances : illustrations SVG choisies selon la destination ---------- */
+let _scn = 0;
+const SCENE_KEYS = [
+  ['montagne', /montagne|alpes|alpe|ski|pyrenees|dolomit|chamonix|tyrol|autriche|suisse|norvege|islande|fjord|andorre|vosges|jura|savoie|tatras|rocheuses/],
+  ['lac', /\blacs?\b|annecy|leman|garde|come|bled|lago|loch|balaton/],
+  ['monument', /paris|rome|londres|barcelone|madrid|venise|florence|athenes|prague|vienne|budapest|berlin|lisbonne|porto|amsterdam|bruxelles|new york|istanbul|ville|city|seville|naples|cracovie|edimbourg/],
+  ['plage', /plage|ile|iles|canaries|lanzarote|fuerteventura|tenerife|gran canaria|baleares|majorque|minorque|ibiza|crete|corse|sardaigne|sicile|grece|zanzibar|maldives|antilles|martinique|guadeloupe|reunion|madere|algarve|pouilles|cote|riviera|mer|beach|playa|thailande|bali|senegal|cancun|mexique/],
+];
+function sceneKind(t) { const n = norm(((t && t.destination) || '') + ' ' + ((t && t.name) || '')); for (const [k, re] of SCENE_KEYS) if (re.test(n)) return k; return 'mer'; }
+function sceneSVG(kind) {
+  const u = 's' + (++_scn); const sky = (a, b) => '<linearGradient id="' + u + 'k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + a + '"/><stop offset="1" stop-color="' + b + '"/></linearGradient>';
+  const sun = (x, y, r, c) => '<circle cx="' + x + '" cy="' + y + '" r="' + (r + 14) + '" fill="' + c + '" opacity=".25"/><circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + c + '"/>';
+  const open = '<svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>';
+  const S = {
+    plage: open + sky('#5CC8F2', '#CFF3FF') + '<linearGradient id="' + u + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18A9C9"/><stop offset="1" stop-color="#0B6FA4"/></linearGradient></defs><rect width="400" height="200" fill="url(#' + u + 'k)"/>' + sun(318, 52, 24, '#FFD447') +
+      '<path d="M0 112 Q100 104 200 112 T400 110 V200 H0Z" fill="url(#' + u + 's)"/><path d="M0 130 q20-6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none"/>' +
+      '<path d="M0 160 Q120 138 260 158 T400 150 V200 H0Z" fill="#F6DDA8"/><path d="M78 168 q6-46 30-82" stroke="#8B5A2B" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<g fill="#2E9E5B"><path d="M108 86 q-34-10-52 8 q26-6 52-8z"/><path d="M108 86 q-14-30-42-30 q24 10 42 30z"/><path d="M108 86 q14-30 42-26 q-26 6-42 26z"/><path d="M108 86 q36-4 48 18 q-24-12-48-18z"/></g></svg>',
+    montagne: open + sky('#8FD3FF', '#EAF8FF') + '</defs><rect width="400" height="200" fill="url(#' + u + 'k)"/>' + sun(320, 48, 20, '#FFD447') +
+      '<path d="M0 150 L70 72 L120 120 L190 46 L262 128 L310 84 L400 150 V200 H0Z" fill="#7C9CC9"/><path d="M190 46 L214 74 L200 70 L190 82 L178 70 L168 72Z M70 72 L86 90 L72 88 L62 96 L56 88Z" fill="#fff"/>' +
+      '<path d="M0 168 L90 110 L160 156 L240 104 L330 160 L400 128 V200 H0Z" fill="#3F6E9E"/><path d="M0 182 Q200 150 400 178 V200 H0Z" fill="#7CC67C"/>' +
+      '<g fill="#1F6E4A"><path d="M40 186 l10-30 l10 30z"/><path d="M58 188 l8-24 l8 24z"/><path d="M330 184 l10-30 l10 30z"/><path d="M350 186 l8-22 l8 22z"/></g></svg>',
+    lac: open + sky('#FFB88C', '#FFE9C2') + '<linearGradient id="' + u + 'l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FB3D4"/><stop offset="1" stop-color="#2A7FB0"/></linearGradient></defs><rect width="400" height="200" fill="url(#' + u + 'k)"/>' + sun(110, 70, 22, '#FFDE6B') +
+      '<path d="M0 118 L80 64 L150 110 L230 50 L310 108 L400 76 V128 H0Z" fill="#7381BC"/><path d="M0 128 L60 96 L130 126 L200 92 L290 128 L360 102 L400 118 V132 H0Z" fill="#4E5E9A"/>' +
+      '<rect y="128" width="400" height="72" fill="url(#' + u + 'l)"/><g stroke="#fff" stroke-opacity=".5" stroke-width="2"><path d="M90 146 h40 M180 160 h60 M60 176 h30 M280 150 h40 M300 182 h50"/></g>' +
+      '<path d="M236 166 h44 l-8 10 h-28z" fill="#E4573D"/><path d="M258 164 V128 L280 162Z" fill="#fff"/></svg>',
+    monument: open + sky('#FFC78A', '#FF8E72') + '</defs><rect width="400" height="200" fill="url(#' + u + 'k)"/>' + sun(300, 96, 30, '#FFE29A') +
+      '<g fill="#5A3F6B"><rect x="20" y="130" width="40" height="70"/><path d="M90 200 V120 q30-38 60 0 V200z"/><rect x="117" y="70" width="6" height="22"/><path d="M196 200 L214 60 L232 200z M206 140 h16 M201 172 h26" stroke="#5A3F6B" stroke-width="3"/>' +
+      '<rect x="250" y="140" width="70" height="60"/><path d="M246 140 h78 l-39-22z"/><rect x="340" y="110" width="44" height="90"/></g>' +
+      '<g fill="#7A5A8A"><rect x="256" y="150" width="6" height="40"/><rect x="270" y="150" width="6" height="40"/><rect x="284" y="150" width="6" height="40"/><rect x="298" y="150" width="6" height="40"/></g>' +
+      '<rect y="196" width="400" height="4" fill="#3E2A4E"/></svg>',
+    mer: open + sky('#86D8F7', '#DDF6FF') + '<linearGradient id="' + u + 's" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1FA6CF"/><stop offset="1" stop-color="#0A5E96"/></linearGradient></defs><rect width="400" height="200" fill="url(#' + u + 'k)"/>' + sun(80, 56, 22, '#FFD447') +
+      '<rect y="120" width="400" height="80" fill="url(#' + u + 's)"/><path d="M0 140 q25-8 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" stroke="#fff" stroke-opacity=".45" stroke-width="3" fill="none"/>' +
+      '<path d="M250 150 h70 l-12 14 h-46z" fill="#E4573D"/><path d="M284 148 V86 L318 146Z" fill="#fff"/><path d="M280 148 V100 L256 146Z" fill="#F3F8FF"/>' +
+      '<g stroke="#2B3F55" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M180 60 q8-8 16 0 q8-8 16 0"/><path d="M220 80 q6-6 12 0 q6-6 12 0"/></g></svg>',
+  };
+  return S[kind] || S.mer;
+}
+/* Bandeau illustré du voyage (programme, aujourd'hui) */
+function tripBanner() {
+  const t = T.trip; const kids = childrenAges(t.dateStart);
+  return '<div class="scene tripban">' + sceneSVG(sceneKind(t)) + '<div class="sc-in"><b>' + esc((t.emoji ? t.emoji + ' ' : '') + t.name) + '</b><span>' + esc(fmtRange(t.dateStart, t.dateEnd) + (t.destination ? ' · ' + t.destination : '') + (kids ? ' · ' + kids : '')) + '</span></div></div>';
+}
+
 /* ---------- Accueil : salutation, prochain voyage, actions, historique ---------- */
 function greeting(d = new Date()) { const h = d.getHours(); return h < 5 ? 'Bonsoir' : h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir'; }
 function tripDaysCount(t) { return isISODate(t.dateStart) && isISODate(t.dateEnd) ? daysBetween(t.dateStart, t.dateEnd) + 1 : 0; }
@@ -2566,13 +2662,13 @@ function heroCard(t, kind) {
     const n = daysBetween(today, t.dateStart);
     big = n === 0 ? 'Aujourd\'hui' : n === 1 ? 'Demain' : 'J-' + n; small = n > 1 ? 'jours avant le départ' : 'bon voyage !';
   }
-  return '<a class="hero' + (kind === 'cur' ? ' cur' : '') + '" href="#/v/' + t.where + '/' + t.id + '"><span class="hero-emoji">' + esc((t.emoji && t.emoji.trim()) || '✈️') + '</span>' +
+  return '<a class="hero scene" href="#/v/' + t.where + '/' + t.id + '">' + sceneSVG(sceneKind(t)) + '<span class="hero-emoji">' + esc((t.emoji && t.emoji.trim()) || '✈️') + '</span>' +
     '<div class="grow" style="min-width:0;z-index:1"><div class="hero-k">' + (kind === 'cur' ? 'En ce moment' : 'Prochain voyage') + '</div><div class="hero-t">' + esc(t.name || 'Sans nom') + '</div><div class="hero-s">' + esc(fmtRange(t.dateStart, t.dateEnd)) + (t.destination ? ' · ' + esc(t.destination) : '') + '</div>' + bar + '</div>' +
     '<div class="hero-n"><b>' + big + '</b><span>' + small + '</span></div></a>';
 }
 function histItem(t) {
   const st = t.stats || {}; const n = tripDaysCount(t);
-  return '<a class="hist" href="#/v/' + t.where + '/' + t.id + '"><span class="hist-e">' + esc((t.emoji && t.emoji.trim()) || '🧳') + '</span>' +
+  return '<a class="hist" href="#/v/' + t.where + '/' + t.id + '"><span class="hist-e">' + sceneSVG(sceneKind(t)) + esc((t.emoji && t.emoji.trim()) || '') + '</span>' +
     '<span class="grow" style="min-width:0"><b style="display:block">' + esc(t.name || 'Sans nom') + '</b><span class="small muted">' + esc(fmtRange(t.dateStart, t.dateEnd)) + (t.destination ? ' · ' + esc(t.destination) : '') + '</span></span>' +
     '<span class="hist-a">' + (st.total != null ? fmtMoneyShort(st.total, t.currency) : '') + '<span>' + (n ? n + ' jour' + (n > 1 ? 's' : '') : '') + '</span></span></a>';
 }
@@ -2596,7 +2692,7 @@ VIEWS.home = () => {
     '<span class="ti" style="background:' + o.bg + '">' + o.e + '</span><b>' + o.t + '</b><span class="s">' + o.s + '</span>' + (o.href ? '</a>' : '</button>');
   return '<header class="topbar"><div class="title" style="padding-left:4px"><b style="font-size:17px">Carnet de voyage</b></div>' + syncBadge() + '<a class="iconbtn" href="#/reglages" aria-label="Réglages">' + ic('gear') + '</a></header>' +
     '<div class="stack">' +
-    '<div class="hello"><h1>' + greeting() + (name ? ' ' + esc(name) : '') + ' 👋</h1><p>' + sub + '</p></div>' +
+    '<div class="hello scene">' + sceneSVG(cur[0] ? sceneKind(cur[0]) : fut[0] ? sceneKind(fut[0]) : 'plage') + '<div class="sc-in"><h1>' + greeting() + (name ? ' ' + esc(name) : '') + ' 👋</h1><p>' + sub + '</p></div></div>' +
     cur.map(t => heroCard(t, 'cur')).join('') + (fut[0] ? heroCard(fut[0], 'fut') : '') +
     (!fam.length ? '<div class="card info"><b>Bienvenue !</b><div class="small" style="margin-top:4px">1. Renseigne <a href="#/reglages">ta famille</a> une fois (voyageurs par défaut, dates de naissance pour les âges).<br>2. Crée un voyage, rejoins-en un avec un lien, ou restaure une sauvegarde (par ex. ton fichier de départ).</div></div>' : '') +
     '<div class="tiles">' +
@@ -2904,7 +3000,7 @@ TRIP_VIEWS.programme = () => {
   const kids = childrenAges(T.trip.dateStart);
   const bd = birthdaysInRange(travelersSorted(), T.trip.dateStart, T.trip.dateEnd);
   return topbar((T.trip.emoji ? T.trip.emoji + ' ' : '') + T.trip.name, fmtRange(T.trip.dateStart, T.trip.dateEnd) + (kids ? ' · ' + kids : ''), { back: '#/' }) +
-    backupReminder() + (T.trip.archived ? '<div class="card info small" style="margin-bottom:10px">Voyage archivé, repris pour information.</div>' : '') +
+    tripBanner() + backupReminder() + (T.trip.archived ? '<div class="card info small" style="margin-bottom:10px">Voyage archivé, repris pour information.</div>' : '') +
     bd.map(x => '<a class="banner" style="margin-bottom:8px;text-decoration:none" href="' + tripUrl('jour', x.date) + '">' + ic('cake') + '<span>' + esc(fmtDay(x.date, { cap: true })) + ' : anniversaire de ' + esc(x.traveler.name) + ' (' + x.age + ' ans)</span></a>').join('') +
     '<div class="two"><div class="side stack">' + dayList(sel) +
     '<div class="grid2"><a class="btn sm" href="' + tripUrl('imports') + '">' + ic('upload', 's') + 'Importer</a><a class="btn sm" href="' + tripUrl('valise') + '">' + ic('bag', 's') + 'Valise</a></div></div>' +
@@ -3293,7 +3389,7 @@ TRIP_VIEWS.aujourdhui = () => {
   if (st !== 'encours') {
     const n = st === 'futur' ? daysBetween(today, T.trip.dateStart) : 0;
     const jj = st === 'futur' && n <= 1 ? jourJCard() : '';
-    return topbar('Aujourd\'hui', T.trip.name, { back: '#/' }) + '<div class="stack">' +
+    return topbar('Aujourd\'hui', T.trip.name, { back: '#/' }) + tripBanner() + '<div class="stack">' +
       (st === 'futur' ? '<div class="card info"><b>Départ dans ' + n + ' jour' + (n > 1 ? 's' : '') + '</b><div class="small">' + esc(fmtDay(T.trip.dateStart, { cap: true, year: true })) + '</div></div>' + jj + (days[0] ? '<a class="btn block" href="' + tripUrl('jour', days[0]) + '">Voir le premier jour</a>' : '') + prepCard(days[0], 'Pour le premier jour')
         : '<div class="card info"><b>Voyage terminé</b><div class="small">Retrouve le récap complet.</div></div><a class="btn primary block" href="' + tripUrl('recap') + '">Voir le récap</a>') + '</div>';
   }
@@ -3968,9 +4064,9 @@ TRIP_VIEWS.imports = () => {
   if (!I.kind || !['auto', 'generer'].includes(I.kind)) I.kind = 'auto';
   App.after.push(bindDrop);
   const key = hasClaudeKey(), gen = I.kind === 'generer';
-  const srcs = I.sources.filter(s => !s.dup), unread = srcs.filter(s => s.kind === 'image' || s.empty);
+  const srcs = I.sources.filter(s => !s.dup), unread = srcs.filter(s => s.kind === 'image' || (s.empty && s.kind !== 'erreur'));
   const srcItem = (s, i) => '<div class="item" style="cursor:default;background:var(--card2)">' + ic(s.kind === 'image' ? 'camera' : s.kind === 'mail' ? 'note' : 'file') + '<span class="grow"><span class="t" style="display:block">' + esc(s.subject || s.name) + '</span><span class="s">' +
-    (s.kind === 'image' ? 'photo · lue par Claude' : s.empty ? '<span class="verif">pas de texte lisible (scan ou manuscrit) : lu par Claude</span>' : esc(s.kind) + ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>';
+    (s.kind === 'erreur' ? '<span class="verif">non lu : ' + esc(s.err || 'format non reconnu') + '</span>' : s.kind === 'image' ? 'photo · lue par Claude' : s.empty ? '<span class="verif">pas de texte lisible (scan ou manuscrit) : lu par Claude</span>' : esc(s.kind) + ' · ' + (s.text || '').length + ' caractères') + (s.dup ? ' · doublon ignoré' : '') + '</span></span><button class="iconbtn" data-act="impDelSrc" data-i="' + i + '" aria-label="Retirer">' + ic('x') + '</button></div>';
   const sources = '<section class="card stack"><h2 class="lbl">Documents</h2><p class="small muted" style="margin:0">Budget, programme (même manuscrit), réservations, notes… d\'un voyage passé ou à venir.</p>' +
     '<div class="grid2"><button class="btn" data-act="impCamera">' + ic('camera') + 'Photo</button><button class="btn" data-act="impPick">' + ic('upload') + 'Fichiers</button></div>' +
     '<div class="drop" id="drop" tabindex="0"><div class="tiny">… ou dépose-les ici : Word, PDF, Excel, mails, photos, texte</div></div>' +
@@ -3979,8 +4075,8 @@ TRIP_VIEWS.imports = () => {
   const go = '<section class="card stack"><button class="btn primary block" data-act="' + (gen ? 'impGen' : 'impGo') + '"' + (I.busy ? ' disabled' : '') + '>' + ic('sparkle') + (I.busy ? 'Analyse en cours…' : gen ? 'Proposer un programme' : 'Analyser') + '</button>' +
     '<div id="impProg" class="small muted" style="text-align:center">' + (I.busy ? 'Envoi des documents à Claude…' : gen ? (key ? 'Claude propose un programme selon les dates, les âges, vos goûts et la saison.' : 'Sans clé API, la demande part vers l\'app Claude.') : key ? 'Claude lit tous les documents, y compris photos et écriture manuscrite.' : 'Analyse sur le téléphone, gratuite et hors ligne : budgets, programmes tapés, notes.') + '</div></section>';
   const needClaude = !key && !gen && unread.length ? '<section class="card warn stack"><div class="small"><b>' + unread.length + ' document' + (unread.length > 1 ? 's' : '') + ' à lire par Claude</b> (photo, scan, écriture manuscrite) : ' + esc(unread.map(s => s.name).join(', ')) + '.</div>' +
-    '<div class="grid2"><a class="btn sm" href="#/reglages">Activer Claude</a><button class="btn sm" data-act="impShare">' + ic('share', 's') + 'Envoyer à l\'app Claude</button></div><p class="tiny muted" style="margin:0">« Activer Claude » : clé API dans Réglages, lecture en un appui. « Envoyer à l\'app Claude » : gratuit, puis tu recolles sa réponse ici.</p></section>' : '';
-  const shared = I.shared && !key ? '<section class="card stack"><h2 class="lbl">Réponse de l\'app Claude</h2><textarea class="input" id="impAns" data-input="impAns" rows="4" placeholder="Colle ici toute la réponse de Claude">' + esc(I.answer) + '</textarea><button class="btn primary block" data-act="impParse">Valider la réponse</button></section>' : '';
+    '<div class="grid2"><button class="btn sm" data-act="impShare">' + ic('share', 's') + 'Envoyer à l\'app Claude</button><a class="btn sm" href="#/reglages">Lecture en un appui</a></div><p class="tiny muted" style="margin:0">« Envoyer à l\'app Claude » : gratuit ; Claude lit la photo, tu copies sa réponse et tu la colles ici en un appui. « Lecture en un appui » : clé API dans les Réglages (payant, quelques centimes).</p></section>' : '';
+  const shared = I.shared && !key ? '<section class="card stack"><h2 class="lbl">Réponse de l\'app Claude</h2><p class="small muted" style="margin:0">Dans Claude, copie sa réponse (bouton copier), puis reviens ici.</p><button class="btn primary block" data-act="impClip">' + ic('copy') + 'Coller la réponse de Claude</button><details><summary class="small" style="cursor:pointer">Coller à la main</summary><textarea class="input" id="impAns" data-input="impAns" rows="4" style="margin-top:8px" placeholder="Colle ici toute la réponse de Claude">' + esc(I.answer) + '</textarea><button class="btn block" style="margin-top:8px" data-act="impParse">Valider la réponse</button></details></section>' : '';
   const done = I.done ? '<section class="card ok stack"><b>' + ic('check', 's') + ' ' + esc(I.done) + '</b><div class="grid3"><a class="btn sm" href="' + tripUrl('recap') + '">Récap</a><a class="btn sm" href="' + tripUrl('programme') + '">Programme</a><a class="btn sm" href="' + tripUrl('budget') + '">Budget</a></div></section>' : '';
   return topbar(gen ? 'Proposer un programme' : 'Importer des documents', T.trip.name, { back: tripUrl('plus') }) + '<div class="stack" style="max-width:820px">' + done +
     (gen ? '<section class="card small">Le programme proposé tient compte des dates, des logements, des âges des enfants jour par jour, de vos goûts et de la saison, sans dupliquer les étapes déjà prévues.</section>' : sources) +
@@ -4002,7 +4098,7 @@ async function addSources(files) {
   for (const f of files) {
     // Le fichier d'origine est gardé (en mémoire) pour l'envoyer à Claude : photos et PDF scannés
     try { const src = await extractFileText(f); src.file = f; App.imp.sources.push(src); }
-    catch (e) { console.error(e); App.imp.sources.push({ kind: 'erreur', name: f.name, text: '', empty: true }); toast('Lecture impossible : ' + f.name + ' (' + e.message + ')', 4000); }
+    catch (e) { console.warn(e); App.imp.sources.push({ kind: 'erreur', name: f.name, text: '', err: e.message }); toast('Lecture impossible : ' + f.name + ' (' + e.message + ')', 4000); }
   }
   const kept = dedupSources(App.imp.sources.filter(s => !s.dup));
   App.imp.sources = App.imp.sources.map(s => kept.includes(s) ? s : { ...s, dup: true });
@@ -4060,18 +4156,26 @@ ACT.impShare = async () => {
 };
 /* Bouton « Analyser » : Claude si une clé est enregistrée, sinon analyse sur le téléphone */
 ACT.impGo = () => {
-  const I = App.imp; const srcs = I.sources.filter(s => !s.dup);
-  if (!srcs.length && !I.text.trim()) { toast('Ajoute au moins un document'); return; }
+  const I = App.imp; const srcs = I.sources.filter(s => !s.dup && s.kind !== 'erreur');
+  if (!srcs.length && !I.text.trim()) { toast('Ajoute au moins un document lisible'); return; }
   if (hasClaudeKey()) return ACT.impAnalyze();
   const texts = srcs.filter(s => s.text && s.text.trim()).map(s => ({ name: s.name, text: s.text }));
   if (I.text.trim()) texts.push({ name: 'Texte collé', text: I.text });
   const { obj, found } = localAnalyze(texts, { trip: T.trip });
-  const unread = srcs.filter(s => s.kind === 'image' || s.empty).length;
+  const unread = srcs.filter(s => s.kind === 'image' || s.empty).length; // erreurs déjà exclues
   if (!found.budget && !found.steps && !(obj.notes || '').trim()) { I.result = null; scheduleRender(); toast(unread ? 'Ces documents doivent être lus par Claude (photo, scan ou écriture manuscrite)' : 'Rien de reconnu dans ces documents', 6000); return; }
   setPreview(obj, []);
   toast(found.budget + ' ligne(s) de budget, ' + found.steps + ' étape(s) et conseil(s) reconnus' + (unread ? ' · ' + unread + ' document(s) à lire par Claude' : ''), 5000);
 };
 ACT.impGen = () => hasClaudeKey() ? ACT.impAnalyze() : ACT.impShare();
+ACT.impClip = async () => {
+  let t = '';
+  try { t = await navigator.clipboard.readText(); } catch { toast('Accès au presse-papiers refusé : utilise « Coller à la main »', 5000); return; }
+  if (!t.trim()) { toast('Presse-papiers vide : copie d\'abord la réponse dans Claude'); return; }
+  App.imp.answer = t; const r = extractJson(t);
+  if (r.error) { toast('Pas de réponse de Claude reconnue dans le presse-papiers', 5000); scheduleRender(); return; }
+  setPreview(r.obj, r.fixes); toast('Réponse de Claude reçue : vérifie l\'aperçu');
+};
 ACT.impAnalyze = async () => {
   const I = App.imp; if (I.busy) return;
   if (!buildImportPrompt()) return;
@@ -4090,6 +4194,21 @@ ACT.impParse = () => {
   if (r.error) { I.result = { error: r.error }; scheduleRender(); return; }
   setPreview(r.obj, r.fixes);
 };
+/* Nom d'un voyage créé d'après des documents : celui du document, sinon destination + année, sinon mois + année */
+const airportPlace = code => { const a = AirportDB.get(code); return a ? (a.fr || a.city) : ((AIRPORTS[code] || AIRPORT_EXTRA[code] || [])[0] || ''); };
+function proposeTripName(R) {
+  const v = R.voyage || {};
+  if (v.name) return v.name;
+  const dates = R.items.map(it => it.data && (it.data.date || it.data.depDate)).filter(isISODate).sort();
+  const start = v.dateStart || dates[0] || ''; const year = start.slice(0, 4);
+  const fl = R.items.find(it => it.kind === 'booking' && it.data && it.data.type === 'vol' && it.data.sens !== 'retour' && it.data.to);
+  const place = v.destination || (fl ? airportPlace(fl.data.to) : '');
+  if (place) return place + (year ? ' ' + year : '');
+  if (start) return 'Voyage ' + MOIS[+start.slice(5, 7) - 1] + ' ' + year;
+  return '';
+}
+INP.impName = el => { App.imp.result.proposedName = el.value; };
+INP.impDest = el => { App.imp.result.dest = el.value; };
 /* Budget prévisionnel (voyage à venir) ou dépenses pour information (voyage passé) */
 function budgetIsPlanned(voyage) {
   const t = T.trip; const v = voyage || {};
@@ -4104,6 +4223,7 @@ function setPreview(obj, fixes) {
   routeBudget(obj, budgetIsPlanned(obj.voyage), tctx.dateStart);
   const n = normalizeImport(obj, { trip: tctx, travelers: travelersSorted(), steps: live('steps'), expenses: live('expenses'), bookings: live('bookings') });
   n.fixes = fixes || [];
+  if (T.trip.draftImport) { n.proposedName = proposeTripName(n); n.dest = (n.voyage && n.voyage.destination) || ''; }
   I.result = n; I.sel = {};
   n.items.forEach((it, k) => { I.sel[k] = it.ok && !it.dup; });
   scheduleRender();
@@ -4116,6 +4236,7 @@ function previewHTML(I) {
   const nSel = Object.values(I.sel).filter(Boolean).length;
   const newTrav = (R.voyageurs || []).filter(v => !travelersSorted().some(t => norm(t.name) === norm(v.name)));
   return '<section class="card stack"><h2 class="lbl">Aperçu avant intégration</h2>' +
+    (T.trip.draftImport ? '<div class="grid2">' + field('Nom du voyage', '<input class="input" id="impName" data-input="impName" value="' + esc(R.proposedName || '') + '" placeholder="ex. Lanzarote 2026">') + field('Destination', '<input class="input" id="impDest" data-input="impDest" value="' + esc(R.dest || '') + '" placeholder="facultatif">') + '</div>' + (R.voyage && R.voyage.name ? '' : '<div class="tiny muted">' + (R.proposedName ? 'Nom proposé d\'après les informations trouvées : modifiable.' : 'Aucun nom trouvé dans les documents : donne-lui un nom.') + '</div>') : '') +
     (R.fixes.length ? '<div class="small muted">Corrections automatiques : ' + esc(R.fixes.join(', ')) + '.</div>' : '') +
     (R.incertitudes.length ? '<div class="banner small">' + ic('warn') + '<div><b>Incertitudes signalées</b><ul style="margin:4px 0 0;padding-left:18px">' + R.incertitudes.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div></div>' : '') +
     (newTrav.length ? '<div class="small">Voyageurs nouveaux qui seront ajoutés : ' + esc(newTrav.map(v => v.name).join(', ')) + '</div>' : '') +
@@ -4138,8 +4259,9 @@ function applyImport() {
     const dates = R.items.filter((it, k) => I.sel[k] && it.ok && it.data && isISODate(it.data.date)).map(it => it.data.date).sort();
     const d0 = v.dateStart || dates[0], d1 = v.dateEnd || dates[dates.length - 1];
     if (isISODate(d0) && isISODate(d1) && d1 >= d0) { p.dateStart = d0; p.dateEnd = d1; }
-    if (v.name && (T.trip.name === DRAFT_NAME || !T.trip.name)) p.name = v.name;
-    for (const k of ['destination', 'emoji']) if (v[k] && !T.trip[k]) p[k] = v[k];
+    const nm = String(R.proposedName || '').trim(); if (nm) p.name = nm;
+    const ds = String(R.dest ?? v.destination ?? '').trim(); if (ds) p.destination = ds;
+    if (v.emoji && !T.trip.emoji) p.emoji = v.emoji;
     if (v.currency && v.currency !== T.trip.currency) p.currency = v.currency;
     p.archived = (p.dateEnd || T.trip.dateEnd) < localISO(); // voyage à venir : pas archivé
     ops.push({ coll: '', id: T.id, patch: p });
