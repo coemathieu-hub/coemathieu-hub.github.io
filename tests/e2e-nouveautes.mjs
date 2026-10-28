@@ -48,7 +48,7 @@ const ANSWER = JSON.stringify({
   vols: [{ sens: 'aller', compagnie: 'easyJet', numero: 'U2 1234', de: 'GVA', vers: 'KEF', depart_date: '2019-07-10', depart_heure: '10:00', arrivee_date: '2019-07-10', arrivee_heure: '12:30' }],
   notes: 'Prévoir des vêtements de pluie.',
 });
-let gemReq = null, gemCalls = 0, gemMode = 'ok';
+let gemReq = null, gemCalls = 0, gemMode = 'ok'; const gemBodies = [];
 const GEM = 'https://generativelanguage.googleapis.com/v1beta/';
 
 const browser = await chromium.launch();
@@ -61,9 +61,13 @@ await ctx.route(/^https?:\/\/(?!127\.0\.0\.1|localhost)/, async route => {
     if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
     const json = (status, o) => route.fulfill({ status, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify(o) });
     if (u.startsWith(GEM + 'models?')) return json(200, { models: [{ name: 'models/gemini-flash-latest', supportedGenerationMethods: ['generateContent'] }] });
-    gemCalls++; gemReq = { url: u, headers: route.request().headers(), body: JSON.parse(route.request().postData() || '{}') };
+    gemCalls++; gemReq = { url: u, headers: route.request().headers(), body: JSON.parse(route.request().postData() || '{}') }; gemBodies.push(gemReq.body);
     if (gemMode === '429') return json(429, { error: { code: 429, message: 'Resource has been exhausted (e.g. check quota).', status: 'RESOURCE_EXHAUSTED' } });
-    return json(200, { candidates: [{ content: { role: 'model', parts: [{ text: ANSWER }] }, finishReason: 'STOP' }], usageMetadata: { promptTokenCount: 1200, candidatesTokenCount: 300 } });
+    if (gemMode === 'nothink' && gemReq.body.generationConfig.thinkingConfig) return json(400, { error: { code: 400, message: 'Thinking level is not supported for this model.', status: 'INVALID_ARGUMENT' } });
+    if (gemMode === 'slow') { await new Promise(r => setTimeout(r, 15000)); try { await route.abort('timedout'); } catch { } return; }
+    // Réponse en flux (SSE), découpée comme celle de l'API
+    const chunk = (text, fin) => 'data: ' + JSON.stringify({ candidates: [{ content: { role: 'model', parts: [{ text }] }, ...(fin ? { finishReason: 'STOP' } : {}) }], modelVersion: 'gemini-test' }) + '\r\n\r\n';
+    return route.fulfill({ status: 200, headers: { ...cors, 'Content-Type': 'text/event-stream' }, body: chunk(ANSWER.slice(0, 60)) + chunk(ANSWER.slice(60, 200)) + chunk(ANSWER.slice(200), true) });
   }
   for (const [re, fn] of MAP) { const m = u.match(re); if (m) { const f = fn(m); return route.fulfill({ status: 200, contentType: MIME[extname(f)] || 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: readFileSync(f) }); } }
   return route.abort('internetdisconnected');
@@ -169,15 +173,33 @@ await p.waitForSelector('.item:has-text("icon-512.png")');
 await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 15000 });
 const h = gemReq ? gemReq.headers : {}; const b = gemReq ? gemReq.body : {};
 ok('Gemini appelé seul, une fois, sans appui sur « Analyser »', gemCalls === 1, gemCalls + ' appel(s)');
-ok('API Gemini : modèle gemini-flash-latest, clé en en-tête (pas dans l\'adresse)', /models\/gemini-flash-latest:generateContent$/.test(gemReq.url) && h['x-goog-api-key'] === 'AIzaTest-cle-fictive-0000000000000000' && !/key=/.test(gemReq.url), gemReq.url);
+ok('API Gemini : modèle gemini-flash-latest en flux, clé en en-tête (pas dans l\'adresse)', /models\/gemini-flash-latest:streamGenerateContent\?alt=sse$/.test(gemReq.url) && h['x-goog-api-key'] === 'AIzaTest-cle-fictive-0000000000000000' && !/key=/.test(gemReq.url), gemReq.url);
 const parts = (b.contents && b.contents[0].parts) || [];
 ok('API Gemini : photo jointe (JPEG réduit) + demande, réponse JSON exigée', parts.some(x => x.inlineData && x.inlineData.mimeType === 'image/jpeg' && x.inlineData.data.length > 100) && parts.some(x => /Extrais TOUT/.test(x.text || '')) && b.generationConfig.responseMimeType === 'application/json');
+ok('API Gemini : réflexion courte demandée (réponse plus rapide)', b.generationConfig.thinkingConfig && b.generationConfig.thinkingConfig.thinkingLevel === 'LOW');
 await p.click('#impRes button:has-text("Intégrer la sélection")');
 await p.waitForSelector('a.btn:has-text("Récap")');
 await p.click('a.btn:has-text("Récap")'); await p.waitForSelector('text=Organisation');
 const rec = sp(await p.innerText('#app'));
 ok('Récap complet : organisation (vol), programme, budget, notes', /Aller GVA → KEF/.test(rec) && /Seljalandsfoss/.test(rec) && /budget par catégorie/i.test(rec) && /2 752 €/.test(rec) && /vêtements de pluie/.test(await p.inputValue('textarea[name=general]')), [/Aller GVA → KEF/.test(rec), /Seljalandsfoss/.test(rec), /budget par catégorie/i.test(rec), /2 752 €/.test(rec)].join(','));
 await shot('n5-recap-complet');
+
+// --- Modèle qui refuse le niveau de réflexion : relance seule sans ce réglage ; puis bouton Annuler pendant une lecture lente
+gemMode = 'nothink'; gemCalls = 0; gemBodies.length = 0;
+await p.goto(p.url().replace('/recap', '/plus')); await p.click('a.item:has-text("Importer des documents")'); await p.waitForSelector('button:has-text("Fichiers")');
+fc = p.waitForEvent('filechooser'); await p.click('button:has-text("Fichiers")'); await (await fc).setFiles([PHOTO]);
+await p.waitForSelector('#impRes button:has-text("Intégrer la sélection")', { timeout: 15000 });
+ok('Modèle sans réglage de réflexion : relancé seul sans ce réglage', gemCalls === 2 && !!gemBodies[0].generationConfig.thinkingConfig && !gemBodies[1].generationConfig.thinkingConfig, gemCalls + ' appel(s)');
+await p.click('#impRes button:has-text("Ne rien intégrer")');
+gemMode = 'slow';
+await p.click('button:has-text("Analyser à nouveau")');
+await p.waitForSelector('button:has-text("Annuler")', { timeout: 5000 });
+await p.waitForTimeout(1500);
+ok('Lecture en cours : temps écoulé affiché', /Gemini lit le document… \d+ s/.test(await p.innerText('#impProg')), await p.innerText('#impProg'));
+await p.click('button:has-text("Annuler")');
+await p.waitForSelector('text=Lecture par Gemini annulée', { timeout: 5000 });
+ok('Annuler : lecture arrêtée tout de suite, bouton Relancer', await p.isVisible('button:has-text("Relancer")') && !(await p.isVisible('.spin')));
+gemMode = 'ok';
 
 // --- Voyage à venir, quota Gemini atteint : repli automatique sur l'analyse du téléphone ; le budget devient le budget prévu
 gemMode = '429'; gemCalls = 0;
